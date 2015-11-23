@@ -6,4 +6,6 @@
 *.snm
 *.toc
 *.vrb
+*.log
+*.ltjruby
 temp
