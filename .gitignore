@@ -1,0 +1,9 @@
+*.pdf
+*.aux
+*.nav
+*.out
+*.pyg
+*.snm
+*.toc
+*.vrb
+temp
