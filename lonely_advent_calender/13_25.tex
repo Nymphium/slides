@@ -1,0 +1,169 @@
+\section{13日目}
+\begin{frame}[fragile]
+	\frametitle{コツ}
+	\lstinline|switch|文とかコツがある、コツを掴むと書き易さが増える。
+
+	\begin{columns}
+		\scriptsize
+		\column[t]{.5\hsize}
+		\begin{lstlisting}[numbers=none,language=MoonScript]
+str = "hogehoge"
+flag = true
+
+switch str
+	when "hogefuga"
+		do_something!
+	when "hogehoge"
+		if flag
+			do_somethinghoge!
+		\end{lstlisting}
+		\column[t]{.5\hsize}
+		\begin{lstlisting}[numbers=none,language=MoonScript]
+str = "hogehoge"
+flag = true
+
+switch str
+	when "hogefuga"
+		do_something!
+	when flag and "hogehoge" -- ここがミソ
+		do_somethinghoge!
+		\end{lstlisting}
+	\end{columns}
+
+	生成されたLuaをみるとMoonScriptをどうかけばもっとスマートになるかがわかる。
+\end{frame}
+\section{14日目}
+\begin{frame}
+	\frametitle{12/14は白樺リサちゃんの誕生日だぁ〜〜〜!!!!}
+	おめでとう!!!!
+
+	{\tiny{}うおお〜〜〜154話以降まだ観てねぇ〜〜〜}
+\end{frame}
+\section{15日目}
+\section{16日目}
+\begin{frame}[fragile]
+	\frametitle{関数型言語\footnote[frame]{作者が関数型言語と言ったら関数型言語}書いた}
+
+	\lstdefinelanguage{untyped}{
+		alsoletter={\\},
+		keywords={\\},
+		keywordstyle=\ttfamily\color{yellow},
+		comment=[l]{--}
+	}
+
+	\alert{\LARGE{}untyped}\footnote[frame]{\url{https://gist.github.com/Nymphium/48c909f622cb0f567c9e} 型推論とかの講義中に思いついたけど型チェックすら無いのでuntyped。}
+	\begin{columns}
+		\column[t]{.4\hsize}
+		\scriptsize
+		\begin{lstlisting}[numbers=none,language=untyped]
+p = \x \y \z + <x, + <y, z>>
+print (p 3 4 5)
+-- print 12
+double = \f \x f (f x)
+print (double (\x * <x, x>) 3)
+-- print 81
+		\end{lstlisting}
+
+		\column[t]{.7\hsize}
+		\begin{itemize}
+			\item parse、eval、repl合わせて223行で実装!
+			\item 型は4つ! {\footnotesize{}(\lstinline|number|、\lstinline|pair|、\lstinline|lambda|、\lstinline|nil|{\footnotesize{}(\lstinline|print|関数のみ)})}
+			\item 関数はすべて一つの値を引数に持ち、一つの値を返す
+			\item REPLしかない
+			\item \lstinline|if|なんてない\footnote[frame]{実はif文も作れるというか初期関数と原始帰納が使えるので略\url{https://gist.github.com/yoshimuraYuu/a1370698ed533bbbdd8a}}、ループもないけど再帰関数はできる
+			\item でもフィボナッチ数が書ける\footnotemark[17]
+			\item 構文が少ないので\structure{初心者におすすめ}
+		\end{itemize}
+	\end{columns}
+\vspace{1\zw}
+
+Luaよりも関数がシンプルに書けるのでLPeg\footnote[frame]{\url{http://www.inf.puc-rio.br/~roberto/lpeg/}}などと相性が良い! 最高!!
+\end{frame}
+\section{17日目}
+\section{18日目}
+\section{19日目}
+\section{20日目}
+\section{21日目}
+\section{22日目}
+\section{23日目}
+\begin{frame}
+	\frametitle{ネタ切れ}
+	\alert{\Huge{}Alt hogeな言語でそんなに話すことがあると思うなよ〜〜ッ!!!}
+
+	まぁ時間もないしね(建前)。
+\end{frame}
+\section{24日目}
+\begin{frame}
+	\frametitle{MoonScriptとコミュニティ}
+
+	\alert{まだまだ若いので育てていこう!}
+
+	\begin{itemize}
+		\item GitHub上で開発が行われている\footnote[frame]{\url{http://github.com/leafo/moonscript/}}
+		\item バグを数個見つけてpr送ったら(これが個人的に初めて)議論の末にマージされたりされなかったりした
+		\item もっとガンガンぼくのかんがえたさいきょうの構文などをissueにたてよう!\footnote[frame]{すでにGitHub上ではバグレポのみならず構文や関数の追加などが多く議論されている。}
+		\item \structure{まだv0.32だしね}
+	\end{itemize}
+\end{frame}
+\section{25日目}
+\begin{frame}[fragile]
+	\frametitle{明日12/26は藤堂ユリカ様の誕生日だ〜〜〜〜!!!!!}
+	おめでとうございます!!!
+
+	\pause
+	ちなみにワンライナーで誕生日順にアイドルが見られるぞ!
+
+	\tiny
+	\begin{lstlisting}[numbers=none]
+$ moor -luakatsu -e 'for m = 1, 12 do for d = 1, 31 do ((x) -> x and print x.name, x.birthday) Aikatsu.find_birthday "%02d/%02d"\format m, d'
+	\end{lstlisting}
+
+	\scriptsize
+	\begin{columns}
+		\column[t]{.5\hsize}
+		\begin{lstlisting}[numbers=none]
+黒沢 凛 01/01
+大地 のの       01/10
+神谷 しおん     01/11
+霧矢 あおい     01/31
+天羽 まどか     02/14
+星宮 いちご     03/15
+三ノ輪 ヒカリ   03/28
+大空 あかり     04/01
+北大路 さくら   04/06
+姫里 マリア     04/18
+有栖川 おとめ   05/05
+新条 ひなき     06/11
+		\end{lstlisting}
+		\column[t]{.5\hsize}
+		\begin{lstlisting}[numbers=none]
+夏樹 みくる     07/07
+紅林 珠璃       07/31
+紫吹 蘭 08/03
+栗栖 ここね     08/21
+藤原 みやび     09/14
+神崎 美月       09/18
+風沢 そら       10/02
+氷上 スミレ     10/20
+音城 セイラ     11/11
+一ノ瀬 かえで   11/23
+冴草 きい       12/03
+白樺 リサ       12/14
+藤堂 ユリカ     12/26
+		\end{lstlisting}
+	\end{columns}
+\end{frame}
+
+\section{}
+\begin{frame}
+
+	\structure{coinsLT \#10}
+
+	\alert{\LARGE\thetitle}
+
+	\begin{center}
+		ご清聴ありがとうございました。
+		\includegraphics[width=.6\textwidth]{img/sailormoonscript.png}
+	\end{center}
+	\vfill
+\end{frame}

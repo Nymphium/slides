@@ -1,3 +1,4 @@
+\skipnexttoc
 \section{自己紹介}
 \begin{frame}
 	こんにちは、びしょ〜j
@@ -43,7 +44,7 @@ class Foo
 		\uncover<4->{
 			{\LARGE{}\alert{かっこいい!! 短い!!}}
 
-			オンラインコンパイラなどもあり手軽に始められる。詳しくは公式\footnote[frame]<4->{\url{http://moonscript.org}}をチェッキラッ
+			オンラインコンパイラなどもあり手軽に始められる。詳しくは公式\footnote[frame]<4->{\url{http://moonscript.org/}}をチェッキラッ
 		}
 		\column[t]<3->{.6\hsize}
 		\begin{lstlisting}[numbers=none,language={[5.3]lua},title=generated Lua]
@@ -70,7 +71,7 @@ do
 	\frametitle{わ〜〜い12/03は冴草きいちゃんの誕生日だ!!!!!}
 	\begin{columns}
 	\scriptsize
-		\column[b]{.41\hsize}
+		\column[b]{.39\hsize}
 		\begin{lstlisting}[numbers=none,language=MoonScript]
 require'luakatsu'
 Aikatsu.Kii!
@@ -86,22 +87,16 @@ Aikatsu.Kii!
 -- sing    市倉 有菜
 -- school  ドリーム･アカデミー
 		\end{lstlisting}
-		\column[b]<2->{.59\hsize}
+		\column[b]<2->{.62\hsize}
 		\begin{lstlisting}[numbers=none,language=MoonScript,title=\alert{Luakatsu v3 draft function}]
 require'luakatsu'
 -- `find_birthday` returns matched idol table
-((x) -> x and x!) Aikatsu.find_birthday"12/03"
+((x) -> x and x!) (Aikatsu.find_birthday"12/03")
 -- name    冴草 きい
 -- actor   秋奈
 -- birthday        12/03
 -- blood_type      O
--- favorite_foods  ブレインサンダー
--- special_ablity  パソコン
--- favorite_brand  MAGICAL TOY
--- type    Pop
--- signature_songs マジカルタイム
--- sing    市倉 有菜
--- school  ドリーム･アカデミー
+-- ...
 		\end{lstlisting}
 	\end{columns}
 おめでとう! 秋奈さんもガルパン劇場版おめでとうございます!!!!
@@ -123,6 +118,7 @@ t3 = {k, v * 3 for k, v in pairs{x:1, y:2, z:3}}
 	\end{lstlisting}
 	\egroup
 
+	\pause
 	これを用いてテーブルのdeep-copyも簡単にできる。
 	\bgroup\scriptsize
 	\begin{lstlisting}[numbers=none,language=MoonScript]
@@ -139,12 +135,11 @@ print t_.m -- 4
 \end{frame}
 \section{5日目}
 \begin{frame}[fragile]
-	\frametitle{REPLがある\footnote[frame]{\url{https://github.com/Nymphium/moor}}}
+	\frametitle{REPLがある\footnote[frame]{\url{https://github.com/Nymphium/moor/}}}
 
-	MoonScriptの作者leafo氏がちょろっとかいたREPLを改良したものを改良した。
-
-	一部オートインデントや、inspectモジュール\footnote[frame]{\url{https://github.com/kikito/inspect.lua}}など使い勝手がよくなっているよ!
-	\scriptsize
+	MoonScriptの作者leafo氏がちょろっとかいたREPL\footnote[frame]{\url{https://github.com/leafo/moonscript/wiki/Moonscriptrepl}}を改良したもの\footnote[frame]{\url{https://luarocks.org/modules/steved/mooni/}}を改良した。
+	一部オートインデントや、inspectモジュール\footnote[frame]{\url{https://github.com/kikito/inspect.lua/}}など使い勝手がよくなっているよ!
+	\tiny
 	\begin{lstlisting}[numbers=none]
 $ moor -h
 Usage: moonr [options]
@@ -158,8 +153,7 @@ Usage: moonr [options]
 $ moor
 moor on MoonScript version 0.3.2 on Lua 5.3
 > string.split_t = (dlm) =>
-?  str = self\match"#{dlm}$" and self or self .. dlm
-?  [p for p in str\gmatch "(.-)#{dlm}"]
+?   [p for p in (@\match"#{dlm}$" and @ or @ .. dlm)\gmatch "(.-)#{dlm}"]
 ?
 > "渋谷凛,島村卯月,本田未央"\split_t ","
 { "渋谷凛", "島村卯月", "本田未央" }
@@ -167,23 +161,32 @@ moor on MoonScript version 0.3.2 on Lua 5.3
 \end{frame}
 \section{6日目}
 \begin{frame}[fragile]
-	\frametitle{analyzer for MoonScript}
+	\frametitle{Syntax Checker for MoonScript}
 
-	みなさんは\alert{Vim}を使っている可能性が高いと思いますが、Syntastic\footnote[frame]{強力なシンタックスチェッカープラグイン。\url{https://github.com/scrooloose/syntastic}}%
-	にMoonScriptのアナライザを書いた\footnote[frame]{\url{http://github.com/nymphium/syntastic-moonscript}}。
+	みなさんは\alert{Vim}/\structure{Neovim}を使っている可能性が高いと思いますが、Syntastic\footnote[frame]{強力なシンタックスチェッカープラグイン。\url{https://github.com/scrooloose/syntastic/}}%
+	にMoonScriptのシンタックスチェッカーを書いた\footnote[frame]{\url{http://github.com/nymphium/syntastic-moonscript/}}。
 
 	$\bullet$しくみ
-	\uncover<2->{
-		\bgroup\small
-		\begin{enumerate}
-			\item ソースをLuaにコンパイル
-			\item Luacheck\footnote[frame]{\url{http://luacheck.readthedocs.org}}を通す
-			\item \lstinline|moonc -X src.moon|でソースと生成されたLuaの行、エラー行を照らし合わせる
 
-				(ここアホっぽい)
-		\end{enumerate}
-		\egroup
-	}
+	\vspace{-2\zw}
+	\begin{columns}
+		\column[t]{.6\hsize}
+			\uncover<2->{
+				\bgroup\small
+				\begin{enumerate}
+					\item ソースをLuaにコンパイル
+					\item Luacheck\footnote[frame]{\url{http://luacheck.readthedocs.org/}}を通す
+					\item \lstinline|moonc -X src.moon|でソースと生成されたLuaの行、エラー行を照らし合わせる(ここアホっぽい)
+				\end{enumerate}
+				\egroup
+			}
+		\column[t]{.4\hsize}
+		\vspace{-2\zw}
+		\begin{figure}[h]
+			\centering
+			\includegraphics[width=\columnwidth]{img/syntastic.png}
+		\end{figure}
+	\end{columns}
 
 	$\bullet$実装
 
