@@ -8,4 +8,7 @@
 *.vrb
 *.log
 *.ltjruby
+*.fls
+*.fdb_latexmk
+*.synctex.gz
 temp
