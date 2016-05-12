@@ -1,0 +1,38 @@
+\documentclass[aspectratio=169,unicode]{beamer}
+\usepackage[ipa,match]{luatexja-preset}
+\usepackage{url}
+\usepackage{here}
+\usepackage{tikz}
+\usepackage{luatexja-ruby}
+\input{../template/beamertemp}
+\input{../template/mylisting}
+\setmainjfont{SourceHanSansJP}
+\setmainfont{SourceHanSansJP}
+\setromanfont{TeXGyreTermes}
+\setmonofont{Meslo LG L}
+\renewcommand{\familydefault}{\sfdefault}
+\renewcommand{\kanjifamilydefault}{\gtdefault}
+\defaultfontfeatures{Ligatures=TeX}
+\defaultjfontfeatures{BoldFont=SourceHanSansJPBold,Ligatures=TeX}
+\jfont{\IPAG}{IPAPGothic:jfm=ujisv} at 1.1\zw
+\newcommand{\npause}[1]{\pause\setcounter{lstlisting}{#1}}
+\directlua{myutil = require'codes/util'}
+\newlength{\bitlen}
+\addtolength{\bitlen}{0.025\textwidth}
+\title{LuaのVM}
+\subtitle{Tsukuba.pm \#{}3}
+\author{びしょ〜じょ}
+\date{May 14, 2016}
+\begin{document}
+\maketitle
+\skipnexttoc
+\section{自己紹介}
+\input{tex/intro.tex}
+\section{Luaとは}
+\input{tex/aboutlua.tex}
+\section{Lua VMの調査}
+\input{tex/search.tex}
+\skipnexttoc
+\section{参考文献}
+\input{tex/appendix.tex}
+\end{document}

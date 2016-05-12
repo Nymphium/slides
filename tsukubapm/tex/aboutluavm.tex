@@ -1,0 +1,39 @@
+\subsection{Lua VMについて}
+\begin{frame}
+\frametitlesubs
+\begin{itemize}
+	\item リオデジャネイロ･カトリカ大学の開発したLua処理系(つまり本家, PUC-Lua)のVM
+
+		\begin{center}
+			\textcolor<2->{gray}{ソース$\rightarrow${\color<2->{red}{}バイトコード}$\rightarrow$VMで実行}
+		\end{center}
+\end{itemize}
+\vspace{-1\zw}
+\begin{center}
+	\only<2->{\alert{の調査と解析}}
+	% \alert{\only<2,4>{\only<4>{\hspace{6.5\zw}}の調査}\only<3,4>{\only<3>{\hspace{10.2\zw{}の}}{\only<4>{と}デモ}}}
+	\vspace{1\zw}
+
+	\only<3>{\alert{Lua5.2を見る (Lua\LaTeX{}がv5.2ベースなので)}}
+\end{center}
+\end{frame}
+\begin{frame}[fragile]
+	\frametitlesubs
+	1環境(メインチャンク、関数クロージャ)ごとにレジスタ(slots, constants、upvalues、locals、functions)を用意
+
+	\begin{lstlisting}[language={[5.2]lua},numbers=none]
+function hello()
+	print("hello")
+end\end{lstlisting}
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{rcl}
+		slots: &2個&(\lstinline|print|と\lstinline|"hello"|をセットするレジスタ)\\
+		constants:& 2個&(\lstinline|"print"|、\lstinline|"hello"|)\\
+		upvalues:& 1個&(\lstinline|_ENV|\footnote[frame]{グローバル変数は\lstinline|_ENV| tableから持ってくるため})\\
+		functions:& 0個&\\
+		locals:& 0個&
+	\end{tabular}
+\end{table}
+\end{frame}

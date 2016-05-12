@@ -1,27 +1,27 @@
 \documentclass[aspectratio=169,unicode]{beamer}
 \usepackage[ipa]{luatexja-preset}
 \usepackage{url,luatexja-ruby,luacode}
-\input{../temp/beamertemp}
-\input{../temp/mylisting}
+\input{../template/beamertemp}
+\input{../template/mylisting}
 \setmainjfont{SourceHanSansJP}
 % \setmainfont{SourceHanSansJP}
-\setmonofont{DroidSansMono}
+% \setmonofont{DroidSansMono}
 \renewcommand{\familydefault}{\sfdefault}
 \renewcommand{\kanjifamilydefault}{\gtdefault}
 \defaultfontfeatures{Ligatures=TeX}
 \defaultjfontfeatures{BoldFont=SourceHanSansJPBold,Ligatures=TeX}
-\directlua{
-	require 'lualoader'
-	ms = require 'moonscript.base'
+% \directlua{
+	% require 'lualoader'
+	% ms = require 'moonscript.base'
 
-	function directmoon(str)
-		print()
-		print("===========")
-		print(str)
-		print("==========")
-		return (ms.loadstring(str))()
-	end
-}
+	% function directmoon(str)
+		% print()
+		% print("===========")
+		% print(str)
+		% print("==========")
+		% return (ms.loadstring(str))()
+	% end
+% }
 \title{MoonScript Advent Calendar}
 \subtitle{3〜25日目}
 \author{びしょ〜じょ}

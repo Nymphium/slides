@@ -1,0 +1,177 @@
+\subsection{バイトコード}
+\begin{frame}[fragile]
+	\frametitlesubs
+	\begin{itemize}
+		\item \lstinline{luac}コマンドでバイトコードを生成
+		\item \lstinline{luac -l bytecode.out}でいい感じに出力
+		\item \lstinline{luac -l -l bytecode.out}で情報が増える
+	\end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+	\frametitlesubs
+ひとまず標準入力から渡してみる
+	\small
+	\begin{lstlisting}[numbers=none,language=sh]
+cat <<LUACODE | luac -l -
+print("hello, world")
+LUACODE
+	\end{lstlisting}
+	\pause
+	\begin{center}$\Downarrow$\end{center}
+	\begin{lstlisting}[numbers=none]
+main <stdin:0,0> (4 instructions at 0x2268790)
+0+ params, 2 slots, 1 upvalue, 0 locals, 2 constants, 0 functions
+        1       [1]     GETTABUP        0 0 -1  ; _ENV "print"
+        2       [1]     LOADK           1 -2    ; "hello, world"
+        3       [1]     CALL            0 2 1
+        4       [1]     RETURN          0 1\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]
+	\frametitlesubs
+	\textrm{Lua\LaTeX}にダイレクトに書いてみる
+	\bgroup
+	\scriptsize
+	\mylisting[language={[5.3]lua}]{codes/dumpdemo.lua}
+	\npause{0}
+	\tiny
+	\directlua{dofile("codes/dumpdemo.lua")}
+	\egroup
+\end{frame}
+\subsection{読み方}
+\begin{frame}[fragile]
+	\frametitlesubs
+	\tiny
+	\directlua{dofile("codes/dumpdemo.lua")}
+	\normalsize
+
+	まずこれを読む。
+\end{frame}
+\subsubsection{header block}
+\begin{frame}[fragile]{\insertsubsubsectionhead}
+	\directlua{dofile("codes/headerprint.lua")}
+
+	header block
+	\begin{multicols}{2}
+		\begin{itemize}
+			\item \directlua{myutil.itemprint("4bytes", 2)}
+
+				\uncover<2->{header signature {\small{}(ESC ``Lua'')}}
+			\item \directlua{myutil.itemprint("1byte")}
+
+				\uncover<3->{Lua Version
+
+				{\small{}(例では52、つまりLua 5.2)}}
+			\item \directlua{myutil.itemprint("1byte")}
+
+				\uncover<4->{Format Version
+			
+				{\small{}(0 = official(default))}}
+			\item \directlua{myutil.itemprint("1byte")}
+
+				\uncover<5->{Endianness flag
+
+				{\small{}(1 = little endian(default), 0 = big endian)}}
+			\item \directlua{myutil.itemprint("1byte")}
+
+				\uncover<6->{size of \lstinline{int} {\small{}(C lang)}}
+			\item \directlua{myutil.itemprint("1byte")}
+
+				\uncover<7->{size of \lstinline{size_t} {\small{}(C lang)}}
+			\item \directlua{myutil.itemprint("1byte")}
+
+				\uncover<8->{size of instruction}
+			\item \directlua{myutil.itemprint("1byte")}
+
+				\uncover<9->{size of \lstinline{lua_Number}\footnote[frame]{32bit integer}{\small{}(C lang)}}
+			\item \uncover<10->{\textcolor{red}{1byte}
+
+					Integral flag
+
+					{\small{}(0 = floating point(default), 1 = integral number type)}}
+		\end{itemize}
+	\end{multicols}
+\end{frame}
+\begin{frame}{\insertsubsubsectionhead}
+	\textcolor{gray}{1B 4C 75 61 52 00 01 04 08 04 08 00} \textcolor{red}{19 93 0D 0A 1A 0A}
+	\begin{itemize}
+		\item 6bytes
+
+		\lstinline{LUAC_DATA}, ``data to catch conversion errors''(ソースのコメントより)
+
+		\begin{itemize}
+			\item 19 93
+
+				Lua1.0のリリース年
+			\item 0D 0A
+
+				DOSの改行(CR LF)、DOS$\rightarrow$UNIXでの改行のデータ変換の検知
+			\item 1A
+
+				SUB
+			\item 0A
+
+				UNIXの改行(LF)、UNIX$\rightarrow$DOSでの改行のデータ変換の検知
+		\end{itemize}
+\end{itemize}
+\end{frame}
+\begin{frame}{\insertsubsubsectionhead}
+	ちなみに
+
+	Lua5.2
+
+	\begin{center}
+		1B 4C 75 61 52 00 01 04 08 04 08 00 19 93 0D 0A 1A 0A
+
+		$\Downarrow$
+	\end{center}
+
+	Lua5.3
+
+	\begin{center}
+		\ltjruby{\textcolor{red}{1B 4C 75 61}}{header signature} \ltjruby{\textcolor{blue}{53}}{version}
+		\ltjruby{\textcolor{red}{00}}{format version} \ltjruby{\textcolor{blue}{19 93 0D 0A 1A 0A}}{LUAC\_DATA}
+		\ltjruby{\textcolor{red}{04 08 04 08 08}}{objects sizes} \ltjruby{\textcolor{blue}{78 56 00 00 00 00 00 00}}{LUAC\_INT\footnote[frame]{Endiannessの検査、0x5678をdumpしているのでこの場合リトルエンディアン}}
+		\ \ltjruby{\textcolor{red}{00 00 00 00 00 00 00 28 77 40}}{LUAC\_NUM\footnote[frame]{IEEE754 float formatの検査}}
+	\pause
+
+	\alert{\Huge{}長い}
+	\end{center}
+\end{frame}
+\subsubsection{function block}
+\begin{frame}[fragile]{\insertsubsubsectionhead}
+	02 00 00 00 02 00 00 00 00 00 02 01 00$\cdots\cdots$
+
+	function block
+	\scriptsize
+	\begin{multicols}{2}
+		\begin{itemize}
+			\item \lstinline{int}
+
+				line defined
+			\item \lstinline{int}
+
+				last line defined
+			\item 1byte
+
+				number of parameters
+			\item 1byte
+
+				\lstinline{is_vararg}
+			\item 1byte
+
+				number of registers used by the function
+			\item List
+
+				\textcolor<2->{red}{number/list of instructions}
+			\item List
+
+				\textcolor<2->{red}{number/list of constants}
+			\item List
+
+				\textcolor<2->{red}{number/list of upvalues}
+			\item List
+
+				debug info
+		\end{itemize}
+	\end{multicols}
+\end{frame}

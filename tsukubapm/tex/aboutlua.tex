@@ -1,0 +1,46 @@
+\subsection{Lua/MoonScriptとは}
+\begin{frame}
+	\frametitlesubs
+	\begin{itemize}
+		\item \alert{Lua}
+
+			弱い動的型付けなスクリプト言語 \uncover<2->{\textcolor{gray}{$\leftarrow${\Huge{}Perlでは$\cdots\cdots${}?}}}\\
+			ブラジル産!! 軽量!! 関数もファーストクラスで扱えるぞ!!
+
+			文法が簡単、予約語も22個と少ない
+		\item \structure{MoonScript}
+
+			JSに対するCoffeeScriptみたいなやつ
+
+			\lstinline{end}地獄の解消、リスト内包表記、クラスベースOOPなど文法の強化
+	\end{itemize}
+\end{frame}
+\begin{frame}
+	\frametitlesubs
+	\textcolor{gray}{{\Huge{}Perlでは$\cdots\cdots${}}}
+\end{frame}
+\subsection{Luaとは?!}
+\begin{frame}
+	\frametitlesubs
+	\begin{itemize}
+		\item \structure{軽量}
+
+			\uncover<2->{アイマス2からNetBSD、Wiresharkや\structure{このスライド}(\textrm{Lua\LaTeX{}})にまで組み込める}
+
+			\uncover<3->{\alert{レジスタベースVM上で動く} (PUC-Lua)}
+		\item \structure{関数がファーストクラス}
+
+			\uncover<4->{高階関数を扱うことができ、CPSを用いた例外処理機構のあるLuaインタプリタ\footnote[frame]{\url{https://github.com/nymphium/llix}}も実装できる}
+		\item \alert{唯一}のデータ構造 table
+			\uncover<5->{
+				\begin{itemize}
+					\item 簡単に言うと\alert{連想配列}\only<6->{\textcolor{gray}{$\leftarrow${\Huge{}Perlでは$\cdots\cdots${}?}}}\only<1-5>{、数字もキー}
+					\item 関数、数値、文字列、table自身も、オブジェクトは全部詰め込める
+					\item \structure{メタテーブル}という機能を用いることにより演算子オーバーロードやプロトタイプベースのオブジェクト指向プログラミンができる
+				\end{itemize}}
+	\end{itemize}
+\end{frame}
+\begin{frame}
+	\frametitlesubs
+	\textcolor{gray}{{\Huge{}Perlでは$\cdots\cdots${}\pause{}ない}}
+\end{frame}
