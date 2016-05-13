@@ -16,7 +16,7 @@
 \defaultjfontfeatures{BoldFont=SourceHanSansJPBold,Ligatures=TeX}
 \jfont{\IPAG}{IPAPGothic:jfm=ujisv} at 1.1\zw
 \newcommand{\npause}[1]{\pause\setcounter{lstlisting}{#1}}
-\directlua{myutil = require'codes/util'}
+\directlua{myutil = require'codes/texutils/util'}
 \newlength{\bitlen}
 \addtolength{\bitlen}{0.025\textwidth}
 \title{LuaのVM}
@@ -37,13 +37,13 @@
 \section{まとめ}
 \input{tex/conclusion.tex}
 \skipnexttoc
+\section{参考文献}
+\input{tex/appendix.tex}
+\skipnexttoc
 \section*{}
 \begin{frame}
 	\begin{center}
 		\Huge{}おわり
 	\end{center}
 \end{frame}
-\skipnexttoc
-\section{参考文献}
-\input{tex/appendix.tex}
 \end{document}

@@ -19,6 +19,18 @@
 	\begin{center}
 		\Huge{}デモ
 	\end{center}
+	\tiny\directlua{dofile"codes/texutils/dumpdemo.lua"}
+
+	\begin{figure}[h]
+		\tikzset{just here/.style = {above right,inner sep=0mm}}
+		\centering
+		\begin{tikzpicture}[remember picture]
+			\useasboundingbox (0,0);
+			\draw[red, dashed, very thick] (-4.8, 1.4) -- (-4.8, 1.17) -- (-7.1, 1.17) -- (-7.1, .84) -- (4.7, .84) -- (4.7, 1.4) -- (-4.8, 1.4);
+		\end{tikzpicture}
+	\end{figure}\normalsize
+
+	このへん(function block)を読ませる
 \end{frame}
 \begin{frame}[fragile]
 	\frametitlesec

@@ -31,24 +31,24 @@ main <stdin:0,0> (4 instructions at 0x2268790)
 	\textrm{Lua\LaTeX}にダイレクトに書いてみる
 	\bgroup
 	\scriptsize
-	\mylisting[language={[5.3]lua}]{codes/dumpdemo.lua}
+	\mylisting[language={[5.3]lua}]{codes/texutils/dumpdemo.lua}
 	\npause{0}
 	\tiny
-	\directlua{dofile("codes/dumpdemo.lua")}
+	\directlua{dofile("codes/texutils/dumpdemo.lua")}
 	\egroup
 \end{frame}
 \subsection{読み方}
 \begin{frame}[fragile]
 	\frametitlesubs
 	\tiny
-	\directlua{dofile("codes/dumpdemo.lua")}
+	\directlua{dofile("codes/texutils/dumpdemo.lua")}
 	\normalsize
 
 	まずこれを読む。
 \end{frame}
 \subsubsection{header block}
 \begin{frame}[fragile]{\insertsubsubsectionhead}
-	\directlua{dofile("codes/headerprint.lua")}
+	\directlua{dofile("codes/texutils/headerprint.lua")}
 
 	header block
 	\begin{multicols}{2}
