@@ -1,0 +1,36 @@
+\begin{frame}
+	\frametitlesec
+
+	かいた
+
+	{\tiny\url{https://gist.github.com/Nymphium/d47385929fd0d23e98207670f9c588c3}}
+	\begin{itemize}
+		\item Lua 5.2バイトコードをターゲット
+		\item header/function blockのconstantsまで解析
+		\item MoonScriptで実装
+
+			\textcolor{gray}{\tiny{}バグを一つみつけてしまった$\cdots\cdots$}
+		\item 5.1のバイトコードの資料見ながら実装していったら5.2とちょこちょこ変わっててホンマキレタ
+		\item 5.2と5.3もちょいちょい違っててキレタ(2)
+	\end{itemize}
+\end{frame}
+\begin{frame}
+	\frametitlesec
+	\begin{center}
+		\Huge{}デモ
+	\end{center}
+\end{frame}
+\begin{frame}[fragile]
+	\frametitlesec
+
+	できそうなこと
+	\begin{itemize}
+		\item 最適化
+
+			最適化っぽいことはほとんどしない(\lstinline{TAICALL}、numberの即値演算程度)のでいっぱいできそう
+		\item 型チェック
+
+			constants poolから逆に命令を見ていけばいけるか
+		\item 可視化 (フローグラフなど)
+	\end{itemize}
+\end{frame}
