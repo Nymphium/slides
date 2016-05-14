@@ -176,3 +176,19 @@ main <stdin:0,0> (4 instructions at 0x2268790)
 		\end{itemize}
 	\end{multicols}
 \end{frame}
+\begin{frame}
+	\tiny\directlua{dofile"codes/texutils/dumpdemo.lua"}\normalsize
+	\begin{figure}[h]
+		\tikzset{just here/.style = {above right,inner sep=0mm}}
+		\centering
+		\begin{tikzpicture}[remember picture]
+			\useasboundingbox (0,0);
+			\draw (-3, 2.3) node[above]{\textcolor{blue}{header block}};
+			% \draw[blue, dashed, very thick] (-7.1, 1.36) -- (-7.1, 2.15) -- (4.7, 2.15) -- (4.7, 1.82) -- (-4.8, 1.82) -- (-4.8, 1.36) -- (-7.1, 1.36);
+			\draw[blue, dashed, very thick] (-7.1, 1.82) -- (-7.1, 2.15) -- (-.08, 2.15) -- (-.08, 1.82) -- (-7.1, 1.82);
+			\draw[red, dashed, very thick] (-.08, 2.15) -- (-.08, 1.82) -- (-7.1, 1.82) -- (-7.1, 1.03) -- (4.7, 1.03) -- (4.7, 2.15) -- (-.08, 2.15);
+			\draw (0, 1) node[below]{\textcolor{red}{function block}};
+		\end{tikzpicture}
+	\end{figure}
+\end{frame}
+
