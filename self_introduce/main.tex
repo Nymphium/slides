@@ -1,0 +1,123 @@
+\documentclass[aspectratio=169,unicode]{beamer}
+\usepackage[ipa,match]{luatexja-preset}
+\usepackage{url}
+\usepackage{here}
+\usepackage{tikz}
+\usepackage{luatexja-ruby}
+\input{../template/beamertemp}
+\input{../template/mylisting}
+\setmainjfont{SourceHanSansJP}
+\setmainfont{SourceHanSansJP}
+\setromanfont{TeXGyreTermes}
+\setmonofont{Meslo LG L}
+\renewcommand{\familydefault}{\sfdefault}
+\renewcommand{\kanjifamilydefault}{\gtdefault}
+\defaultfontfeatures{Ligatures=TeX}
+\defaultjfontfeatures{BoldFont=SourceHanSansJPBold,Ligatures=TeX}
+\jfont{\IPAG}{IPAPGothic:jfm=ujisv} at 1.1\zw
+\newcommand{\npause}[1]{\pause\setcounter{lstlisting}{#1}}
+% \directlua{myutil = require'codes/texutils/util'}
+% \newlength{\bitlen}
+% \addtolength{\bitlen}{0.025\textwidth}
+% \notoc
+\title{自己紹介}
+% \subtitle{自己紹介}
+\author{河原 悟}
+% \subtitle{Tsukuba.pm \#{}3}
+% \author{びしょ〜じょ}
+\date{May 14, 2016}
+\begin{document}
+\maketitle
+\skipnexttoc
+\section{自己紹介}
+\skipnexttoc
+\subsection{所属}
+\skipnexttoc
+\begin{frame}
+	\frametitlesubs
+	\begin{itemize}
+		\item 所属: 筑波大学
+			\begin{itemize}
+				\item 情報学群 情報科学類 4年次3年生
+				\item プログラム論理研究室\footnote{\url{http://logic.cs.tsukuba.ac.jp/}} 配属予定
+				\item 情報学類誌 WORD 編集部\footnote{\url{http://www.word-ac.net}}
+
+					 \LaTeX、コーラ飲み比べ、楽器制作、漫画紹介など
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+\subsection{プログラミング}
+\begin{frame}
+	\frametitlesubs
+	\begin{itemize}
+		\item プログラミング歴: 3年
+
+			大学に入ってから
+			\begin{itemize}
+				\item GitHub ID: Nymphium
+				\item \structure{Lua}
+
+					Lua製OSSにいくつかPRを投げる、MLに目を通す
+				\item \alert{MoonScript}
+
+					日本人唯一のコントリビューター
+			\end{itemize}
+	\end{itemize}
+\end{frame}
+\section{活動}
+\subsection{アルバイト}
+\begin{frame}
+	\frametitlesubs
+
+	\begin{itemize}
+		\item 産業総合研究所
+			\begin{itemize}
+				\item 2014/9 〜 2015/2
+				\item Java, Shell Script
+		\end{itemize}
+		\item アジルポイント
+			\begin{itemize}
+				\item 2015/05 〜
+				\item JavaScript(jQuery), 英日翻訳
+			\end{itemize}
+	\end{itemize}
+\end{frame}
+\subsection{contribute for MoonScript}
+\begin{frame}
+	\frametitlesubs
+	\begin{itemize}
+		\item MoonScript? \footnote{\url{https://github.com/leafo/moonscript}}
+			\begin{itemize}
+				\item Luaにトランスパイル可能なスクリプト言語
+
+					\begin{itemize}
+						\item CoffeeScriptライクな構文
+						\item トランスパイラ/インタプリタはMoonScriptで記述されている
+					\end{itemize}
+			\end{itemize}\pause
+
+		\item ビルドシステム周り、構文のバグフィックスなど
+		\item {\footnotesize{}\lstinline{curl https://github.com/leafo/moonscript/blob/master/CHANGELOG.md | grep nymphium}}
+		\item \alert{日本人唯一のコントリビューター}
+		\item 3番めくらいにコード変更量が多い!!
+\end{itemize}\end{frame}
+\subsection{他}
+\begin{frame}
+	\frametitlesubs
+	\begin{itemize}
+		\item MoonScriptによるLua処理系の実装\footnote{\url{http://nymphium.github.io/pdf/information_special_seminar.html}}
+			\begin{itemize}
+				\item CPSによる例外処理機構を実装
+			\end{itemize}
+		\item Optimizer for Lua VM (鋭意製作中)
+			\begin{itemize}
+				\item Lua VMの実行形式を読み取り、命令列を高速になるように最適化していく
+			\end{itemize}
+		\item MoonScript開発用ツール
+			\begin{itemize}
+				\item REPL\footnote{\url{https://github.com/nymphium/moor}}
+				\item Syntastic用のLint\footnote{\url{https://github.com/nymphium/syntastic-moonscript}}
+			\end{itemize}
+	\end{itemize}
+\end{frame}
+\end{document}
