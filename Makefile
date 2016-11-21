@@ -1,11 +1,11 @@
-# CONTINUE ?=
+CONTINUE ?=
 TARGET = main
-LATEXMKFLAG =-pdf -synctex=1 -interaction=nonstopmode
+LATEXMKFLAG =-pdf -synctex=1 -interaction=nonstopmode $(CONTINUE)
 
 all:
 	latexmk $(LATEXMKFLAG) $(TARGET)
 continue:
-	CONTINUE+= -pvc make all
+	make CONTINUE=-pvc
 clean:
 	latexmk -C
 	-rm $(TARGET).ltjruby
