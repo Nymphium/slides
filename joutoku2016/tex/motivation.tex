@@ -1,0 +1,77 @@
+\section{motivation}
+\begin{frame}[fragile]
+\frametitlesec
+\alert{Lua VM}, register-based Virtual Machine
+\begin{figure}[H]
+	\bgroup
+	\footnotesize\tt
+	\tikzset{
+		LL/.style={
+			draw=black,decorate,
+			decoration={snake, segment length=3mm,post}
+		},
+		every node/.style = {draw, align=center}
+	}
+
+	\begin{tikzpicture}
+		\node[ellipse,fill=\nodecolor] (source) {Lua source};
+		\node[right = 2 of source, ellipse,fill=\nodecolor] (bytecode) {\textcolor<2>{red}{bytecode}};
+		\node[draw=none, above] at ($(source)!0.5!(bytecode)$) {\textrm{compile}};
+		\node[draw=none,right = of bytecode] (run) {(run on the VM)};
+		\draw[->] (source) -- (bytecode);
+		\draw[->] (bytecode) -- (run);
+	\end{tikzpicture}
+	\egroup
+\end{figure}
+\pause
+\pause
+
+積極的に最適化が\structure{行われない}
+
+\bgroup
+\small
+\begin{minipage}{.1\textwidth}
+\ 
+\end{minipage}
+\begin{minipage}{.3\textwidth}
+\begin{lstlisting}[language={[5.3]lua}]
+local x = 3
+local y = 5
+print(x + y)\end{lstlisting}
+\end{minipage}
+\begin{minipage}{.2\textwidth}
+\begin{center}
+\structure{$\Rightarrow$}
+
+compile
+\end{center}
+\end{minipage}
+\begin{minipage}{.35\textwidth}
+	\begin{lstlisting}
+LOADK       0   0
+LOADK       1   1
+GETTABUP   2    0   -3
+ADD         3   0    1
+CALL        2   2    1
+RETURN      0   1\end{lstlisting}
+\end{minipage}
+\begin{minipage}{.1\textwidth}
+\ 
+\end{minipage}
+\egroup
+
+\only<4->{%
+\vskip-3.3\zw%
+\hspace{10\zw}%
+\fcolorbox{black}{white}{\parbox{\dimexpr10\zw\fboxsep-2\fboxrule\relax}{\alert{コンパイル時に値が\ \ $\uparrow$ 分かる(定数化可能)}}}%
+\vskip.4\zw%
+}
+
+\only<5->{%
+\vskip-8.5\zw%
+\hskip7.7\zw%
+\fcolorbox{black}{white}{\parbox{\dimexpr11\zw\fboxsep-2\fboxrule\relax}{\alert{足し算の結果が分かればこの定数はいらない\ \ $\rightarrow$}}}%
+\vskip5.7\zw%
+}
+\end{frame}
+

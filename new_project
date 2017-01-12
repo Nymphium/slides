@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -ex
+
+new_dir=${1%%/}
+mkdir "${new_dir}"
+touch "${new_dir}/main.tex"
+cp Makefile "${new_dir}"
+

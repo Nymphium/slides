@@ -1,0 +1,75 @@
+\section{benchmark}
+% \subsection{Linpack benchmark}
+% \begin{frame}[fragile]
+% \frametitlesubs
+% Linpack benchmark\footnote{\url{https://www.jasondavies.com/optimising-lua/JasonDaviesDissertation.pdf}にあるソースコードを利用}
+% \end{frame}
+% \subsection{function inlining}
+\begin{frame}[fragile]
+\frametitlesec
+\begin{minipage}{.05\textwidth}
+	\ 
+\end{minipage}
+\begin{minipage}[t]{.3\textwidth}
+	\scriptsize
+	\begin{lstlisting}[language={[5.3]lua}]
+local function pow(i)
+	return i * i
+end
+
+local a = {}
+
+for i = 1, 10000000 do
+	a[i] = pow(i)
+end
+	\end{lstlisting}
+	\begin{minipage}[t]{1.2\textwidth}
+		% \begin{center}
+			\vspace{3\zw}
+			\only<6>{\Large\alert{1.4倍の高速化}}
+		% \end{center}
+	\end{minipage}
+\end{minipage}
+\begin{minipage}[t]{.2\textwidth}
+	\pause
+	\vspace{3\zw}
+	\ \ \ \ \ \ \ $\Rightarrow$
+
+	\vspace{6\zw}
+	\only<6>{\ \ \ \ \ \ \ $\Leftarrow$}
+\end{minipage}
+\begin{minipage}[t]{.3\textwidth}
+	\bgroup
+	\scriptsize
+	\begin{lstlisting}[style=snippet,escapechar={@}]
+......
+FORPREP         2 4    
+@\color<5>{brown}{MOVE\ \ \ \ \ \ \ \ 6\ 0}@
+MOVE            7 5
+@\alert<4>{CALL\ \ \ \ \ \ \ \ 6\ 2\ 2}@
+SETTABLE        1 5 6
+FORLOOP         2 -5   
+......
+	\end{lstlisting}
+	\egroup
+
+	\pause
+	\vspace{-1\zw}
+	\begin{center}
+		$\Downarrow$
+	\end{center}
+	\vspace{-1\zw}
+	\scriptsize
+	\begin{lstlisting}[style=snippet,escapechar={@}]
+......
+FORPREP         2 4    
+MOVE            7 5
+@\alert<4>{MUL\ \ \ \ \ \ \ \ \ 8\ 7\ 7}@
+@\alert<4>{MOVE\ \ \ \ \ \ \ \ 6\ 8}@
+SETTABLE        1 5 6
+FORLOOP         2 -5   
+......
+	\end{lstlisting}
+\end{minipage}
+\end{frame}
+

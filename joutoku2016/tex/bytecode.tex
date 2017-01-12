@@ -1,0 +1,54 @@
+\section{bytecode}
+\begin{frame}[fragile]
+\frametitlesec
+\begin{center}
+	\begin{overlayarea}{.35\textwidth}{.1\textheight}
+		\begin{onlyenv}<2->
+			\begin{lstlisting}
+$ luac test.lua
+			\end{lstlisting}
+		\end{onlyenv}
+	\end{overlayarea}
+	\only<2->{compile $\Rightarrow$}
+\end{center}
+\bgroup
+\begin{minipage}{.05\textwidth}
+\ 
+\end{minipage}
+\begin{minipage}{.34\textwidth}
+	\footnotesize
+	\only<1>{\vspace{2.42\zh}}
+
+	\begin{lstlisting}[language={[5.3]lua}]
+print("hello, world!")
+	\end{lstlisting}
+\end{minipage}\pause%
+\egroup
+\begin{minipage}{.16\textwidth}
+\ 
+\end{minipage}
+\bgroup
+\begin{minipage}{.43\textwidth}
+	\tiny
+	\begin{lstlisting}
+1b 4c 75 61 53 00 19 93 0d 0a 1a 0a 04 08 04 08
+08 78 56 00 00 00 00 00 00 00 00 00 00 00 28 77
+40 01 0a 40 74 65 73 74 2e 6c 75 61 00 00 00 00
+00 00 00 00 00 02 02 04 00 00 00 06 00 40 00 41
+40 00 00 24 40 00 01 26 00 80 00 02 00 00 00 04
+06 70 72 69 6e 74 04 0e 68 65 6c 6c 6f 2c 20 77
+6f 72 6c 64 21 01 00 00 00 01 00 00 00 00 00 04
+00 00 00 01 00 00 00 01 00 00 00 01 00 00 00 01
+00 00 00 00 00 00 00 01 00 00 00 05 5f 45 4e 56
+\end{lstlisting}
+\end{minipage}
+\egroup
+
+\pause
+\begin{center}
+	$\Downarrow$
+
+	MoonScript treatable format
+\end{center}
+\end{frame}
+

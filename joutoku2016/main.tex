@@ -1,0 +1,27 @@
+\documentclass[aspectratio=169,unicode,compress,14pt]{beamer}
+\usepackage{luatexja-preset,amsmath,ulem,tikz,here,color}
+\usetikzlibrary{shapes,snakes,arrows.meta,positioning,calc}
+\def\nodecolor{blue!20}%
+\input{../template/beamertemp.tex}
+\input{../template/mylisting.tex}
+\setmonofont{Meslo LG L}
+\setsansfont{Source Han Sans JP}
+\setromanfont{Takao Ex Mincho}
+\renewcommand{\familydefault}{\rmdefault}
+\setbeamersize{text margin left=1\zw}
+\setbeamersize{text margin right=1\zw}
+\newlength{\bitlen}
+\title{Optimizing Lua VM Bytecode using Data Flow Analysis}
+\institute{情報特別演習 報告会}
+\keywords{Lua VM, Register-based VM, optimization}
+\author{Satoru Kawahara}
+\lstset{numbers=none}
+\begin{document}
+\maketitle
+\input{tex/motivation.tex}
+\input{tex/summary.tex}
+\input{tex/bytecode.tex}
+\input{tex/optimize.tex}
+\input{tex/benchmark.tex}
+\input{tex/conclusion.tex}
+\end{document}
