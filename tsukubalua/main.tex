@@ -1,0 +1,46 @@
+\documentclass[aspectratio=169,unicode,compress,14pt]{beamer}
+\usepackage{luatexja-preset,amsmath,ulem,tikz,here,color,hyperref}
+\def\aatitle{Opeth, Lua VM Bytecode Optimizer}
+\usetikzlibrary{shapes,snakes,arrows.meta,positioning,calc}
+\def\nodecolor{blue!20}%
+\input{../template/beamertemp.tex}
+\input{../template/mylisting.tex}
+\setmonofont{Meslo LG L}
+\setsansfont{Source Han Sans JP}
+\setsansjfont{Source Han Sans JP}
+\setromanfont{Takao Ex Mincho}
+\setmainfont{Source Han Sans JP}
+\setmainjfont{Source Han Sans JP}
+\setbeamersize{text margin left=1\zw}
+\setbeamersize{text margin right=1\zw}
+\newfontfamily{\theking}{theKing26Queen}
+\newcommand{\Opeth}{\textcolor{black}{{\huge{}Opeth}{\footnotesize{},\\Lua VM Bytecode Optimizer}}}
+\title{\Opeth}
+\keywords{Lua VM, Register-based VM, optimization}
+\author{\footnotesize{}Nymphium}
+\date{\footnotesize{}February 12, 2017 at tsukuba.lua}
+\makeatletter
+\hypersetup{
+	pdftex,
+	pdftitle=\aatitle,
+	pdfsubject=\aatitle,
+	pdfauthor={びしょ〜じょ},
+	pdfkeywords={Optimization, Register-based Virtual Machine, Lua},
+	urlcolor=blue,
+	colorlinks=false,
+	% pdfborderstyle={/S/U/W .5}
+}
+\makeatother
+\begin{document}
+\bgroup
+\theking
+\maketitle
+\egroup
+\title{\aatitle}
+\skipnexttoc
+\input{tex/intro.tex}
+\input{tex/opeth.tex}
+\input{tex/impl.tex}
+\input{tex/tools.tex}
+\input{tex/concl.tex}
+\end{document}

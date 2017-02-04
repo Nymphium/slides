@@ -1,0 +1,31 @@
+\begin{frame}
+	\frametitlesec
+	つくったoptimizer
+
+	\begin{center}{\theking{}Opeth\par}\end{center}
+	\begin{itemize}
+		\item \url{https://github.com/Nymphium/opeth}
+		\item 『情報特別演習II』\footnote{\url{http://www.coins.tsukuba.ac.jp/syllabus/GB13312_GB13322.html}}という通年の講義で制作
+		\item コマンドラインから使用可能
+		\item モジュールとしても使える
+	\end{itemize}
+\end{frame}
+\skipnexttoc
+\subsection{デモ}
+\begin{frame}[fragile]
+\begin{center}\Huge{}デモ\end{center}
+\end{frame}
+\skipnexttoc
+\begin{frame}[fragile]
+	\frametitlesubs
+
+	\begin{lstlisting}[language=MoonScript,numbers=none,escapechar=@]
+optimizer = require'opeth.opeth'
+
+f = -> ......
+......
+
+f_ = @\alert{\uwave{optimizer}}@f
+f_! -- wow
+	\end{lstlisting}
+\end{frame}
