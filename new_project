@@ -2,6 +2,11 @@
 
 set -ex
 
+if [ "${1}" = "--help" ] || [ "${#1}" -eq 0 ]; then
+	cat "$(basename "${0}")"
+	exit 0
+fi
+
 new_dir=${1%%/}
 mkdir "${new_dir}"
 touch "${new_dir}/main.tex"
