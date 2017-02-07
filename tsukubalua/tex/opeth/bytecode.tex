@@ -1,0 +1,150 @@
+\subsection{Bytecode}
+\begin{frame}
+	\frametitlesubs
+	\begin{figure}
+		\centering
+		\begin{tikzpicture}
+			\node[text width=13\zw] (sousa) at (0, 0) {Lua VM 5.3のバイトコード\\を操作したい};
+			\node[right = .5 of sousa] (arrow) {$\Rightarrow$};
+			\node[right = .5 of arrow, text width=13\zw] {バイトコードのdocumentは\\\alert<2->{ない}};
+		\end{tikzpicture}
+	\end{figure}
+
+	\pause
+	\vspace{3\zw}
+	\begin{center}
+		$\Rightarrow$ \alert{自分で読み解くしかない}
+	\end{center}
+\end{frame}
+\begin{frame}
+	\frametitlesubs
+
+	有志の非公式ドキュメント
+	\begin{itemize}
+		\item Lua VM 5.3 instructions (bytecodeではない)\footnote{\url{https://github.com/dibyendumajumdar/ravi/blob/master/readthedocs/lua_bytecode_reference.rst}}
+		\item Lua VM 5.1 reference\footnote{\url{http://luaforge.net/docman/83/98/ANoFrillsIntroToLua51VMInstructions.pdf}}
+	\end{itemize}
+	\pause
+
+	Lua VM bytecodeを読むためのツール
+	\begin{itemize}
+		\item \lstinline{luac -l -l luac.out}
+		\item \lstinline{xxd -g 1 luac.out | nvim - -R}\pause
+		\item ソースコード\footnote{\url{https://www.lua.org/source}}
+	\end{itemize}
+
+	\pause
+	\begin{center}
+		簡単に言うと\alert{\Huge{}気合}
+	\end{center}
+\end{frame}
+\begin{frame}[fragile]
+	\frametitlesubs
+	\hspace{-.5\zw}
+	\begin{minipage}[t]{.34\textwidth}
+		\bgroup\footnotesize
+		\begin{lstlisting}[numbers=none,language={[5.3]lua}]
+print("hello, world!")
+		\end{lstlisting}
+		\tiny
+		\begin{lstlisting}[numbers=none]
+ $ luac -l -l luac.out
+
+main <hello.lua:0,0> (4 instructions at 0x16e79e0)
+0+ params, 2 slots, 1 upvalue, 0 locals, 2 constants, 0 functions
+  1  [1]  GETTABUP     0 0 -1  ; _ENV "print"
+  2  [1]  LOADK        1 -2    ; "hello, world!"
+  3  [1]  CALL         0 2 1
+  4  [1]  RETURN       0 1
+constants (2) for 0x16e79e0:
+  1  "print"
+  2  "hello, world!"
+locals (0) for 0x16e79e0:
+upvalues (1) for 0x16e79e0:
+  0  _ENV    1       0
+		\end{lstlisting}
+		\egroup
+	\end{minipage}
+	\begin{minipage}{.01\textwidth}
+		\ 
+	\end{minipage}
+	\begin{minipage}[t]{.64\textwidth}
+		\pause
+		\bgroup\tiny
+		\begin{lstlisting}[numbers=none]
+$ xxd -g 1 luac.out
+00000000: 1b 4c 75 61 53 00 19 93 0d 0a 1a 0a 04 08 04 08  .LuaS...........
+00000010: 08 78 56 00 00 00 00 00 00 00 00 00 00 00 28 77  .xV...........(w
+00000020: 40 01 0b 40 68 65 6c 6c 6f 2e 6c 75 61 00 00 00  @..@hello.lua...
+00000030: 00 00 00 00 00 00 02 02 04 00 00 00 06 00 40 00  ..............@.
+00000040: 41 40 00 00 24 40 00 01 26 00 80 00 02 00 00 00  A@..$@..&.......
+00000050: 04 06 70 72 69 6e 74 04 0e 68 65 6c 6c 6f 2c 20  ..print..hello,
+00000060: 77 6f 72 6c 64 21 01 00 00 00 01 00 00 00 00 00  world!..........
+00000070: 04 00 00 00 01 00 00 00 01 00 00 00 01 00 00 00  ................
+00000080: 01 00 00 00 00 00 00 00 01 00 00 00 05 5f 45 4e  ............._EN
+00000090: 56                                                                  V
+		\end{lstlisting}
+		\egroup\normalfont
+		\pause
+		\begin{center}
+			\vspace{1\zw}
+			\LARGE
+			\alert{???}
+		\end{center}
+	\end{minipage}
+\end{frame}
+\begin{frame}[fragile]
+	\frametitlesubs
+	\begin{center}
+		\begin{minipage}[t]{.4\textwidth}
+			\bgroup\tiny
+			\begin{lstlisting}[numbers=none]
+1b 4c 75 61 53 00 19 93 0d 0a 1a 0a 04 08 04 08
+08 78 56 00 00 00 00 00 00 00 00 00 00 00 28 77
+40 01 0b 40 68 65 6c 6c 6f 2e 6c 75 61 00 00 00
+00 00 00 00 00 00 02 02 04 00 00 00 06 00 40 00
+41 40 00 00 24 40 00 01 26 00 80 00 02 00 00 00
+04 06 70 72 69 6e 74 04 0e 68 65 6c 6c 6f 2c 20
+77 6f 72 6c 64 21 01 00 00 00 01 00 00 00 00 00
+04 00 00 00 01 00 00 00 01 00 00 00 01 00 00 00
+01 00 00 00 00 00 00 00 01 00 00 00 05 5f 45 4e
+56
+			\end{lstlisting}
+			\egroup
+		\end{minipage}
+	\end{center}
+	\pause
+	\begin{figure}[h]
+		\def\position{(0.1, -1.76)}
+		\tikzset{just here/.style = {above right,inner sep=0mm}}
+		\centering
+		\begin{tikzpicture}[remember picture]
+			\useasboundingbox (0.1,-1.76);
+			\coordinate (top) at (-3, 2.3);
+			\node[above right = .2 of top] (label) {\textcolor{blue}{header block}};
+			\coordinate[right = 6.2 of top] (p1);
+			\coordinate[below = 0.55 of p1] (p2);
+			\coordinate[left = 5.4 of p2] (p3);
+			\coordinate[below = 0.28 of p3] (p4);
+			\coordinate[left = 0.8 of p4] (p5);
+			\draw[blue, dashed, very thick] (top) -- (p1) -- (p2) -- (p3) -- (p4) -- (p5) -- (top);
+		\end{tikzpicture}
+	\end{figure}
+	\pause
+	\begin{figure}[h]
+		\tikzset{just here/.style = {above right,inner sep=0mm}}
+		\centering
+		\begin{tikzpicture}[remember picture]
+			\useasboundingbox (0.1,-1.76);
+			\coordinate (bottom) at (-3, 1.33);
+			\node[below right = .2 of bottom] (label) {\textcolor{red}{function block}};
+			\coordinate[right = 6.2 of bottom] (p1);
+			\coordinate[above = 2.14 of p1] (p2);
+			\coordinate[left = 5.4 of p2] (p3);
+			\coordinate[below = .28 of p3] (p4);
+			\coordinate[left = .8 of p4] (p5);
+			\draw[red, dashed, very thick] (bottom) -- (p1) -- (p2) -- (p3) -- (p4) -- (p5) -- (bottom);
+		\end{tikzpicture}
+	\end{figure}
+\end{frame}
+

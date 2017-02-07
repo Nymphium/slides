@@ -1,0 +1,92 @@
+\subsection{Optimizations}
+\begin{frame}
+	\frametitlesubs
+	\begin{itemize}
+		\item Constant Folding
+		\item Constant Propagation
+		\item Dead-Code Elimination
+		\item Function Inlining
+		\item Unreachable Block Removal
+		\item Unused Resource Removal
+	\end{itemize}
+\end{frame}
+\subsubsection{Constant Folding}
+\begin{frame}[fragile]
+	\frametitle{Constant Folding}
+
+	\begin{enumerate}
+		\item 演算命令のオペランドの型を調べて
+		\item \lstinline{table}、\lstinline{userdata}\alert<2->{以外なら} \uncover<3->{$\Leftarrow$ \structure{メタメソッド}を考慮}
+		\item 値を取ってきて
+		\item 演算をおこない
+		\item 即値命令にswap
+	\end{enumerate}
+\end{frame}
+\subsubsection{Constant Propagation}
+\begin{frame}[fragile]
+	\frametitle{Constant Propagation}
+
+	\begin{enumerate}
+		\item \lstinline{MOVE}命令が参照してるregisterの定義位置を見て
+		\item \lstinline{LOADK}なら\lstinline{MOVE}を\lstinline{LOADK}にする
+	\end{enumerate}
+
+	\pause
+	\begin{itemize}
+		\item 単体では速度改善なさそう
+		\item \lstinline{LOADK}への依存が減るので、他の最適化を有利に進められる
+		\item[] <3-> \textcolor{gray}{(今回の実装では)いまいちぱっとしない}
+	\end{itemize}
+\end{frame}
+\subsubsection{Dead-Code Elimination}
+\begin{frame}[fragile]
+	\frametitle{Dead-Code Elimination}
+	\begin{enumerate}
+		\item \lstinline{LOADK}、\lstinline{MOVE}、\lstinline{CLOSURE}、\lstinline{LOADNIL}が生成するregistrの使用を調べ
+		\item 0個の場合命令を消す
+	\end{enumerate}
+
+	\pause
+	\begin{itemize}
+		\item DU/UD Chainのわかりやすい使用例
+	\end{itemize}
+\end{frame}
+\subsubsection{Function Inlining}
+\begin{frame}[fragile]
+	\frametitle{Function Inlining}
+	\begin{enumerate}
+		\item \lstinline{CALL}命令が引っ張ってくるclosureを見て
+		\item 再帰関数でなければ展開
+	\end{enumerate}
+	\pause
+	\begin{itemize}
+		\item register windowの使用を抑えられる
+		\item<3-> \alert{実は頼みの綱}
+		\item<4-> バグがヤバい
+
+			ア
+	\end{itemize}
+\end{frame}
+\subsubsection{Unreachable Block Removal}
+\begin{frame}
+	\frametitle{Unreachable Block Removal}
+	\begin{enumerate}
+		\item 後続ブロックを持たない基本ブロックを丸々削除
+		\item だけ
+	\end{enumerate}
+	\begin{itemize}
+		\item 速くはならないがバイトコードのサイズ縮小に貢献
+	\end{itemize}
+\end{frame}
+\subsubsection{Unused Resource Removal}
+\begin{frame}
+	\frametitle{Unused Resource Removal}
+	\begin{enumerate}
+		\item constant list、prototype listから不要なものを削除
+		\item だけ
+	\end{enumerate}
+	\begin{itemize}
+		\item 速くはならないがバイトコードのサイズ縮小に貢献
+	\end{itemize}
+\end{frame}
+

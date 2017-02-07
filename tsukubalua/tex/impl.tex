@@ -1,1 +1,62 @@
-\section{implementation}
+\skipnexttoc
+\section{Implementation}
+\subsection{Architecture}
+\begin{frame}
+	\frametitlesubs
+	\begin{figure}[H]
+		\centering
+		\bgroup
+		\footnotesize\tt
+		\tikzset{
+			LL/.style={
+				draw=black,decorate,
+				decoration={snake, segment length=3mm,post}
+			},
+			>={Latex[width=1mm,length=1mm]},
+			every node/.style = {draw, align=center},
+		}
+
+		\newcommand{\byty}{-1.3}
+
+		\begin{tikzpicture}
+			\node[ellipse,fill=\nodecolor] (source) at (5.3, 3.2) {\textsf{Source}};
+			\node[above = of source,star,star points=6,star point ratio=0.8,fill=\nodecolor] (bytecode) {\textsf{bytecode}};
+			\coordinate[above = of bytecode] (pt9);
+			\coordinate[right = 3.7 of pt9] (pt5);
+			\node[rectangle,fill=\nodecolor,below = 0.4 of pt5] (adata) {analyzed data};
+			\node[rectangle,text width=3.6cm,align=center,fill=\nodecolor,below = 2 of adata] (cfgduch) {Control Flow Graph\\\& DU~Chain};
+			\coordinate[right = 4.3 of adata] (pt6);
+			\coordinate[right = 2 of adata] (pt7);
+			\coordinate[right = 2 of cfgduch] (pt8);
+			\draw[->] (source) -- (bytecode);
+			\draw (bytecode) -- (pt9);
+			\draw[->] (pt9) -| (adata);
+			\draw[->] (adata) -- (cfgduch);
+			% \draw[LL,thick,>=latex] (adata) -- (pt7);
+			% \draw[LL,thick,>=latex] (cfgduch) -- (pt8);
+			\node[fill=yellow!20,rectangle, text width=19\zw,below = -1.6\zw of pt6] (opts){%
+				\textcolor{red}{optimizer}\\%
+				\begin{itemize}
+					\item Constant Folding
+					\item Constant Propagation
+					\item Dead-code Elimination
+					\item Function Inlining
+					\item Unreachable Block Removal
+					\item Unused Resource Removal
+			\end{itemize}};
+			\draw[LL,thick,>=latex,->] (adata) -- (opts);
+			\draw[LL,thick,>=latex,->] (cfgduch) -- (opts);
+			\coordinate[below = 1.3 of opts] (pt2);
+			\coordinate[left = 8 of pt2] (pt3);
+			\draw[to path = {-| (\tikztotarget)},->] (opts) |- (pt3) |- (adata);
+			% \node[draw=none, above] at ($(pt2)!0.5!(pt3)$) {again};
+			\node[right = 1.3 of pt2,text width=4.8em,fill=\nodecolor,circle] (optbc) {\textsf{optimized\\bytecode}};
+			\draw[->] (pt2) --  (optbc);
+		\end{tikzpicture}
+		\egroup
+		\caption{optimization image}
+	\end{figure}
+\end{frame}
+\input{tex/opeth/bytecode.tex}
+\input{tex/opeth/cfg.tex}
+\input{tex/opeth/optimizations.tex}

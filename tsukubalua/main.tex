@@ -1,5 +1,5 @@
 \documentclass[aspectratio=169,unicode,compress,14pt]{beamer}
-\usepackage{luatexja-preset,amsmath,ulem,tikz,here,color,hyperref}
+\usepackage{luatexja-preset,amsmath,ulem,tikz,here,color,hyperref,fontawesome}
 \def\aatitle{Opeth, Lua VM Bytecode Optimizer}
 \usetikzlibrary{shapes,snakes,arrows.meta,positioning,calc}
 \def\nodecolor{blue!20}%
@@ -37,10 +37,11 @@
 \maketitle
 \egroup
 \title{\aatitle}
-\skipnexttoc
+\switchfooter
 \input{tex/intro.tex}
 \input{tex/opeth.tex}
 \input{tex/impl.tex}
+\input{tex/benchmark.tex}
 \input{tex/tools.tex}
 \input{tex/concl.tex}
 \end{document}

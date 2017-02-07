@@ -1,16 +1,12 @@
-\section{intro}
+\section{Intro}
 \begin{frame}
+	\frametitlesec
 	こんにちは、びしょ〜じょです。
 	\begin{itemize}
 		\item ここの大学に4年滞在中の3年生
 		\item {\alert{Lua/MoonScript}をよく書く}
 		\item ライトなメタラー
 	\end{itemize}
-	\begin{figure}[H]
-		\centering
-		\includegraphics[height=.3\textheight]{img/dousei_wedding_women.png}
-		\caption{ウェディングドレスを着た同性愛者の女性カップルが結婚式を挙げているイラストです。}
-	\end{figure}
 \end{frame}
 \begin{frame}
 	\frametitle{流れ}
@@ -19,6 +15,84 @@
 		\item あまり最適化されてないことが判明
 		\item \alert{optimizer作るか}
 	\end{enumerate}
+\end{frame}
+\subsection{Lua is $\dots\dots$}
+\begin{frame}
+	\frametitlesubs
+	\begin{itemize}
+		\item 弱い動的型付けなスクリプト言語
+		\item 文法が簡単、予約語も22個と少ない
+		\pause
+		\item 関数がファーストクラス
+			\begin{itemize}
+				\item ナウい関数型プログラミングも可能
+			\end{itemize}
+		\pause
+		\item \alert{唯一}のデータ構造 table
+			\begin{itemize}
+				\item 簡単に言うと\alert{連想配列}
+				\item オブジェクトは全部キーにも要素にも
+				\item \structure{メタテーブル}で色々拡張
+			\end{itemize}
+	\end{itemize}
+\end{frame}
+\subsection{Implementations}
+\begin{frame}
+	\frametitlesubs
+	\begin{itemize}
+		\item \alert<2->{(PUC-Lua)}
+			\begin{itemize}
+				\item リオデジャネイロ･カトリカ大学開発の、いわゆる本家
+				\item 軽量、組み込みで広く活躍
+			\end{itemize}
+		\item \alert<2->{LuaJIT}
+			\begin{itemize}	
+				\item だいぶ速い。FFIモジュールなども提供
+		\end{itemize}
+		\item LuaJ、Rembulan
+			\begin{itemize}
+				\item JVM実装。
+		\end{itemize}
+		\item その他色々
+	\end{itemize}
+\end{frame}
+\subsubsection{Other}
+\begin{frame}
+	\frametitlesubs
+	その他
+	\begin{itemize}
+		\item llix
+			\begin{itemize}
+				\item 拙作。例外処理構文を追加
+			\end{itemize}
+		\item TypedLua
+			\begin{itemize}
+				\item 型アノテーション、型定義ファイルなど。トランスパイラ
+				\item GSoCで募集してたり\footnote{\url{https://summerofcode.withgoogle.com/archive/2016/organizations/4733835644239872/}}
+			\end{itemize}
+		\item Ravi
+			\begin{itemize}
+				\item LLVM+Luaの文法+$\alpha$。別言語
+			\end{itemize}
+		\item Terra
+			\begin{itemize}
+				\item multi-stage programming
+			\end{itemize}
+		\item MoonScript
+			\begin{itemize}
+				\item altLua的なモノ。\pause{}ちょっとコントリビュート
+			\end{itemize}
+	\end{itemize}
+\end{frame}
+\subsection{About Lua VM}
+\begin{frame}
+\frametitlesubs
+\begin{itemize}
+	\item PUC-Lua
+	\item \alert{レジスターベース} (Lua 5.0〜)
+	\item \structure{関数呼び出しはレジスターウィンドウ}
+	\item 47個の命令 (Lua 5.3)
+\end{itemize}
 \end{frame}
 \begin{frame}[fragile]
 \frametitlesec

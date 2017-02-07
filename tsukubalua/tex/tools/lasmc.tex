@@ -1,0 +1,32 @@
+\subsection{lasmc}
+\begin{frame}[fragile]
+	\frametitlesubs
+
+	\begin{minipage}[t]{.58\textwidth}
+		\begin{itemize}
+			\item アセンブリみたいにLua VMの命令を書きたいという願い
+			\item いろいろ機能をたそうとしたら構文がごちゃごちゃになってやる気0
+			\item \structure{意外にも}デバッグに貢献
+		\end{itemize}
+	\end{minipage}
+	\begin{minipage}{.03\textwidth}
+		\ 
+	\end{minipage}
+	\begin{minipage}[t]{.33\textwidth}
+		\bgroup\scriptsize
+		\begin{lstlisting}[numbers=none]
+main: 0 2
+LOADK 0 0 -- load `3`
+LOADK 1 1 -- load `5`
+LOADK 1 2 -- load `7`
+EQ 0 0 1 -- R(0) == R(1) ?
+JMP 0 2
+LOADK 2 2 -- load `7`
+JMP 0 1
+LOADK 2 3 -- load `9`
+RETURN 0 1
+{3 5 7 9} -- constant list
+		\end{lstlisting}
+		\egroup
+	\end{minipage}
+\end{frame}

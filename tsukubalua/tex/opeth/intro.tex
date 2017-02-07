@@ -1,3 +1,4 @@
+% \skipnexttoc
 \begin{frame}
 	\frametitlesec
 	つくったoptimizer
@@ -10,12 +11,10 @@
 		\item モジュールとしても使える
 	\end{itemize}
 \end{frame}
-\skipnexttoc
-\subsection{デモ}
+\subsection{Demo}
 \begin{frame}[fragile]
 \begin{center}\Huge{}デモ\end{center}
 \end{frame}
-\skipnexttoc
 \begin{frame}[fragile]
 	\frametitlesubs
 
@@ -25,7 +24,7 @@ optimizer = require'opeth.opeth'
 f = -> ......
 ......
 
-f_ = @\alert{\uwave{optimizer}}@f
-f_! -- wow
+g = @\alert{\uwave{optimizer}}@f
+g! -- wow
 	\end{lstlisting}
 \end{frame}
