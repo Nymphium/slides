@@ -1,0 +1,45 @@
+\providecommand{\bysame}{\leavevmode\hbox to3em{\hrulefill}\thinspace}
+\providecommand{\MR}{\relax\ifhmode\unskip\space\fi MR }
+% \MRhref is called by the amsart/book/proc definition of \MR.
+\providecommand{\MRhref}[2]{%
+  \href{http://www.ams.org/mathscinet-getitem?mr=#1}{#2}
+}
+\providecommand{\href}[2]{#2}
+\begin{thebibliography}{IMMT08}
+
+\bibitem[Cor]{compileroptimizations}
+Nullstone Corporation, \emph{Compiler optimizations},
+  \url{http://www.compileroptimizations.com/}.
+
+\bibitem[Dav05]{jasondavies}
+Jason~D. Davies, \emph{Optimizing lua}, 2005,
+  \url{https://www.jasondavies.com/optimising-lua/JasonDaviesDissertation.pdf}.
+
+\bibitem[IMMT08]{compilercoins}
+{Ikuo Tanaka}, {Masataka Sasa}, {Munahiro Takimoto}, and {Tan Watanabe},
+  \emph{コンパイラの基盤技術と実践 --
+  コンパイラ$\cdot$インフラストラクチャcoinsを用いて}, 2008.
+
+\bibitem[Maj]{raviluabytecode}
+Dibyendu Majumdar, \emph{Lua 5.3 bytecode reference},
+  \url{http://the-ravi-programming-language.readthedocs.io/en/latest/lua_bytecode_reference.html}.
+
+\bibitem[Man06]{nofrills}
+Kein-Hong Man, \emph{A no-frills introduction to lua 5.1 vm instructions},
+  2006,
+  \url{http://luaforge.net/docman/83/98/ANoFrillsIntroToLua51VMInstructions.pdf}.
+
+\bibitem[Rio]{luasource}
+PUC Rio, \emph{source code for lua 5.3}, \url{https://www.lua.org/source/5.3/}.
+
+\bibitem[RLW03]{imploflua}
+{Roberto Ierusalimuschy}, {Luiz Henrique de Figueiredo}, and {Waldemar Celes},
+  \emph{The implementation of lua 5.0}, 2003,
+  \url{https://www.lua.org/doc/jucs05.pdf}.
+
+\bibitem[Sch12]{michael}
+Michael Schroder, \emph{Optimizing lua using run-time type specialization},
+  2012,
+  \url{https://www.complang.tuwien.ac.at/anton/praktika-fertig/schroeder/thesis.pdf}.
+
+\end{thebibliography}

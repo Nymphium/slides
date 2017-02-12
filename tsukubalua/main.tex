@@ -44,4 +44,11 @@
 \input{tex/benchmark.tex}
 \input{tex/tools.tex}
 \input{tex/concl.tex}
+
+\directlua{
+	if os.getenv("COMP") then
+		tex.print(\asluastring{\input{tex/owari.tex}})
+	end
+}
+
 \end{document}
