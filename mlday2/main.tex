@@ -1,0 +1,621 @@
+\documentclass[unicode,compress,14pt,CJK%
+\directlua{
+    handout = os.getenv"HANDOUT"
+    local _ = handout and tex.print(",handout")
+},t]{beamer}
+\usepackage[no-math]{luatexja-fontspec}
+\usepackage{fontawesome}
+\usefonttheme[onlymath]{serif}
+\usepackage{luacode}
+\input{../template/beamertemp}
+\usepackage{ulem}
+\defaultfontfeatures{Ligatures={NoRequired, NoCommon, NoContextual}}
+\defaultjfontfeatures{Ligatures={NoRequired, NoCommon, NoContextual}}
+\setsansfont[Script=Default,Kerning=On,BoldFont=GenShinGothic-Bold,ItalicFont=NotoSansDisplay-LightItalic]{GenShinGothic-Light}
+\setmainjfont[%
+Script=Default,%
+Kerning=On,%
+CharacterWidth=AlternateProportional,%
+BoldFont=GenShinGothic-P-Bold,%
+YokoFeatures={JFM=prop}]{GenShinGothic-P-Light}
+\setmonofont[Kerning=Reset]{Inconsolata}
+\usepackage{amsmath,amssymb,stmaryrd}
+\usepackage{tikz,pgfplots}
+\usepackage{url,hyperref}
+
+\usepackage[style=alphabetic,minalphanames=3,backend=biber]{biblatex}
+\renewcommand*{\labelalphaothers}{\textsuperscript{+}}
+\addbibresource{main.bib}
+\beamertemplatetextbibitems
+%% bib underline breaklines https://tex.stackexchange.com/questions/200997/underlined-titles-in-bibliography-with-biblatex-and-ulem-packages
+\renewbibmacro*{title}{%
+  \ifboolexpr{
+    test {\iffieldundef{title}}
+    and
+    test {\iffieldundef{subtitle}}
+  }
+    {}
+    {\printtext{%
+     \printtext[titlecase]{\usefield{\uline}{title}}%
+     \setunit{\subtitlepunct}%
+     \printfield[titlecase]{subtitle}}%
+     \newunit}%
+  \printfield{titleaddon}}
+
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\newtcolorbox{newbie}{
+    enhanced,
+    boxrule=0pt,
+    right skip=0pt,
+    left skip=0pt,
+    boxsep=0pt,
+    right=.3em,
+    left=.3em,
+    sharp corners,
+    colback=black!20,
+}
+\usetikzlibrary{shapes,snakes,arrows.meta,positioning,calc,fit,shapes.callouts}
+\tikzstyle{every picture} +=[remember picture]
+
+% \tikzset{
+    % multiline/.style = {text badly ragged, text badly centered},
+    % lang/.style = {ellipse, draw},
+    % boldarrow/.style = {draw=black,solid,fill=black,line width=.6pt},
+% }
+%
+% \newfontfamily\NotoEmoji{NotoColorEmoji}
+% \newfontfamily\NotoEmoji{Twitter Color Emoji}
+
+\usepackage{bxcoloremoji}
+
+\def\green#1{\textcolor{green!70!black}{#1}}
+\def\blue#1{\textcolor{blue!70!black}{#1}}
+\def\yellow#1{\textcolor{orange!70!yellow}{#1}}
+
+\def\lstbasiccolor#1{
+  \lstset{
+    basicstyle=\small\ttfamily\color{#1},
+    identifierstyle={\ttfamily},
+    keywordstyle=[1]{\ttfamily},
+    keywordstyle=[7]{\ttfamily},
+    keywordstyle=[8]{\bfseries\ttfamily},
+    literate=*{->}{$\rightarrow{}$}{1},
+  }
+}
+
+\makeatletter
+\newcommand*\idstyle{%
+  \expandafter\id@style\the\lst@token\relax
+}
+\def\id@style#1#2\relax{%
+  \ifcat#1\relax\else
+    \ifnum`#1=\uccode`#1%
+      \color{magenta}\bfseries\ttfamily
+    \fi
+  \fi
+}
+\makeatother
+
+\def\CodeSymbol#1{\textcolor{black!5!blue!50}{\texttt{#1}}}
+
+\lstset{
+    language={[Objective]caml},
+    escapechar=!,
+    numbers=none,
+    basicstyle=\small\ttfamily\color{green!60!black},
+    backgroundcolor=\color{black!7!yellow!9},
+    columns=fixed,
+    float=tbpm,
+    moredelim={[is][\color{red}\uwave]{<@}{@>}},
+    moredelim={[is]{<0@}{@0>}},
+    morekeywords=[1]{
+        effect,handle
+    },
+    morekeywords=[8]{
+        perform,continue
+    },
+    morekeywords=[10]{|>},
+    literate=*{->}{{{\textcolor{black!5!orange!90}{$\rightarrow$}{}}}}{1}
+             {\{}{{\CodeSymbol{\{}}}1
+             {\}}{{\CodeSymbol{\}}}}1
+             {(}{{\CodeSymbol{(}}}1
+             {)}{{\CodeSymbol{)}}}1
+             {|}{{\CodeSymbol{|}}}1
+             {|>}{{$\mid >$}}1
+             {;}{{\CodeSymbol{;}}}1
+             {\_}{\_}1
+             {:}{{\CodeSymbol{:}}}1,
+    keywordstyle=[1]{\color{black!5!orange!90}\ttfamily},
+    keywordstyle=[7]{\color{black!5!blue!90}\ttfamily},
+    keywordstyle=[8]{\color{black!5!cyan!80}\bfseries\ttfamily},
+    identifierstyle=\idstyle,
+}
+
+\def\emph#1{\textit{#1}}
+
+\AtBeginSubsection{}
+% \tocmonocoltrue
+
+\title{\textcolor{black}{Dive into \textit{Algebraic Effects}}}
+\author{びしょ〜じょ}
+\date{September 16, 2018}
+\institute{ML Days \#2}
+
+\begin{document}
+\maketitle
+
+\switchfooter
+\begin{frame}{やること}
+    \vfill
+    \begin{itemize}
+        \item[\faicon{wifi}] \alert{Algebraic Effects}を伝道
+
+            \begin{itemize}
+                \item[\coloremoji{🤔}] Algebraic Effects is 何
+                \item[\blue{\faicon{language}}] Algebraic Effectsが使える言語
+                \item[\coloremoji{🙆}] Algebraic Effectsの活用事例
+            \end{itemize}
+        \item[\coloremoji{🔬}] 研究のご紹介
+
+            {\small 先日JSSSTでポスター発表した内容を紹介シマス}
+    \end{itemize}
+    \vfill
+\end{frame}
+
+\begin{frame}{目次}
+    \tableofcontents
+\end{frame}
+\switchfooter
+
+\section{自己紹介}
+\begin{frame}
+    \frametitlesec
+
+    \vfill
+
+    \begin{minipage}[b]{.1\textwidth}
+        \centering
+        \raisebox{-.5\zh}{\includegraphics[height=2\zh]{img/yh.png}}
+    \end{minipage}
+    \begin{minipage}[b]{.49\textwidth}
+        こんにちは、びしょ〜じょです。
+    \end{minipage}
+
+    \begin{itemize}
+        \item T大学大学院でM1をやっている
+        \item プログラム言語とかの研究
+        \item 少し前はLuaにお熱だった
+    \end{itemize}
+
+    \begin{itemize}
+        \item[\textcolor{blue!60!white}{\faicon{twitter}}] \href{https://twitter.com/Nymphium}{Nymphium}
+        \item[\textcolor{black}{\faicon{github}}] \href{https://github.com/nymphium}{Nymphium}
+    \end{itemize}
+    \vfill
+\end{frame}
+
+\section{Algebraic Effects}
+\newsavebox{\lstbox}
+\begin{lrbox}{\lstbox}
+    \begin{lstlisting}
+!\tikz \node[coordinate] (eff0) {};\null!effect Say   : string -> unit !\tikz \node[coordinate] (effdef) {};!
+!\null!effect Twice : unit   -> unit!\tikz \node[coordinate] (effe) {};!
+
+!\tikz \node[coordinate] (handle0) {};\null!handle (
+  !\tikz \node[coordinate] (effinvoke) {};\null!perform (Say "Hello");
+  !\null!perform (Twice ());
+  !\null!perform (Say "world")
+) !\tikz \node[coordinate] (handlew) {};\null!with
+!\tikz \node[coordinate] (effh0) {};\null!| x -> x!\tikz \node[coordinate] (handler) {};!
+| effect (Twice ()) !\tikz \node[coordinate] (cont) {};\null!k -> k (); k ()
+| effect (Say msg)  !\null!k ->
+    print_endline msg; k ()!\tikz \coordinate (effhe) {};!
+    \end{lstlisting}
+\end{lrbox}
+
+\begin{frame}[fragile]
+    \frametitlesec
+
+    イメージとしては\textbf{\alert{継続}を持てる\structure{例外}}\pause
+
+    例(Eff language implementation):
+
+    \usebox{\lstbox}
+    \pause
+    \begin{tikzpicture}[remember picture, overlay]
+        \only<+->{
+            \node[ellipse callout, text=blue, draw=blue, line width = 1pt, fill = white,
+              callout absolute pointer={($(effdef) - (.2, 1)$)}] at ($(effdef) + (2.1, .7) - (0, 1.4)$) {\small effect definition};
+            \fill[fill opacity=0.2,blue] ($(eff0) + (0, -.9)$) rectangle ($(effe)+(.05, -1.4)$);
+        }
+        \only<+->{
+            \node[ellipse callout, text=orange!70!yellow, draw=orange!70!yellow, line width=1pt, fill=white,
+              callout absolute pointer={($(effinvoke) + (5.7, -.1) - (0, .7)$)}] at ($(effinvoke) + (9.0, .7) - (0, .8)$) {\small effect invocation};
+            \fill[fill opacity=0.2,orange!70!yellow] ($(effinvoke) + (0, .4) - (0, 1.3)$) rectangle ($(effinvoke)+(5.7, -1.1) - (0, 1.3)$);
+        }
+        \only<+->{
+            \node[ellipse callout, text=green!60!black, draw=green!60!black, line width = 1pt, fill = white,
+                callout absolute pointer={($(handler) + (5, .5) -(0,1.3)$)}] at ($(handler) + (7.7, 1.6) -(0,1.1)$) {\small effect handler};
+            \fill[fill opacity=0.3,green!70!yellow] ($(handle0) + (0, .4) -(0,1.3)$) rectangle ($(handle0) + (1.55, -.1)-(0,1.3)$);
+            \fill[fill opacity=0.3,green!70!yellow] ($(handlew) + (0, .4) -(0,1.3)$) rectangle ($(handlew) + (1.15, -.1)-(0,1.3)$);
+            \fill[fill opacity=0.3,green!70!yellow] ($(effh0) + (0, .4)-(0,1.3)$) rectangle ($(effhe) + (2., -.1)-(0,1.3)$);
+        }
+
+        \only<+->{
+            \node[fill=red, text = white,ellipse,rectangle] at ($(cont)-(0,1.3)+(.1,.2)$) {\small k};
+            \node[fill=red, text = white,ellipse,rectangle] at ($(cont)-(0,1.3)+(.1,-.35)$) {\small k};
+            \node[ellipse callout, text=red, draw=red, line width = 1pt, fill = white,
+                callout absolute pointer={($(cont) -(0,1.3) + (.2, .4)$)}] at ($(cont) -(0,1.3) + (4.4, .8)$) {\small \textbf{continuation}};
+        }
+    \end{tikzpicture}
+\end{frame}
+
+\subsection{effectの型}
+\begin{frame}[fragile]
+    \frametitlesubs
+
+    \begin{center}
+        \begin{minipage}{.7\textwidth}
+            \hfill なにこれ{\large \coloremoji{🤔}}
+
+            \begin{lstlisting}[xrightmargin=2.8\zw,xleftmargin=1\zw]
+effect Say : !\tikz \node[coordinate] (str) {};\null!string -> !\tikz \node[coordinate] (unit) {};\null!unit
+            \end{lstlisting}
+            \begin{tikzpicture}[remember picture, overlay]
+                \onslide<3->{
+                    \lstbasiccolor{blue!60!black}
+                    \fill[fill opacity=0.3, blue!60!black] ($(str) + (0, -.15)$) rectangle ($(str) +(1.6, .4)$);
+                }
+
+                \onslide<4->{
+                    \lstbasiccolor{orange!70!yellow}
+                    \fill[fill opacity=0.3, orange!70!yellow] ($(unit)+(0, -.15)$) rectangle ($(unit)+(1.1, .4)$);
+                }
+            \end{tikzpicture}
+        \end{minipage}
+
+        \pause
+    \end{center}
+
+    \vskip-\zh%
+    \hskip2\zw%
+    例:\hskip7\zw
+
+    \begin{center}
+        \begin{minipage}{.7\textwidth}
+            \begin{lstlisting}[xrightmargin=3.1\zw,xleftmargin=2\zw]
+!\tikz \node[coordinate] (ctxt) {};\null $E\left[\right.$\tikz \node[coordinate] (entire) {};\null!perform (Say !\tikz \node[coordinate] (str) {};\null!"Hello")!\tikz \node[coordinate] (ctxte){};\null $\left.\right]$!
+            \end{lstlisting}
+            \pause
+            \begin{tikzpicture}[remember picture, overlay]
+                \onslide<3->{
+                    \lstbasiccolor{blue!60!black}
+                    \node at ($(str) + (.9, -.4)$) {\lstinline{: string}};
+                    \fill[fill opacity=0.3, blue!60!black] ($(str)+(0, -.15)$) rectangle ($(str)+(1.8, .4)$);
+                }
+                \onslide<4->{
+                    \lstbasiccolor{orange!70!yellow}
+                    \node at ($(entire) + (3, -.8)$) {\lstinline{: unit}};
+                    \fill[fill opacity=0.3, orange!70!yellow] ($(entire)+(0, -.6)$) rectangle ($(entire)+(5.3, .4)$);
+                }
+                \onslide<5->{
+                    \lstbasiccolor{red}
+                    \node at ($(ctxt)+(3, .6)$) {\lstinline{: unit -> 'a} {\scriptsize (継続のanswer type)}};
+                    \fill[fill opacity=0.5, red] ($(ctxt)+(0, -.15)$) rectangle ($(ctxt)+(.52,.4)$);
+                    \fill[fill opacity=0.5, red] ($(ctxte)+(0, -.15)$) rectangle ($(ctxte)+(.3,.4)$);
+                }
+            \end{tikzpicture}
+        \end{minipage}
+    \end{center}
+
+    \begin{center}
+        \vfill
+        \onslide<6>{
+            {\Huge \textbf{完全に理解した}}
+        }
+        \vfill
+    \end{center}
+\end{frame}
+
+\subsection{デモ}
+\begin{frame}[fragile]
+    \frametitlesubs
+
+    \usebox{\lstbox}
+\end{frame}
+
+\subsection{ポイント}
+\begin{frame}
+    \frametitlesubs
+
+    \begin{flalign*}
+        &\begin{array}{lc}
+            \left.\begin{array}{rr}
+                    \bullet&\text{定義と実装の\textbf{分離}}\\
+                    \bullet&\text{ハンドラの\textbf{合成}}
+                \end{array}\right\} & \begin{array}{l}
+                \text{モジュラーなプログラミング}\\
+                \text{を支援}
+            \end{array}
+        \end{array}\\
+        &\begin{array}{lc}
+            \left.\begin{array}{rr}
+                    \bullet&\text{\textbf{限定継続}が使える}
+            \end{array}\right\}&\text{例外より強力}
+        \end{array}
+    \end{flalign*}
+\end{frame}
+
+\section{Algebraic Effectsが使える言語}
+\begin{frame}[fragile]
+    \frametitlesec
+
+    \begin{itemize}
+        \item Eff\footnote{\url{https://www.eff-lang.org/}}
+
+            \begin{itemize}
+                \item MLベースのsyntax、型推論
+                \item 処理系やライブラリ(EDSL)など実装多数
+            \end{itemize}
+
+        \item Koka\footnote{\url{https://koka-lang.github.io/koka/}}
+
+            \begin{itemize}
+                \item MS Research製
+                \item effectが型で表される
+
+                    (ex: \lstinline{println : <@a -> console ()@>})
+                \item Algebraic Effects以外にもおもしろ機能
+            \end{itemize}
+
+        \item Multicore \textbf{OCaml}\footnote{\url{http://ocamllabs.io/doc/multicore.html}}
+
+            \begin{itemize}
+                \item OCaml LabsがOCamlをfork
+                \item 継続が\alert{oneshot}のAlgebraic Effetsを持つ
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\subsection{Multicore OCaml}
+\begin{frame}[fragile]
+    \frametitlesubs
+
+    {\small Stateモナド風}
+
+    \begin{multicols}{2}
+        \begin{lstlisting}[basicstyle=\scriptsize\ttfamily\color{green!60!black}]
+module State(S : sig type t end)
+= struct
+  type t = S.t
+
+  effect Put : t -> unit;;
+  effect Get : t
+
+  let run init f =
+    init |> match f () with
+    | x -> (fun s -> (s, x))
+    | effect (Put s') k ->
+      (fun s -> continue k () s')
+    | effect Get k ->
+      (fun s -> continue k s s)
+end
+
+effect Log : int -> unit
+let log msg = perform @@ Log msg
+try begin
+  let module S1 =
+    State(struct
+      type t = int
+    end) in
+  let open S1 in
+  let incr () = 
+   perform (Put (perform Get + 1))
+  in
+  run 0 @@ fun () ->
+      incr ();
+      log @@ perform Get;
+      incr ();
+      log @@ perform Get
+end
+with effect (Log msg) k ->
+  print_int msg; continue k ()
+        \end{lstlisting}
+    \end{multicols}
+
+    \vfill
+\end{frame}
+
+\hypertarget{fr:delimcc}{}
+\label{fr:deimcc}
+\begin{frame}[fragile]
+    \frametitlesubs
+
+    shift/resetも実装できるぞ!!
+    \phantomsection
+    \begin{lstlisting}[basicstyle=\scriptsize\ttfamily\color{green!60!black}]
+module DelimccOne = struct
+  type 'a prompt = {
+    take : 'b. (('b -> 'a) -> 'a) -> 'b;
+    push : (unit -> 'a) -> 'a;
+  }
+
+  let new_prompt (type a) : unit -> a prompt = fun () ->
+    let module M = struct
+      effect Prompt : (('b -> a) -> a) -> 'b
+    end in
+    let take f = perform (M.Prompt f) in
+    let push th =
+      try th () with effect (M.Prompt f) k -> f @@ continue k
+    in
+    {take; push}
+
+  let push_prompt {push} = push
+  let take_subcont {take} = take
+
+  let shift0 p f = take_subcont p @@ fun k -> f k
+end
+    \end{lstlisting}
+\end{frame}
+
+\section{研究紹介}
+\begin{frame}
+    \frametitlesec
+
+    \structure{$\bullet$} \green{Asymmetric Coroutine}による\alert{Oneshot Algebraic Effects}の実装
+
+    \begin{center}
+        \small
+        \begin{tikzpicture}
+            \node[ellipse,draw] (oneshotsr) {\structure{oneshot shift/reset}};
+            \node[ellipse,draw, below left = of oneshotsr, xshift = 1.7\zw,yshift=.6\zh, text width=4.4\zw] (oneshotae) {\alert{oneshot Algebraic Effects}};
+            \node[ellipse,draw, text width=5.5\zw, below right = of oneshotsr, xshift = -2\zw,yshift=.2\zh] (asymcor) {\green{asymmetric coroutine}};
+
+            \path[->, line width=0.07\zw]
+                (oneshotae) edge node[above left,sloped]{1} (oneshotsr)
+                (oneshotsr) edge node[above right,sloped]{2} (asymcor);
+        \end{tikzpicture}
+    \end{center}
+    \vskip-2\zh
+
+    \begin{itemize}
+        \item[\coloremoji{👊}] (asymmetric) coroutineのある言語でAEが使える
+        \item[\coloremoji{☝}] 1, 2のそれぞれ既存の変換を参考にする
+    \end{itemize}
+\end{frame}
+
+\subsection{oneshot AE $\rightarrow$ oneshot s/r}
+\begin{frame}[fragile]{\normalsize \alert{oneshot} Algebraic Effects $\rightarrow$ \alert{oneshot} shift/reset}
+
+    \vskip.5\baselineskip
+
+    \cite{kiselyov2016eff}に基づき\structure{\hyperlink{fr:delimcc}{先程の実装}}の逆をやる
+
+    \begin{lstlisting}[basicstyle=\scriptsize\ttfamily\color{green!60!black},xleftmargin=4\zw,xrightmargin=4\zw]
+module Translate(D: DELIMCC) : sig
+  type ('a, 'b) free
+  type 'a thunk = unit -> 'a
+  val newi : unit -> 'a D.prompt
+  val op : ('a, 'b) free D.prompt -> 'a -> 'b
+  val handler : ('g, 'g) free D.prompt ->
+    ('g -> 'o) -> ('g * ('g -> 'o) -> 'o) -> 'g thunk -> 'o
+  val handle : ('a thunk -> 'b) -> 'a thunk -> 'b
+end = struct
+  ......
+end
+    \end{lstlisting}
+
+    \bgroup
+    \small
+    \begin{itemize}
+        \item[Q.] 継続のoneshotnessをAEが引き継いでることの証明は?
+        \item[A.] まだ無い。affine typeで型によって示す予定
+    \end{itemize}
+    \egroup
+\end{frame}
+
+\subsection{oneshot s/r $\rightarrow$ AC}
+\begin{frame}[fragile]{\normalsize \alert{oneshot} shift/reset $\rightarrow$ Asymmetric Coroutine}
+
+
+    \vskip.5\baselineskip
+
+    \cite{UsuiMaster2017}による変換を使う (Luaによる実装)
+
+    \begin{multicols}{2}
+        \begin{lstlisting}[basicstyle=\scriptsize\ttfamily\color{green!60!black},language={[5.3]lua}]
+function sr.reset(th)
+  local l = coro.create(
+    function(_)
+      return (function(y)
+        return function(_)
+          return y
+        end
+      end)(th())
+    end)
+
+  return coro.resume(l)()
+end
+
+function sr.shift(f)
+  local k = coro.current
+
+  return coro.yield(function(_)
+    return sr.reset(function()
+      return f(k)
+    end)
+  end)
+end
+
+function sr.throw(k, e)
+  return coro.resume(k, e)()
+end
+        \end{lstlisting}
+    \end{multicols}
+\end{frame}
+
+\subsection{課題、今後の予定}
+\begin{frame}
+    \frametitlesubs
+
+    \begin{itemize}
+        \item oneshotnessの保証(先述)
+        \item Usuiによる変換の対象のshift/resetをmulti-promptで再定義
+        \item oneshot shift/resetを経由しない\yellow{ダイレクトな変換}を考える
+    \end{itemize}
+
+\begin{center}
+        \small
+        \begin{tikzpicture}
+            \node[ellipse,draw] (oneshotsr) {\structure{oneshot shift/reset}};
+            \node[ellipse,draw, below left = of oneshotsr, xshift = 1.7\zw,yshift=.6\zh, text width=4.4\zw] (oneshotae) {\alert{oneshot Algebraic Effects}};
+            \node[ellipse,draw, text width=5.5\zw, below right = of oneshotsr, xshift = -2\zw,yshift=-.0\zh] (asymcor) {\green{asymmetric coroutine}};
+
+            \path[->, line width=0.07\zw]
+                (oneshotae) edge (oneshotsr)
+                (oneshotsr) edge (asymcor);
+
+            \path[->,line width=.15\zw,color=orange!70!yellow] (oneshotae) edge (asymcor);
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
+\section{まとめ}
+\begin{frame}
+    \frametitlesec
+
+    \begin{itemize}
+        \item[\coloremoji{🌋}] Algebraic Effectsが楽しい
+
+            ICFP 2018やML Workshop2018にも\\
+            AE関連のトピック%
+            \footnote{\url{https://icfp18.sigplan.org/event/mlfamilyworkshop-2018-papers-programming-with-abstract-algebraic-effects}}%
+            \footnote{\url{https://icfp18.sigplan.org/event/icfp-2018-papers-versatile-event-correlation-with-algebraic-effects}}
+
+        \item[\coloremoji{🉐}] Algebraic Effects使おう
+
+            \begin{itemize}
+                \item[\coloremoji{🛠}] インプリいろいろ
+                \item[\coloremoji{💪}] なければ自作も可
+            \end{itemize}
+
+        \item[\coloremoji{👨‍💻}] 研究やってます
+    \end{itemize}
+\end{frame}
+
+\nofootertrue
+\begin{frame}
+    \vfill
+    \centering
+    {\Huge \textbf{おわり}}
+    \vfill
+\end{frame}
+
+    \nocite{*}
+\begin{frame}{参考文献}
+    \scriptsize
+    \printbibliography[heading=none]
+\end{frame}
+\end{document}

@@ -1,0 +1,13 @@
+effect Say : string -> unit
+effect Twice : unit -> unit
+
+let () =
+  handle (
+    perform ( Say " Hello " );
+    perform ( Twice ());
+    perform ( Say " world ")
+  ) with
+  | x -> x
+  | effect ( Twice ()) k -> k (); k ()
+  | effect ( Say msg ) k -> print_endline msg ; k ()
+
