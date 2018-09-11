@@ -1,0 +1,152 @@
+\section{Algebraic Effects}
+\newsavebox{\lstbox}
+\begin{lrbox}{\lstbox}
+    \begin{lstlisting}
+!\tikz \node[coordinate] (eff0) {};\null!effect Say   : string -> unit !\tikz \node[coordinate] (effdef) {};!
+!\null!effect Twice : unit   -> unit!\tikz \node[coordinate] (effe) {};!
+
+!\tikz \node[coordinate] (handle0) {};\null!handle (
+  !\tikz \node[coordinate] (effinvoke) {};\null!perform (Say "Hello");
+  !\null!perform (Twice ());
+  !\null!perform (Say "world")
+) !\tikz \node[coordinate] (handlew) {};\null!with
+!\tikz \node[coordinate] (effh0) {};\null!| x -> x!\tikz \node[coordinate] (handler) {};!
+| effect (Twice ()) !\tikz \node[coordinate] (cont) {};\null!k -> k (); k ()
+| effect (Say msg)  !\null!k ->
+    print_endline msg; k ()!\tikz \coordinate (effhe) {};!
+    \end{lstlisting}
+\end{lrbox}
+
+\begin{frame}[fragile]
+    \frametitlesec
+
+    イメージとしては\textbf{\alert{継続}を持てる\structure{例外}}\pause
+
+    例(Eff language implementation):
+
+    \usebox{\lstbox}
+    \pause
+    \begin{tikzpicture}[remember picture, overlay]
+        \only<+->{
+            \node[ellipse callout, text=blue, draw=blue, line width = 1pt, fill = white,
+              callout absolute pointer={($(effdef) - (.2, 1)$)}] at ($(effdef) + (2.1, .7) - (0, 1.4)$) {\small effect definition};
+            \fill[fill opacity=0.2,blue] ($(eff0) + (0, -.9)$) rectangle ($(effe)+(.05, -1.4)$);
+        }
+        \only<+->{
+            \node[ellipse callout, text=orange!70!yellow, draw=orange!70!yellow, line width=1pt, fill=white,
+              callout absolute pointer={($(effinvoke) + (5.7, -.1) - (0, .7)$)}] at ($(effinvoke) + (9.0, .7) - (0, .8)$) {\small effect invocation};
+            \fill[fill opacity=0.2,orange!70!yellow] ($(effinvoke) + (0, .4) - (0, 1.3)$) rectangle ($(effinvoke)+(5.7, -1.1) - (0, 1.3)$);
+        }
+        \only<+->{
+            \node[ellipse callout, text=green!60!black, draw=green!60!black, line width = 1pt, fill = white,
+                callout absolute pointer={($(handler) + (5, .5) -(0,1.3)$)}] at ($(handler) + (7.7, 1.6) -(0,1.1)$) {\small effect handler};
+            \fill[fill opacity=0.3,green!70!yellow] ($(handle0) + (0, .4) -(0,1.3)$) rectangle ($(handle0) + (1.55, -.1)-(0,1.3)$);
+            \fill[fill opacity=0.3,green!70!yellow] ($(handlew) + (0, .4) -(0,1.3)$) rectangle ($(handlew) + (1.15, -.1)-(0,1.3)$);
+            \fill[fill opacity=0.3,green!70!yellow] ($(effh0) + (0, .4)-(0,1.3)$) rectangle ($(effhe) + (2., -.1)-(0,1.3)$);
+        }
+
+        \only<+->{
+            \node[fill=red, text = white,ellipse,rectangle] at ($(cont)-(0,1.3)+(.1,.2)$) {\small k};
+            \node[fill=red, text = white,ellipse,rectangle] at ($(cont)-(0,1.3)+(.1,-.35)$) {\small k};
+            \node[ellipse callout, text=red, draw=red, line width = 1pt, fill = white,
+                callout absolute pointer={($(cont) -(0,1.3) + (.2, .4)$)}] at ($(cont) -(0,1.3) + (4.4, .8)$) {\small \textbf{continuation}};
+        }
+    \end{tikzpicture}
+\end{frame}
+
+\subsection{effectの型}
+\begin{frame}[fragile]
+    \frametitlesubs
+
+    \begin{center}
+        \begin{minipage}{.7\textwidth}
+            \hfill なにこれ{\large \coloremoji{🤔}}
+
+            \begin{lstlisting}[xrightmargin=2.8\zw,xleftmargin=1\zw]
+effect Say : !\tikz \node[coordinate] (str) {};\null!string -> !\tikz \node[coordinate] (unit) {};\null!unit
+            \end{lstlisting}
+            \begin{tikzpicture}[remember picture, overlay]
+                \onslide<3->{
+                    \lstbasiccolor{blue!60!black}
+                    \fill[fill opacity=0.3, blue!60!black] ($(str) + (0, -.15)$) rectangle ($(str) +(1.6, .4)$);
+                }
+
+                \onslide<4->{
+                    \lstbasiccolor{orange!70!yellow}
+                    \fill[fill opacity=0.3, orange!70!yellow] ($(unit)+(0, -.15)$) rectangle ($(unit)+(1.1, .4)$);
+                }
+            \end{tikzpicture}
+        \end{minipage}
+
+        \pause
+    \end{center}
+
+    \vskip-\zh%
+    \hskip2\zw%
+    例:\hskip7\zw
+
+    \begin{center}
+        \begin{minipage}{.7\textwidth}
+            \begin{lstlisting}[xrightmargin=3.1\zw,xleftmargin=2\zw]
+!\tikz \node[coordinate] (ctxt) {};\null $E\left[\right.$\tikz \node[coordinate] (entire) {};\null!perform (Say !\tikz \node[coordinate] (str) {};\null!"Hello")!\tikz \node[coordinate] (ctxte){};\null $\left.\right]$!
+            \end{lstlisting}
+            \pause
+            \begin{tikzpicture}[remember picture, overlay]
+                \onslide<3->{
+                    \lstbasiccolor{blue!60!black}
+                    \node at ($(str) + (.9, -.4)$) {\lstinline{: string}};
+                    \fill[fill opacity=0.3, blue!60!black] ($(str)+(0, -.15)$) rectangle ($(str)+(1.8, .4)$);
+                }
+                \onslide<4->{
+                    \lstbasiccolor{orange!70!yellow}
+                    \node at ($(entire) + (3, -.8)$) {\lstinline{: unit}};
+                    \fill[fill opacity=0.3, orange!70!yellow] ($(entire)+(0, -.6)$) rectangle ($(entire)+(5.3, .4)$);
+                }
+                \onslide<5->{
+                    \lstbasiccolor{red}
+                    \node at ($(ctxt)+(3, .6)$) {\lstinline{: unit -> 'a} {\scriptsize (継続のanswer type)}};
+                    \fill[fill opacity=0.5, red] ($(ctxt)+(0, -.15)$) rectangle ($(ctxt)+(.52,.4)$);
+                    \fill[fill opacity=0.5, red] ($(ctxte)+(0, -.15)$) rectangle ($(ctxte)+(.3,.4)$);
+                }
+            \end{tikzpicture}
+        \end{minipage}
+    \end{center}
+
+    \begin{center}
+        \vfill
+        \onslide<6>{
+            {\Huge \textbf{完全に理解した}}
+        }
+        \vfill
+    \end{center}
+\end{frame}
+
+\subsection{デモ}
+\begin{frame}[fragile]
+    \frametitlesubs
+
+    \usebox{\lstbox}
+\end{frame}
+
+\subsection{ポイント}
+\begin{frame}
+    \frametitlesubs
+
+    \begin{flalign*}
+        &\begin{array}{lc}
+            \left.\begin{array}{rr}
+                    \bullet&\text{定義と実装の\textbf{分離}}\\
+                    \bullet&\text{ハンドラの\textbf{合成}}
+                \end{array}\right\} & \begin{array}{l}
+                \text{モジュラーなプログラミング}\\
+                \text{を支援}
+            \end{array}
+        \end{array}\\
+        &\begin{array}{lc}
+            \left.\begin{array}{rr}
+                    \bullet&\text{\textbf{限定継続}が使える}
+            \end{array}\right\}&\text{例外より強力}
+        \end{array}
+    \end{flalign*}
+\end{frame}
+

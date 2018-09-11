@@ -1,0 +1,19 @@
+\usepackage[style=alphabetic,minalphanames=3,backend=biber]{biblatex}
+\renewcommand*{\labelalphaothers}{\textsuperscript{+}}
+\addbibresource{main.bib}
+\beamertemplatetextbibitems
+%% bib underline breaklines https://tex.stackexchange.com/questions/200997/underlined-titles-in-bibliography-with-biblatex-and-ulem-packages
+\renewbibmacro*{title}{%
+  \ifboolexpr{
+    test {\iffieldundef{title}}
+    and
+    test {\iffieldundef{subtitle}}
+  }
+    {}
+    {\printtext{%
+     \printtext[titlecase]{\usefield{\uline}{title}}%
+     \setunit{\subtitlepunct}%
+     \printfield[titlecase]{subtitle}}%
+     \newunit}%
+  \printfield{titleaddon}}
+

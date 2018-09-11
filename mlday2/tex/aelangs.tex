@@ -1,0 +1,112 @@
+\section{Algebraic Effectsが使える言語}
+\begin{frame}[fragile]
+    \frametitlesec
+
+    \begin{itemize}
+        \item Eff\footnote{\url{https://www.eff-lang.org/}}
+
+            \begin{itemize}
+                \item MLベースのsyntax、型推論
+                \item 処理系やライブラリ(EDSL)など実装多数
+            \end{itemize}
+
+        \item Koka\footnote{\url{https://koka-lang.github.io/koka/}}
+
+            \begin{itemize}
+                \item MS Research製
+                \item effectが型で表される
+
+                    (ex: \lstinline{println : <@a -> console ()@>})
+                \item Algebraic Effects以外にもおもしろ機能
+            \end{itemize}
+
+        \item Multicore \textbf{OCaml}\footnote{\url{http://ocamllabs.io/doc/multicore.html}}
+
+            \begin{itemize}
+                \item OCaml LabsがOCamlをfork
+                \item 継続が\alert{oneshot}のAlgebraic Effetsを持つ
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\subsection{Multicore OCaml}
+\begin{frame}[fragile]
+    \frametitlesubs
+
+    {\small Stateモナド風}
+
+    \begin{multicols}{2}
+        \begin{lstlisting}[basicstyle=\scriptsize\ttfamily\color{green!60!black}]
+module State(S : sig type t end)
+= struct
+  type t = S.t
+
+  effect Put : t -> unit;;
+  effect Get : t
+
+  let run init f =
+    init |> match f () with
+    | x -> (fun s -> (s, x))
+    | effect (Put s') k ->
+      (fun s -> continue k () s')
+    | effect Get k ->
+      (fun s -> continue k s s)
+end
+
+effect Log : int -> unit
+let log msg = perform @@ Log msg
+try begin
+  let module S1 =
+    State(struct
+      type t = int
+    end) in
+  let open S1 in
+  let incr () = 
+   perform (Put (perform Get + 1))
+  in
+  run 0 @@ fun () ->
+      incr ();
+      log @@ perform Get;
+      incr ();
+      log @@ perform Get
+end
+with effect (Log msg) k ->
+  print_int msg; continue k ()
+        \end{lstlisting}
+    \end{multicols}
+
+    \vfill
+\end{frame}
+
+\hypertarget{fr:delimcc}{}
+\label{fr:deimcc}
+\begin{frame}[fragile]
+    \frametitlesubs
+
+    shift/resetも実装できるぞ!!
+    \phantomsection
+    \begin{lstlisting}[basicstyle=\scriptsize\ttfamily\color{green!60!black}]
+module DelimccOne = struct
+  type 'a prompt = {
+    take : 'b. (('b -> 'a) -> 'a) -> 'b;
+    push : (unit -> 'a) -> 'a;
+  }
+
+  let new_prompt (type a) : unit -> a prompt = fun () ->
+    let module M = struct
+      effect Prompt : (('b -> a) -> a) -> 'b
+    end in
+    let take f = perform (M.Prompt f) in
+    let push th =
+      try th () with effect (M.Prompt f) k -> f @@ continue k
+    in
+    {take; push}
+
+  let push_prompt {push} = push
+  let take_subcont {take} = take
+
+  let shift0 p f = take_subcont p @@ fun k -> f k
+end
+    \end{lstlisting}
+\end{frame}
+

@@ -1,0 +1,59 @@
+\def\lstbasiccolor#1{
+  \lstset{
+    basicstyle=\small\ttfamily\color{#1},
+    identifierstyle={\ttfamily},
+    keywordstyle=[1]{\ttfamily},
+    keywordstyle=[7]{\ttfamily},
+    keywordstyle=[8]{\bfseries\ttfamily},
+    literate=*{->}{$\rightarrow{}$}{1},
+  }
+}
+
+\makeatletter
+\newcommand*\idstyle{%
+  \expandafter\id@style\the\lst@token\relax
+}
+\def\id@style#1#2\relax{%
+  \ifcat#1\relax\else
+    \ifnum`#1=\uccode`#1%
+      \color{magenta}\bfseries\ttfamily
+    \fi
+  \fi
+}
+\makeatother
+
+\def\CodeSymbol#1{\textcolor{black!5!blue!50}{\texttt{#1}}}
+
+\lstset{
+    language={[Objective]caml},
+    escapechar=!,
+    numbers=none,
+    basicstyle=\small\ttfamily\color{green!60!black},
+    backgroundcolor=\color{black!7!yellow!9},
+    columns=fixed,
+    float=tbpm,
+    moredelim={[is][\color{red}\uwave]{<@}{@>}},
+    moredelim={[is]{<0@}{@0>}},
+    morekeywords=[1]{
+        effect,handle
+    },
+    morekeywords=[8]{
+        perform,continue
+    },
+    morekeywords=[10]{|>},
+    literate=*{->}{{{\textcolor{black!5!orange!90}{$\rightarrow$}{}}}}{1}
+             {\{}{{\CodeSymbol{\{}}}1
+             {\}}{{\CodeSymbol{\}}}}1
+             {(}{{\CodeSymbol{(}}}1
+             {)}{{\CodeSymbol{)}}}1
+             {|}{{\CodeSymbol{|}}}1
+             {|>}{{$\mid >$}}1
+             {;}{{\CodeSymbol{;}}}1
+             {\_}{\_}1
+             {:}{{\CodeSymbol{:}}}1,
+    keywordstyle=[1]{\color{black!5!orange!90}\ttfamily},
+    keywordstyle=[7]{\color{black!5!blue!90}\ttfamily},
+    keywordstyle=[8]{\color{black!5!cyan!80}\bfseries\ttfamily},
+    identifierstyle=\idstyle,
+}
+

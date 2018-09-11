@@ -1,0 +1,122 @@
+\section{研究紹介}
+\begin{frame}
+    \frametitlesec
+
+    \structure{$\bullet$} \green{Asymmetric Coroutine}による\alert{Oneshot Algebraic Effects}の実装
+
+    \begin{center}
+        \small
+        \begin{tikzpicture}
+            \node[ellipse,draw] (oneshotsr) {\structure{oneshot shift/reset}};
+            \node[ellipse,draw, below left = of oneshotsr, xshift = 1.7\zw,yshift=.6\zh, text width=4.4\zw] (oneshotae) {\alert{oneshot Algebraic Effects}};
+            \node[ellipse,draw, text width=5.5\zw, below right = of oneshotsr, xshift = -2\zw,yshift=.2\zh] (asymcor) {\green{asymmetric coroutine}};
+
+            \path[->, line width=0.07\zw]
+                (oneshotae) edge node[above left,sloped]{1} (oneshotsr)
+                (oneshotsr) edge node[above right,sloped]{2} (asymcor);
+        \end{tikzpicture}
+    \end{center}
+    \vskip-2\zh
+
+    \begin{itemize}
+        \item[\coloremoji{👊}] (asymmetric) coroutineのある言語でAEが使える
+        \item[\coloremoji{☝}] 1, 2のそれぞれ既存の変換を参考にする
+    \end{itemize}
+\end{frame}
+
+\subsection{oneshot AE $\rightarrow$ oneshot s/r}
+\begin{frame}[fragile]{\normalsize \alert{oneshot} Algebraic Effects $\rightarrow$ \alert{oneshot} shift/reset}
+
+    \vskip.5\baselineskip
+
+    \cite{kiselyov2016eff}に基づき\structure{\hyperlink{fr:delimcc}{先程の実装}}の逆をやる
+
+    \begin{lstlisting}[basicstyle=\scriptsize\ttfamily\color{green!60!black},xleftmargin=4\zw,xrightmargin=4\zw]
+module Translate(D: DELIMCC) : sig
+  type ('a, 'b) free
+  type 'a thunk = unit -> 'a
+  val newi : unit -> 'a D.prompt
+  val op : ('a, 'b) free D.prompt -> 'a -> 'b
+  val handler : ('g, 'g) free D.prompt ->
+    ('g -> 'o) -> ('g * ('g -> 'o) -> 'o) -> 'g thunk -> 'o
+  val handle : ('a thunk -> 'b) -> 'a thunk -> 'b
+end = struct
+  ......
+end
+    \end{lstlisting}
+
+    \bgroup
+    \small
+    \begin{itemize}
+        \item[Q.] 継続のoneshotnessをAEが引き継いでることの証明は?
+        \item[A.] まだ無い。affine typeで型によって示す予定
+    \end{itemize}
+    \egroup
+\end{frame}
+
+\subsection{oneshot s/r $\rightarrow$ AC}
+\begin{frame}[fragile]{\normalsize \alert{oneshot} shift/reset $\rightarrow$ Asymmetric Coroutine}
+
+
+    \vskip.5\baselineskip
+
+    \cite{UsuiMaster2017}による変換を使う (Luaによる実装)
+
+    \begin{multicols}{2}
+        \begin{lstlisting}[basicstyle=\scriptsize\ttfamily\color{green!60!black},language={[5.3]lua}]
+function sr.reset(th)
+  local l = coro.create(
+    function(_)
+      return (function(y)
+        return function(_)
+          return y
+        end
+      end)(th())
+    end)
+
+  return coro.resume(l)()
+end
+
+function sr.shift(f)
+  local k = coro.current
+
+  return coro.yield(function(_)
+    return sr.reset(function()
+      return f(k)
+    end)
+  end)
+end
+
+function sr.throw(k, e)
+  return coro.resume(k, e)()
+end
+        \end{lstlisting}
+    \end{multicols}
+\end{frame}
+
+\subsection{課題、今後の予定}
+\begin{frame}
+    \frametitlesubs
+
+    \begin{itemize}
+        \item oneshotnessの保証(先述)
+        \item Usuiによる変換の対象のshift/resetをmulti-promptで再定義
+        \item oneshot shift/resetを経由しない\yellow{ダイレクトな変換}を考える
+    \end{itemize}
+
+\begin{center}
+        \small
+        \begin{tikzpicture}
+            \node[ellipse,draw] (oneshotsr) {\structure{oneshot shift/reset}};
+            \node[ellipse,draw, below left = of oneshotsr, xshift = 1.7\zw,yshift=.6\zh, text width=4.4\zw] (oneshotae) {\alert{oneshot Algebraic Effects}};
+            \node[ellipse,draw, text width=5.5\zw, below right = of oneshotsr, xshift = -2\zw,yshift=-.0\zh] (asymcor) {\green{asymmetric coroutine}};
+
+            \path[->, line width=0.07\zw]
+                (oneshotae) edge (oneshotsr)
+                (oneshotsr) edge (asymcor);
+
+            \path[->,line width=.15\zw,color=orange!70!yellow] (oneshotae) edge (asymcor);
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
+
