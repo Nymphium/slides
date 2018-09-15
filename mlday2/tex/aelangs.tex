@@ -1,4 +1,4 @@
-\section{Algebraic Effectsが使える言語}
+\section{AE Implimentations}
 \begin{frame}[fragile]
     \frametitlesec
 
@@ -35,8 +35,7 @@
 
     {\small Stateモナド風}
 
-    \begin{multicols}{2}
-        \begin{lstlisting}[basicstyle=\scriptsize\ttfamily\color{green!60!black}]
+    \begin{lstlisting}[basicstyle=\scriptsize\ttfamily\color{green!60!black},multicols=2]
 module State(S : sig type t end)
 = struct
   type t = S.t
@@ -72,8 +71,7 @@ try begin
 end
 with effect (Log msg) k ->
   print_int msg; continue k ()
-        \end{lstlisting}
-    \end{multicols}
+    \end{lstlisting}
 
     \vfill
 \end{frame}

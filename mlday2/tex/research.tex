@@ -2,7 +2,11 @@
 \begin{frame}
     \frametitlesec
 
-    \structure{$\bullet$} \green{Asymmetric Coroutine}による\alert{Oneshot Algebraic Effects}の実装
+    \vskip-\zh
+
+    \begin{itemize}
+        \item[\coloremoji{🔬}] \green{Asymmetric Coroutine}による\alert{Oneshot Algebraic Effects}の実装\footnote{\url{http://logic.cs.tsukuba.ac.jp/~sat/pdf/jssst2018.pdf}}
+    \end{itemize}
 
     \begin{center}
         \small
@@ -16,11 +20,11 @@
                 (oneshotsr) edge node[above right,sloped]{2} (asymcor);
         \end{tikzpicture}
     \end{center}
-    \vskip-2\zh
+    \vskip-1.5\zh
 
     \begin{itemize}
         \item[\coloremoji{👊}] (asymmetric) coroutineのある言語でAEが使える
-        \item[\coloremoji{☝}] 1, 2のそれぞれ既存の変換を参考にする
+        \item[\coloremoji{☝}] 1の類似の変換、2の既存の変換を参考にする
     \end{itemize}
 \end{frame}
 
@@ -30,6 +34,8 @@
     \vskip.5\baselineskip
 
     \cite{kiselyov2016eff}に基づき\structure{\hyperlink{fr:delimcc}{先程の実装}}の逆をやる
+
+    {\small 直感としては \alert{effect instance}$\rightarrow$\blue{prompt},\\\alert{effect invocation} $\rightarrow$ \blue{shift}, \alert{effect handler} $\rightarrow$ \blue{reset}}
 
     \begin{lstlisting}[basicstyle=\scriptsize\ttfamily\color{green!60!black},xleftmargin=4\zw,xrightmargin=4\zw]
 module Translate(D: DELIMCC) : sig
@@ -57,13 +63,17 @@ end
 \subsection{oneshot s/r $\rightarrow$ AC}
 \begin{frame}[fragile]{\normalsize \alert{oneshot} shift/reset $\rightarrow$ Asymmetric Coroutine}
 
-
-    \vskip.5\baselineskip
-
     \cite{UsuiMaster2017}による変換を使う (Luaによる実装)
 
-    \begin{multicols}{2}
-        \begin{lstlisting}[basicstyle=\scriptsize\ttfamily\color{green!60!black},language={[5.3]lua}]
+    \vskip.1\baselineskip
+
+    \bgroup\small
+    Luaの\lstinline{coroutine} + 現在のthreadを表す\lstinline{current}
+
+    \alert{※} ただしpromptはない(shiftが持つ限定継続は直前のreset)
+    \egroup
+
+    \begin{lstlisting}[basicstyle=\scriptsize\ttfamily\color{green!60!black},language={[5.3]lua},multicols=2]
 function sr.reset(th)
   local l = coro.create(
     function(_)
@@ -90,8 +100,7 @@ end
 function sr.throw(k, e)
   return coro.resume(k, e)()
 end
-        \end{lstlisting}
-    \end{multicols}
+    \end{lstlisting}
 \end{frame}
 
 \subsection{課題、今後の予定}
@@ -108,12 +117,12 @@ end
         \small
         \begin{tikzpicture}
             \node[ellipse,draw] (oneshotsr) {\structure{oneshot shift/reset}};
-            \node[ellipse,draw, below left = of oneshotsr, xshift = 1.7\zw,yshift=.6\zh, text width=4.4\zw] (oneshotae) {\alert{oneshot Algebraic Effects}};
-            \node[ellipse,draw, text width=5.5\zw, below right = of oneshotsr, xshift = -2\zw,yshift=-.0\zh] (asymcor) {\green{asymmetric coroutine}};
+            \node[ellipse,draw, below left = of oneshotsr, xshift = 1.7\zw,yshift=-.4\zh, text width=4.4\zw] (oneshotae) {\alert{oneshot Algebraic Effects}};
+            \node[ellipse,draw, text width=5.5\zw, below right = of oneshotsr, xshift = -2\zw,yshift=-1.0\zh] (asymcor) {\green{asymmetric coroutine}};
 
             \path[->, line width=0.07\zw]
-                (oneshotae) edge (oneshotsr)
-                (oneshotsr) edge (asymcor);
+                (oneshotae) edge node[above left]{\small partially ok} (oneshotsr)
+                (oneshotsr) edge node[above right, text width=8em, xshift=.5em,yshift=-.8em]{\small ok, but\\prompt-less s/r} (asymcor);
 
             \path[->,line width=.15\zw,color=orange!70!yellow] (oneshotae) edge (asymcor);
         \end{tikzpicture}
