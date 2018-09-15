@@ -2,3 +2,5 @@
 *.bcf
 *.blg
 *.run.xml
+!main.pdf
+
