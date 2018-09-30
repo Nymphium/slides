@@ -1,0 +1,141 @@
+\documentclass[unicode,compress,14pt,CJK%
+\directlua{
+    handout = os.getenv"HANDOUT"
+    local _ = handout and tex.print(",handout")
+},t]{beamer}
+\usepackage[no-math]{luatexja-fontspec}
+\usepackage{fontawesome}
+\usefonttheme[onlymath]{serif}
+\usepackage{luacode}
+\input{../template/beamertemp}
+\usepackage{ulem}
+\defaultfontfeatures{Ligatures={NoRequired, NoCommon, NoContextual}}
+\defaultjfontfeatures{Ligatures={NoRequired, NoCommon, NoContextual}}
+\setsansfont[Script=Default,Kerning=On,BoldFont=GenShinGothic-Bold,ItalicFont=NotoSansDisplay-LightItalic]{GenShinGothic-Light}
+\setmainjfont[%
+Script=Default,%
+Kerning=On,%
+CharacterWidth=AlternateProportional,%
+BoldFont=GenShinGothic-P-Bold,%
+YokoFeatures={JFM=prop}]{GenShinGothic-P-Light}
+\setmonofont[Kerning=Reset]{Inconsolata}
+\usepackage{amsmath,amssymb,stmaryrd}
+\usepackage{tikz,pgfplots}
+\usepackage{url,hyperref}
+
+% \input{config/biblatex}
+
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\newtcolorbox{newbie}{
+    enhanced,
+    boxrule=0pt,
+    right skip=0pt,
+    left skip=0pt,
+    boxsep=0pt,
+    right=.3em,
+    left=.3em,
+    sharp corners,
+    colback=black!20,
+}
+\usetikzlibrary{shapes,snakes,arrows.meta,positioning,calc,fit,shapes.callouts}
+\tikzstyle{every picture} +=[remember picture]
+
+\usepackage{bxcoloremoji}
+
+\def\green#1{\textcolor{green!70!black}{#1}}
+\def\blue#1{\textcolor{blue!70!black}{#1}}
+\def\yellow#1{\textcolor{orange!70!yellow}{#1}}
+
+% \input{config/listings}
+
+%% for beamer not to underline
+\def\emph#1{\textit{#1}}
+
+% \AtBeginSubsection{}
+
+\notoc
+
+%%%%
+\title{研究2017}
+\author{河原 悟}
+\institute{研究室紹介 2018}
+%%%%
+
+\begin{document}
+\maketitle
+
+\section{自己紹介}
+\begin{frame}
+    \frametitlesec
+
+    \begin{itemize}
+        \item M1
+        \item 研究 $\cdots\cdots$ Algebraic Effectsに関する研究
+        \item バックグラウンド
+
+            \begin{itemize}
+                \item プログラミングは大学に入ってから
+                \item 言語処理系が趣味
+                \item Luaの処理系や最適化器を作ったりした
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{卒業研究}
+\begin{frame}
+    \frametitlesec
+
+    明示的な合流点を持つコンパイラ中間言語の設計および実装
+
+    \begin{itemize}
+        \item コンパイラの実装
+        \item 最適化器の実装
+        \item 実験(ベンチマーク、比較)
+        \item 論文
+    \end{itemize}
+\end{frame}
+
+\section{工程}
+\begin{frame}
+    \frametitlesec
+
+
+    \begin{figure}[ht]
+        \centering
+        \begin{tikzpicture}
+            \foreach \x in {5,...,12}
+                \path[dashed] (\x, 0) edge (\x, -3);
+
+            \foreach \x in {6,...,12}
+                \node at (\x, .5) {\x};
+
+            \node at (5, .5) {\textasciitilde 5};
+
+            \foreach \x in {1,...,3}
+                \path[dashed] ($(\x, 0) + (12, 0)$) edge ($(\x, -3) + (12, 0)$);
+
+            \foreach \x in {1,...,2}
+                \node at ($(\x, .5) + (12, 0)$) {\x};
+
+
+            \node at (15, .5) {3月};
+
+            \path[->,line width=1.5pt]
+                (4, -.3) edge (6, -.3) % 輪講など
+                (8, -1.8) edge (15.5, -1.8) % 実装
+                (7.5, -2.2) edge (8.1, -2.2) % 英語A
+                (13.8, -2.2) edge (14.5, -2.2) % 英語B
+                (7.2, -2.7) edge (8.5, -2.7) % 院試
+                (6, -1.4) edge (15.5, -1.4) % 論文読み
+                (10, -.5) edge (10.7, -.5) % 中間
+                (11.5, -1) edge (13.8, -1) % 論文かき
+                (13.8, -1) edge (14.5, -1) % 発表
+                (14.5, -1) edge (15.5, -1) % ポスター
+                ;
+        \end{tikzpicture}
+    \end{figure}
+\end{frame}
+\end{document}
+
