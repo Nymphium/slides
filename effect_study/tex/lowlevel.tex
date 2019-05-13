@@ -1,0 +1,39 @@
+\section{Low-level Manipulations}
+\begin{frame}
+  \frametitlesec
+
+  e.g.) \hlinkclip{https://github.com/koka-lang/libhandler} \alert{libhandler}, implemented in \structure{C}
+
+  \pause
+  \begin{table}[ht]
+    \centering
+
+    \begin{tabular}{ccc}
+      \alert{Algebraic Effects} & $\mapsto$ & \structure{libhandler} \\\hline
+      \parbox{8em}{\centering effect handler \& \\ ciontinuation} & $\mapsto$ & \parbox{9em}{\centering call stack \& \\instruction pointer}\\
+      effect invocation & $\mapsto$ & longjmp
+    \end{tabular}
+  \end{table}
+\end{frame}
+
+\subsection*{pros/cons}
+\begin{frame}
+  \frametitlesubs
+
+  \pause
+  \begin{itemize}
+    \item<+->[\coloremoji{😁}] 低レベルで提供可能
+
+      FFIで様々な言語から呼び出せる
+
+    \item<+->[\coloremoji{😓}] 実装が大変かつ限定的
+  \end{itemize}
+
+  \onslide<+->{
+    \centering
+    $\Downarrow$
+
+    \{処理系, ライブラリ\}バックエンド向け
+  }
+\end{frame}
+

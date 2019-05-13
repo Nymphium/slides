@@ -1,0 +1,74 @@
+\section{Multiprompt shift/reset}
+\begin{frame}[t,fragile]
+  \frametitlesec
+
+  \pause
+  e.g.)\texttt{racket/control} in Racket
+
+  \begin{onlyenv}<2>
+    \begin{lstlisting}[language=,xleftmargin=1\zw,xrightmargin=1\zw,belowskip=-1\zh]
+(reset
+  (+ 2 (reset
+    (+ 3 (shift _k 4)))))
+
+;; !$\rightarrow^\star$! (reset (+ 2 4)) !$\rightarrow^\star$! 6
+    \end{lstlisting}
+  \end{onlyenv}
+  \begin{onlyenv}<3->
+    \begin{lstlisting}[language=,xleftmargin=1\zw,xrightmargin=1\zw]
+(let ((p (make-continuation-prompt-tag))
+      (q (make-continuation-prompt-tag)))
+  (reset-at !\only<3>{\texttt{p}}\only<4>{\textcolor{red}{\textbf{p}}}\tikz\coordinate (resetp);!
+    (+ 2 (reset-at q
+      (+ 3 (shift-at !\only<3>{\texttt{p}}\only<4>{\textcolor{red}{\textbf{p}}}\tikz\coordinate (shiftp);! _k 4))))))
+
+;; !$\rightarrow^\star$! (reset-at p (+ 2 (shift-at p _k 4)))
+;; !$\rightarrow^\star$! 4
+    \end{lstlisting}
+  \end{onlyenv}
+  \begin{onlyenv}<4>
+    \begin{tikzpicture}[overlay]
+      \node[above right = of resetp,draw,fill=cream,yshift=1\zh] (callout) {対応するpromptまで飛んでいく};
+      \path[->,line width=2pt]
+        (callout) edge ($(resetp)+(.05, .2)$)
+        (callout) edge ($(shiftp)+(.1, .2)$);
+    \end{tikzpicture}
+  \end{onlyenv}
+\end{frame}
+
+\begin{frame}
+  \frametitlesec
+
+  e.g.) \hlinkclip{https://b-studios.de/scala-effekt/} \alert{Effekt}, implemented in \structure{Scala}
+
+  \pause
+  \begin{table}[ht]
+    \centering
+    \begin{tabular}{rcl}
+      \alert{Algebraic Effects} & $\mapsto$ & \parbox{6em}{\structure{Multiprompt\\shift/reset}}\\
+      \hline
+      effect operation  & $\mapsto$ & prompt tag\\
+      effect handler    & $\mapsto$ & \texttt{reset-at}\\
+      effect invocation & $\mapsto$ & \texttt{shift-at}\\
+      continuation & $\mapsto$ & continuation
+    \end{tabular}
+  \end{table}
+\end{frame}
+
+\subsection*{pros/cons}
+\begin{frame}
+  \frametitlesubs
+
+  \pause
+  \begin{itemize}
+    \item<+->[\coloremoji{😁}] 直感的で素直な対応
+
+      実装しやすい
+    \item<:->[\coloremoji{😁}] effectのdynamic instantiationも対応
+
+      multi-stateなど
+    \item<+->[\coloremoji{😅}] あまり一般的でない
+
+      実装が少ない
+  \end{itemize}
+\end{frame}

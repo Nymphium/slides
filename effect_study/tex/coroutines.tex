@@ -1,0 +1,99 @@
+\section{Coroutines}
+\begin{frame}
+  \frametitlesec
+
+  \begin{center}
+    \begin{minipage}[c]{1.8em}
+      e.g.)
+    \end{minipage}
+    \begin{minipage}[c]{.8\textwidth}
+      \begin{itemize}
+        \item[\hlinkclip{https://github.com/ocaml-multicore/ocaml-multicore}] \alert{Multicore OCaml}, implemented\\with \structure{fiber}, in \structure{C}~\cite{dolan2015effective} 
+        \item[\hlinkclip{https://github.com/Nymphium/eff.lua}] \alert{eff.lua} , implemented with \structure{coroutine}, in \structure{Lua}
+      \end{itemize}
+    \end{minipage}
+  \end{center}
+
+  \pause
+
+  \begin{table}[ht]
+    \centering
+
+    \setbeamercovered{transparent}
+
+    \begin{tabular}{rcl}
+      \alert{Algebraic Effects} & $\mapsto$ & \structure{Coroutines}\\\hline
+      effect invocation & $\mapsto$ & yield\\
+      effect handler & $\mapsto$ & create \& resume\\
+      continuation & $\mapsto$ & coroutine
+    \end{tabular}
+  \end{table}
+\end{frame}
+
+\begin{frame}
+  \frametitlesec
+
+  \begin{table}[ht]
+    \centering
+
+    \setbeamercovered{transparent}
+
+    \begin{tabular}{rcl}
+      \uncover<1>{\alert{Algebraic Effects} & $\mapsto$ & \structure{Coroutines}\\\hline}
+      \uncover<1>{effect invocation & $\mapsto$ & yield}\\
+      \uncover<1>{effect handler & $\mapsto$ & create \& resume}\\
+      \uncover<1->{\tikz\coordinate[remember picture] (continuation);\null continuation & $\mapsto$ & coroutine\tikz\coordinate[remember picture] (coroutine);\null }
+    \end{tabular}
+  \end{table}
+
+  \begin{onlyenv}<3->
+    \begin{tikzpicture}[overlay]
+      \node[
+        draw,
+        rectangle callout,
+        fill=cream,
+        above = of continuation,
+        xshift=.5\zw,
+        callout absolute pointer={($(continuation) + (1, .4) $)}]
+        {何回も呼び出したいけど};
+      \node[
+        draw,
+        rectangle callout,
+        fill=cream,
+        above=of coroutine,
+        callout absolute pointer={($(coroutine) - (1, -.4)$)}
+        ]
+        {状態をコピーできない};
+    \end{tikzpicture}
+  \end{onlyenv}
+
+  \onslide<4->{
+    \centering
+    \begin{minipage}{1em}
+      \Large \coloremoji{⚠}%
+    \end{minipage}
+    \begin{minipage}{.9\textwidth}
+      \centering coroutinesをコピーするような操作がなければ\\
+      継続は\alert{ワンショットに限定}される
+    \end{minipage}
+  }
+\end{frame}
+
+\subsection*{pros/cons}
+\begin{frame}
+  \frametitlesubs
+
+  \pause
+  \begin{itemize}
+    \item<+->[\coloremoji{😁}] Coroutinesを持ってる言語は多め
+
+      Lua, Ruby, JS, Kotlin, Python, etc.
+
+      % \coloremoji{⚠} ただしstackfulnessに注意
+    \item<+->[\coloremoji{😅}] 継続はワンショット
+
+      非決定計算とかは書けない
+
+      \coloremoji{🤔} Multicore OCamlのように継続を複製する操作があれば……
+  \end{itemize}
+\end{frame}

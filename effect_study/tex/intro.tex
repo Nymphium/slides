@@ -1,0 +1,34 @@
+\section{Introduction}
+\begin{frame}
+    \frametitlesec
+
+    Algebraic Effectsの様々な実装
+
+    \pause
+    \begin{itemize}
+        \item<+-> ライブラリ
+            \begin{itemize}
+                \item[\hlinkclip{https://github.com/Nymphium/eff.lua}] eff.lua
+                \item[\hlinkclip{https://b-studios.de/scala-effekt/}] Effekt
+                \item[\hlinkclip{https://github.com/koka-lang/libhandler}] libhandler
+                \item etc.
+            \end{itemize}
+
+        \item<+-> 言語(処理系) \hspace{12\zw}\tikz\coordinate[remember picture](think);\null
+            \begin{itemize}
+                \item[\hlinkclip{https://github.com/matijapretnar/eff}] Eff
+                \item[\hlinkclip{https://github.com/ocaml-multicore/ocaml-multicore}] Multicore OCaml
+                \item[\hlinkclip{https://github.com/koka-lang/koka}] Koka
+                \item etc.
+            \end{itemize}
+    \end{itemize}
+
+    \onslide<+->{
+        \begin{tikzpicture}[overlay]
+            \coordinate[below = 0.5 of think] (thinker0);
+            \node[below = 0 of thinker0] (thinker) {\LARGE \coloremoji{🤔}};
+
+            \node[draw, rectangle callout, above left = 0.6 of thinker0, xshift = 3\zw, fill=cream, callout absolute pointer={(thinker.north west)}, text width=6.4\zw] (callout1) {どうやって実装\\されている??};
+        \end{tikzpicture}
+    }
+\end{frame}

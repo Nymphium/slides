@@ -11,4 +11,7 @@ main.pdf
 *.fls
 *.fdb_latexmk
 *.synctex.gz
+*.blg
+*.bbl
+*.bcf
 temp

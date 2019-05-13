@@ -1,0 +1,107 @@
+\section{\textit{N-Barrelled} CPS}
+\begin{frame}[t]
+  \frametitlesec
+
+  \vskip.7\baselineskip
+
+  \structure<1-2>{Double-Barrelled} CPS~\cite{thielecke2002comparing} を拡張するといい感じに使えるのでは？
+
+  \pause
+  \begin{onlyenv}<2-3>
+    \begin{table}[ht]
+      \centering
+      \begin{tabular}{c|c}
+        sort & \parbox{9em}{\centering number of\\continuations}\\
+        \hline
+        (pure) CPS & 1 \\
+        \hline
+        \only<2>{\coloremoji{👉}} CPS \structure<2>{+ Exception} & \structure<2>{2} \onslide<3->{\\\hline %
+        CPS \alert{+ Algebraic Effects} & 1 \alert{+ \parbox{7.2em}{\centering number of\\effect handlers}}}
+      \end{tabular}
+    \end{table}
+  \end{onlyenv}
+
+  \begin{onlyenv}<4->
+    \begin{table}[ht]
+      \centering
+      \begin{tabular}{ccc}
+        \alert{Algebraic Effects} & $\mapsto$ & \structure{N-Barrelled CPS} \\\hline
+        effect handler    & $\mapsto$ & \only<4>{(effect-id * handler) list}\only<5->{\textcolor{red}{\uwave{(effect-id * handler) list}}}\tikz[remember picture]\coordinate(thisiscont);\null\\
+        effect invocation & $\mapsto$ & \parbox{8em}{\centering lookup list \&\\pass parameters}\\
+        handler nesting   & $\mapsto$ & handler-list concatenation\\
+      \end{tabular}
+    \end{table}
+  \end{onlyenv}
+
+  \begin{onlyenv}<5>
+    \begin{tikzpicture}[remember picture, overlay]
+      \node[draw, rectangle callout , callout absolute pointer={($(thisiscont)+(-1,.4)$)}, above = of thisiscont,fill=cream] {N-Barrel};
+    \end{tikzpicture}
+  \end{onlyenv}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitlesec
+
+  \begin{lstlisting}[title={補助関数}]
+let lookup : ('a * 'b) list !$\rightarrow$! 'a !$\rightarrow$! 'b option
+= !$\cdots\cdots$!
+let lookup!$_\mathit{eff}$! h eff v k =
+  match lookup h eff with
+  | Some effh !$\rightarrow$! effh v k
+  | None !$\rightarrow$! !$\mathit{abort}$!
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[t,fragile]
+  \frametitlesec
+
+  \vskip-1.5\baselineskip
+
+  \begin{lstlisting}[title={例}]
+handle (perform (Foo 5)) with
+| effect (Foo x) k !$\rightarrow$! k (x + x)
+| effect (Bar b) k !$\rightarrow$! k (b - b)
+| (*  value   *) y !$\rightarrow$! y * 20
+  \end{lstlisting}
+
+  \pause
+  \begin{center}\vskip-1em$\Downarrow$ 雰囲気で変換 \hlinkclip{https://gist.github.com/Nymphium/bb8235134121c57d8c470ee39b74f586}  \end{center}
+  \vskip-1em
+  \begin{lstlisting}
+(fun k!$_0$! h!$_0$! !$\rightarrow$!
+  (fun k!$_1$! h!$_1$! !$\rightarrow$! k!$_1$! 5) (fun v!$_1$! !$\rightarrow$!
+  (lookup!$_\mathit{eff}$! h!$_0$! Foo v!$_1$!) (fun res!$_\mathtt{Foo}$! !$\rightarrow$!
+  (fun y k!$_\mathit{top}$! !$\rightarrow$! k!$_\mathit{top}$! (y * 20)) res!$_\mathtt{Foo}$! k!$_0$!)) h!$_0$!
+) (fun x !$\rightarrow$! x)
+  [ (Foo, fun x k !$\rightarrow$! k (x + x));
+    (Bar, fun b k !$\rightarrow$! k (b - b)) ]
+  \end{lstlisting}
+\end{frame}
+
+\subsection*{pros/cons}
+\begin{frame}
+  \frametitlesubs
+
+  \pause
+  \begin{itemize}
+    \item<+->[\coloremoji{😁}] CPSのテク(最適化など)の恩恵が得られそう
+    \item<+->[\coloremoji{😁}] 捕捉可能なハンドラに一発で飛べる
+    \item<+->[\coloremoji{😕}] グローバルな変換が必要
+  \end{itemize}
+
+  \onslide<+->{
+    \begin{center}
+      \centering
+      $\Downarrow$
+
+      \{処理系, ライブラリ\}バックエンド向け
+    \end{center}
+  }
+
+  \begin{itemize}
+    \item<+->[\coloremoji{⭐}] related) \hlinkclip{https://koka-lang/koka} Koka
+
+      compililing to JS or C\# via type-directed \structure{\textit{selective} CPS}~\cite{leijen2016algebraic}
+  \end{itemize}
+\end{frame}

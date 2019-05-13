@@ -1,0 +1,119 @@
+\documentclass[unicode,compress,14pt,CJK%
+\directlua{
+    handout = os.getenv"HANDOUT"
+    local _ = handout and tex.print(",handout")
+}]{beamer}
+\usepackage[no-math]{luatexja-fontspec}
+\usepackage{fontawesome}
+\usefonttheme[onlymath]{serif}
+\usepackage{luacode}
+\input{../template/beamertemp}
+\usepackage{ulem}
+\defaultfontfeatures{Ligatures={NoRequired, NoCommon, NoContextual}}
+\defaultjfontfeatures{Ligatures={NoRequired, NoCommon, NoContextual}}
+\setsansfont[Script=Default,Kerning=On,BoldFont=GenShinGothic-Bold,ItalicFont=NotoSansDisplay-LightItalic]{GenShinGothic-Light}
+\setmainjfont[%
+Script=Default,%
+Kerning=On,%
+CharacterWidth=AlternateProportional,%
+BoldFont=GenShinGothic-P-Bold,%
+YokoFeatures={JFM=prop}]{GenShinGothic-P-Light}
+\setmonofont[Kerning=Reset]{Inconsolata}
+\newfontfamily{\bfslant}[Script=Default,Kerning=On]{NotoSansDisplay-BoldItalic}
+\newjfontfamily{\semijbf}[%
+Script=Default,%
+Kerning=On,%
+CharacterWidth=AlternateProportional,%
+YokoFeatures={JFM=prop}]{GenShinGothic-P-Regular}
+\newfontfamily{\semibf}[%
+Script=Default,%
+Kerning=On,%
+ItalicFont=NotoSansDisplay-Italic,
+CharacterWidth=AlternateProportional,%
+]{GenShinGothic-P-Regular}
+\newcommand{\textbfslant}[1]{{\bfslant #1}}
+\usepackage{amsmath,amssymb,stmaryrd}
+\usepackage{tikz,pgfplots}
+\usepackage{url,hyperref}
+
+\input{config/biblatex.tex}
+
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\newtcolorbox{newbie}{
+    enhanced,
+    boxrule=0pt,
+    right skip=0pt,
+    left skip=0pt,
+    boxsep=0pt,
+    right=.3em,
+    left=.3em,
+    sharp corners,
+    colback=black!20,
+}
+\usetikzlibrary{shapes,snakes,arrows.meta,positioning,calc,fit,shapes.callouts}
+\tikzstyle{every picture} +=[remember picture]
+
+\usepackage{bxcoloremoji}
+
+\def\green#1{\textcolor{green!70!black}{#1}}
+\def\blue#1{\textcolor{blue!70!black}{#1}}
+\def\yellow#1{\textcolor{orange!70!yellow}{#1}}
+
+\input{config/listings}
+
+%% for beamer not to underline
+\def\emph#1{\textit{#1}}
+
+\def\hlinkclip#1{%
+  \href{#1}{\small\textcolor{gray}{\faicon{paperclip}}}}
+
+\AtBeginSubsection{}
+
+\setbeamertemplate{frametitle}{%
+  \ifnoframetitle\else%
+    \ifx\insertframesubtitle\empty%
+      \begin{beamercolorbox}{frametitle}%
+        \noindent\parbox[b][1.8\baselineskip]{\textwidth}{\centering\LARGE\semibf\semijbf\insertframetitle}\par%
+        \vskip-.4\zh\xhrulefill{titleblue}{1pt}
+      \end{beamercolorbox}%
+    \else%
+      \begin{beamercolorbox}{framesubtitle}%
+        \noindent\parbox[b][1.5\baselineskip]{\textwidth}{\centering\Large\semibf\semijbf\insertframesubtitle}\par%
+        \vskip-.27\zh\xhrulefill{titleblue}{1pt}\par%
+        \vskip-9pt\xhrulefill{titleblue}{1pt}
+      \end{beamercolorbox}
+    \fi\fi}%
+
+% \includeonly{tex/selfintro}
+
+\definecolor{cream}{HTML}{FFFFCC}
+
+%%%%
+\title{\textcolor{black}{\Huge \textbf{How do you} \textbfslant{implement}\\\textbf{Algebraic Effects?}}}
+\def\thetitle{\normalsize How do you implement Algebraic Effects?}
+\author{びしょ〜じょ}
+\date{May 26, 2019}
+\institute{effect system勉強会}
+%%%%
+
+\begin{document}
+\maketitle
+
+\input{tex/pre.tex}
+\input{tex/selfintro.tex}
+\input{tex/intro.tex}
+\input{tex/lowlevel.tex}
+\input{tex/coroutines.tex}
+\input{tex/delimcc.tex}
+\input{tex/free.tex}
+\input{tex/n_cps.tex}
+\input{tex/umami.tex}
+\input{tex/conclusion.tex}
+
+\switchfooter
+\begin{frame}[t]{参考文献}
+    \printbibliography
+\end{frame}
+\end{document}
