@@ -1,31 +1,34 @@
-\section{Good Point}
-\begin{frame}
+\section{Good Point as Libraries}
+\begin{frame}[t]
   \frametitlesec
 
   \pause
-  様々なコントロール抽象がAlgebraic Effectsで実装されていると
-  ユーザの学習コストを抑えられる
+  様々な\structure{コントロール抽象}を\alert{Algebraic Effects}という1つのインターフェースに落とし込める
 
   \vskip-.5\baselineskip
 
+  \pause
   \begin{figure}[ht]
-    \centering
-    \begin{tikzpicture}
+    \setbeamercovered{transparent}
+    \begin{tikzpicture}[
+      every node/.style={draw,fill=white},
+      cloud/.style={cloud callout,cloud ignores aspect,cloud puff arc=140}
+      ]
       \onslide<3->{
-        \node (thinker) {\LARGE \coloremoji{🤷‍♂️}};
+        \node[draw=none] (thinker) {\LARGE \coloremoji{🤷‍♂️}};
         \bgroup
           \small
-          \node[fill=white,draw, cloud callout, callout pointer segments = 1, cloud ignores aspect,cloud puffs=11.7, cloud puff arc=140, callout absolute pointer={(thinker.north west)} , above left = .3 of thinker,yshift=-.5\zh] (coroutines) { \structure{Coroutines} };
-          \node[fill=white,draw, cloud callout, callout pointer segments = 2, cloud ignores aspect,cloud puffs=11.7, cloud puff arc=140, callout absolute pointer={(thinker.north)} , above = .8 of thinker,text width=7\zw, xshift=-4\zw] (delimcc) {\centering \structure{Delimited\\Continuations}};
-          \node[fill=white,draw, cloud callout, callout pointer segments = 2, cloud ignores aspect,cloud puffs=11.7, cloud puff arc=140, callout absolute pointer={(thinker.north east)} , above right = .9 of thinker, xshift=-2.8\zw,yshift=.52\zh] (free) {\structure{Free Monad}};
-          \node[fill=white,draw, cloud callout, callout pointer segments = 1, cloud ignores aspect,cloud puffs=6.3, cloud puff arc=140, callout absolute pointer={($(thinker.east)+(0,.5)$)} , right = .3 of thinker, yshift=2.4\zh] (que) {\coloremoji{😨}??};
+          \node[cloud, callout pointer segments = 1,cloud puffs=14.7, callout absolute pointer={(thinker.north west)} , above left = .2 of thinker,xshift=1.6\zw, yshift=1.1\zh] (coroutines) { \structure{Coroutines} };
+          \node[cloud, callout pointer segments = 2,cloud puffs=14.7, callout absolute pointer={(thinker.north)} , above = 1.2 of thinker,text width=7\zw, xshift=1\zw] (delimcc) {\centering \structure{Delimited\\Continuations}};
+          \node[cloud, callout pointer segments = 2, cloud puffs=14.7, callout absolute pointer={(thinker.north east)} , above right = .9 of thinker, xshift=-2.5\zw,yshift=-.5\zh] (free) {\structure{(Free) Monad}};
+          \node[cloud, callout pointer segments = 1,cloud puffs=6.3, callout absolute pointer={($(thinker.east)+(0,.5)$)} , right = .2 of thinker, yshift=1.7\zh] (que) {\coloremoji{😨}??};
         \egroup
       }
 
-      \onslide<4->{
-        \node[right = 2.5 of thinker,yshift=.7\zh] (okman) {\Huge \coloremoji{🙆‍♂️}};
-        \coordinate[right = 9 of okman];
-        \node[fill=white,draw, ellipse callout, callout absolute pointer={(okman.north west)} , above = .7 of thinker,text width=8\zw, xshift=2em] (ae) {\LARGE\color{red}Algebraic\\\ \ \,Effects};
+      \only<4->{
+        \node[draw=none,right = 2.5 of thinker] (okman) {\Huge \coloremoji{🙆‍♂️}};
+        \node[draw=none,right = of okman] {};
+        \node[ellipse callout, callout absolute pointer={(okman.north west)} , above = .8 of thinker,text width=7.7\zw, xshift=3em] (ae) {\LARGE\color{red}Algebraic\\\ \ \,Effects};
 
         \path[->,line width=3pt] (thinker) edge (okman);
       }

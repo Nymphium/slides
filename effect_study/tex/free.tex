@@ -4,19 +4,19 @@
 
   % e.g.) \hlinkclip{https://github.com/matijapretnar/eff} \alert{Eff}, implemented in \structure{\only<1-2>{OCaml}\only<3>{\LARGE OCaml}}
 
-  % \begin{onlyenv}<2>
-    % \begin{lstlisting}[language={[Objective]caml}]
-% type 'a free =
-  % | Pure: 'a !$\rightarrow$! 'a free
-  % | Impure: 'arg * ('res !$\rightarrow$! 'a free) !$\rightarrow$! 'a free
+  \begin{onlyenv}<2>
+    \begin{lstlisting}[language={[Objective]caml}]
+type 'a free =
+  | Pure: 'a !$\rightarrow$! 'a free
+  | Impure: 'arg * ('res !$\rightarrow$! 'a free) !$\rightarrow$! 'a free
 
-% let rec (!$\gg=$!) op f =
-  % match op with
-  % | Pure x !$\rightarrow$! f x
-  % | Impure (x, k) !$\rightarrow$!
-    % Impure (x, fun y !$\rightarrow$! k y !$\gg=$! f)
-    % \end{lstlisting}
-  % \end{onlyenv}
+let rec (!$\gg=$!) op f =
+  match op with
+  | Pure x !$\rightarrow$! f x
+  | Impure (x, k) !$\rightarrow$!
+    Impure (x, fun y !$\rightarrow$! k y !$\gg=$! f)
+    \end{lstlisting}
+  \end{onlyenv}
   % \begin{onlyenv}<3>
     % \begin{lstlisting}[language={[Objective]caml}]
 % type ('arg, 'res) operation = ..
@@ -31,13 +31,14 @@
             % * ('res !$\rightarrow$! 'a free) !$\rightarrow$! 'a free
     % \end{lstlisting}
   % \end{onlyenv}
-% \end{frame}
+\end{frame}
 
-% \begin{frame}
-  % \frametitlesec
+\begin{frame}
+  \frametitlesec
 
   e.g.) \hlinkclip{https://github.com/matijapretnar/eff} \alert{Eff}, implemented in \structure{OCaml}
 
+  \pause
   \begin{table}[ht]
     \centering
     \begin{tabular}{ccc}
@@ -45,8 +46,8 @@
       effect invocation   & $\mapsto$ & Impure \\
       % pure computation    & $\mapsto$ & Pure\\
       % 質問で答える
-      continuation        & $\mapsto$ & rhs of ($\gg=$)\\
-      effect handler      & $\mapsto$ & runFree
+      effect handler      & $\mapsto$ & run\\
+      continuation        & $\mapsto$ & rhs of ($\gg=$)
     \end{tabular}
   \end{table}
 \end{frame}
@@ -56,20 +57,21 @@
   \frametitlesubs
 
   \begin{itemize}
-    \item[\coloremoji{😁}] Freeの資産が使える
+    \item[\coloremoji{😁}] \itemheader{Freeの資産が使える}
 
-      \cite{pretnar2017efficient}ではequation rulesやtype-directed optimisationなどを駆使してhand-writtenなOCamlコードに肉薄するコードを生成している
-
+      \cite{pretnar2017efficient}では\green{equation rules}や\green{type-directed optimisation}などを駆使して実行効率の良いコードを生成
   \end{itemize}
 \end{frame}
 
 \subsection*{cons}
-\begin{frame}
+\begin{frame}[fragile]
   \frametitlesubs
 
   \begin{itemize}
-    \item[\coloremoji{😅}] ただのFree
+    \item[\coloremoji{😅}] \itemheader{ただのFree Monad}
 
-      HaskellのdoとかF\#のcomputation expressionなどがないと書きづらそう、ライブラリにはやや不向きか
+      monadicな書き方ができないとちょっとつらい
+
+      {\small Haskellの\lstinline{do}, F\#のcomputation expression,  Scalaの\lstinline{for}, etc.}
   \end{itemize}
 \end{frame}

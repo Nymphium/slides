@@ -6,7 +6,7 @@
 
     \pause
     \begin{itemize}
-        \item<+-> ライブラリ
+        \item<+-> \itemheader{ライブラリ}
             \begin{itemize}
                 \item[\hlinkclip{https://github.com/Nymphium/eff.lua}] eff.lua
                 \item[\hlinkclip{https://b-studios.de/scala-effekt/}] Effekt
@@ -14,8 +14,8 @@
                 \item etc.
             \end{itemize}
 
-        \item<+-> 言語(処理系) \hspace{12\zw}\tikz\coordinate[remember picture](think);\null
-            \begin{itemize}
+        \item<+-> \itemheader{言語(処理系)} \hspace{11\zw}\tikz\coordinate[remember picture](think);\null
+            \begin{itemize} 
                 \item[\hlinkclip{https://github.com/matijapretnar/eff}] Eff
                 \item[\hlinkclip{https://github.com/ocaml-multicore/ocaml-multicore}] Multicore OCaml
                 \item[\hlinkclip{https://github.com/koka-lang/koka}] Koka
@@ -25,10 +25,11 @@
 
     \onslide<+->{
         \begin{tikzpicture}[overlay]
+            \LARGE
             \coordinate[below = 0.5 of think] (thinker0);
-            \node[below = 0 of thinker0] (thinker) {\LARGE \coloremoji{🤔}};
+            \node[below = 0 of thinker0] (thinker) {\Huge \coloremoji{🤔}};
 
-            \node[draw, rectangle callout, above left = 0.6 of thinker0, xshift = 3\zw, fill=cream, callout absolute pointer={(thinker.north west)}, text width=6.4\zw] (callout1) {どうやって実装\\されている??};
+            \node[draw, rectangle callout, above left = 0.6 of thinker0, xshift = 3\zw, fill=cream, callout absolute pointer={($(thinker.north)-(.3,.1)$)}, text width=6.5\zw] (callout1) {どうやって実装\\されているの??};
         \end{tikzpicture}
     }
 \end{frame}

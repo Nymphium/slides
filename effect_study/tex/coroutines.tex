@@ -80,20 +80,23 @@
 \end{frame}
 
 \subsection*{pros/cons}
-\begin{frame}
+\begin{frame}[fragile]
   \frametitlesubs
 
   \pause
   \begin{itemize}
-    \item<+->[\coloremoji{😁}] Coroutinesを持ってる言語は多め
+    \item<+->[\coloremoji{😁}] \itemheader{さまざまな言語で実装可能}
 
-      Lua, Ruby, JS, Kotlin, Python, etc.
+      Coroutinesを持ってる言語は多い\coloremoji{😉}
 
-      % \coloremoji{⚠} ただしstackfulnessに注意
-    \item<+->[\coloremoji{😅}] 継続はワンショット
+      {\small Lua, Ruby, JS, Kotlin, Python, etc.}
+
+    \item<+->[\coloremoji{😅}] \itemheader{継続はワンショット}
 
       非決定計算とかは書けない
 
-      \coloremoji{🤔} Multicore OCamlのように継続を複製する操作があれば……
+    \item<+->[\coloremoji{🤔}] \itemheader{coroutineを複製する操作があれば……}
+
+      \alert{Multicore OCaml}の\lstinline{Obj.clone_continuation}の実装
   \end{itemize}
 \end{frame}

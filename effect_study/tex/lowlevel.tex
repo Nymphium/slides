@@ -10,8 +10,9 @@
 
     \begin{tabular}{ccc}
       \alert{Algebraic Effects} & $\mapsto$ & \structure{libhandler} \\\hline
-      \parbox{8em}{\centering effect handler \& \\ ciontinuation} & $\mapsto$ & \parbox{9em}{\centering call stack \& \\instruction pointer}\\
-      effect invocation & $\mapsto$ & longjmp
+      effect invocation & $\mapsto$ & longjmp\\
+      effect handler    & $\mapsto$ & stack frame + ip \\
+      continuation      & $\mapsto$ & stack frame + ip
     \end{tabular}
   \end{table}
 \end{frame}
@@ -22,18 +23,20 @@
 
   \pause
   \begin{itemize}
-    \item<+->[\coloremoji{😁}] 低レベルで提供可能
+    \item<+->[\coloremoji{😁}] \itemheader{低レベル実装}
 
-      FFIで様々な言語から呼び出せる
-
-    \item<+->[\coloremoji{😓}] 実装が大変かつ限定的
+      \begin{itemize}
+        \item FFIで様々な言語から呼び出せる
+        \item 速い
+      \end{itemize}
+    \item<+->[\coloremoji{😓}] \itemheader{実装が大変かつ限定的}
   \end{itemize}
 
   \onslide<+->{
     \centering
     $\Downarrow$
 
-    \{処理系, ライブラリ\}バックエンド向け
+    \uline{\{処理系, ライブラリ\}バックエンド向け}か
   }
 \end{frame}
 

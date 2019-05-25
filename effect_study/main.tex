@@ -57,7 +57,7 @@ CharacterWidth=AlternateProportional,%
 
 \usepackage{bxcoloremoji}
 
-\def\green#1{\textcolor{green!70!black}{#1}}
+\def\green#1{\textcolor{green!60!black}{#1}}
 \def\blue#1{\textcolor{blue!70!black}{#1}}
 \def\yellow#1{\textcolor{orange!70!yellow}{#1}}
 
@@ -86,9 +86,11 @@ CharacterWidth=AlternateProportional,%
       \end{beamercolorbox}
     \fi\fi}%
 
-% \includeonly{tex/selfintro}
-
 \definecolor{cream}{HTML}{FFFFCC}
+
+\newcommand{\itemheader}[1]{%
+  {\semibf\semijbf #1}}
+
 
 %%%%
 \title{\textcolor{black}{\Huge \textbf{How do you} \textbfslant{implement}\\\textbf{Algebraic Effects?}}}
@@ -98,22 +100,21 @@ CharacterWidth=AlternateProportional,%
 \institute{effect system勉強会}
 %%%%
 
+% \includeonly{tex/selfintro}
+
 \begin{document}
 \maketitle
 
-\input{tex/pre.tex}
-\input{tex/selfintro.tex}
-\input{tex/intro.tex}
-\input{tex/lowlevel.tex}
-\input{tex/coroutines.tex}
-\input{tex/delimcc.tex}
-\input{tex/free.tex}
-\input{tex/n_cps.tex}
-\input{tex/umami.tex}
-\input{tex/conclusion.tex}
+\include{tex/pre}
+\include{tex/selfintro}
+\include{tex/intro}
+\include{tex/lowlevel}
+\include{tex/coroutines}
+\include{tex/delimcc}
+\include{tex/free}
+\include{tex/n_cps}
+\include{tex/umami}
+\include{tex/conclusion}
+\include{tex/bibliography}
 
-\switchfooter
-\begin{frame}[t]{参考文献}
-    \printbibliography
-\end{frame}
 \end{document}
