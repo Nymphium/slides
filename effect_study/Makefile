@@ -1,6 +1,6 @@
 CONTINUE ?=
 TARGET = main
-LATEXMKFLAG =-pdf -synctex=1 -interaction=nonstopmode $(CONTINUE)
+LATEXMKFLAG =-f -pdf -synctex=1 -interaction=nonstopmode $(CONTINUE)
 
 all:
 	latexmk $(LATEXMKFLAG) $(TARGET)

@@ -1,0 +1,80 @@
+\documentclass[unicode,compress,14pt,CJK,aspectratio=43%
+\directlua{
+    handout = os.getenv"HANDOUT"
+    local _ = handout and tex.print(",handout")
+}]{beamer}
+\usepackage{luatexja}
+\usepackage[no-math]{luatexja-fontspec}
+\usepackage{fontawesome}
+\usepackage{emoji}
+\usefonttheme[onlymath]{serif}
+\usepackage{luacode}
+\input{../template/beamertemp}
+\usepackage{ulem}
+\setsansfont[Script=Default,Kerning=On,BoldFont=GenShinGothic-Bold,ItalicFont=NotoSansDisplay-Italic]{GenShinGothic}
+\setmainjfont[%
+Script=Default,%
+Kerning=On,%
+% CharacterWidth=AlternateProportional,%
+BoldFont=GenShinGothic-P-Bold,%
+YokoFeatures={JFM=prop}]{GenShinGothic-P}
+\setmonofont[Kerning=Reset]{MonaspiceArNerdFont}
+\newfontfamily{\bfslant}[Script=Default,Kerning=On]{NotoSansDisplay-BoldItalic}
+\newjfontfamily{\semijbf}[%
+Script=Default,%
+Kerning=On,%
+% CharacterWidth=AlternateProportional,%
+YokoFeatures={JFM=prop}]{GenShinGothic-P-Regular}
+\newfontfamily{\semibf}[%
+Script=Default,%
+Kerning=On,%
+ItalicFont=NotoSansDisplay-Italic,
+% CharacterWidth=AlternateProportional,%
+]{GenShinGothic-P-Regular}
+\newcommand{\textbfslant}[1]{{\bfslant #1}}
+\usepackage{amsmath,amssymb,stmaryrd}
+\usepackage{tikz,pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{url,hyperref}
+\usepackage{scalefnt}
+
+% \input{config/biblatex.tex}
+
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\newtcolorbox{newbie}{
+    enhanced,
+    boxrule=0pt,
+    right skip=0pt,
+    left skip=0pt,
+    boxsep=0pt,
+    right=.3em,
+    left=.3em,
+    sharp corners,
+    colback=black!20,
+}
+\usetikzlibrary{shapes,arrows.meta,positioning,calc,fit,shapes.callouts}
+\tikzstyle{every picture}+=[remember picture]
+
+\newcommand{\itemheader}[1]{%
+  {\semibf\semijbf #1}}
+
+\AtBeginSection{}
+\AtBeginSubsection{}
+
+\csname endofdump\endcsname
+
+\title{\color{black}{\LARGE\bfslant\color{blue}Guide}\newline{\large to}{\newline}{\color{red}{\huge\bfslant Profile-Guided Optimization}:}}
+\subtitle{\bf\normalsize\color{black} inlining, devirtualizing, and profiling}
+\def\thetitle{\normalsize Guide to Profile-Guided Optimization: inlining, devirtualizing, and profiling}
+\hypersetup{pdftitle={\thetitle}}
+\author{Satoru Kawahara}
+\date{June 8, 2024}
+\institute{Go Conference 2024}
+\begin{document}
+\maketitle
+\input{src/first.tex}
+\input{src/intro.tex}
+\input{src/pgo1.tex}
+\end{document}
