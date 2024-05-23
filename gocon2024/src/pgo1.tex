@@ -1,15 +1,26 @@
-\section{Profile-Guilded Optimization}
+\section{Profile-Guided Optimization}
 \begin{frame}[t]
-  \frametitlesec
-  \pause
+	\frametitlesec
+	\pause
 
-  \textbf{\scalefont{1.3}\textcolor{red}{PGO}} is \textit{a optimization method}:
+	\textbf{\scalefont{1.3}\textcolor{highlight}{PGO}} is \textit{an optimization method that}:
 
-  \pause
-  \begin{itemize}[<+->]
-    \item Uses \textcolor{red}{\it profiling information} of \textcolor{red}{\bf the program execution},
-    \item Enables \textcolor{blue}{\it more aggressive optimizations},\\
+	\pause
+	\begin{itemize}[<+->]
+		\item Uses \textcolor{highlight}{\it profiling information} from \textcolor{highlight}{\bf program execution},
+		\item Enables \textcolor{subhighlight}{\it more aggressive optimizations},\\
 
-      such as \textcolor{blue}{\scalefont{1.1}\textbf{inlining}} and \textcolor{blue}{\scalefont{1.1}\textbf{devirtualization}}.
-  \end{itemize}
+		      such as \textcolor{subhighlight}{\scalefont{1.1}\textbf<+->{\tikz\coordinate[remember picture] (inlining);\null inlining}} and \textcolor{subhighlight}{\scalefont{1.1}\textbf<.->{\tikz\coordinate[remember picture] (devirt);\null devirtualization}}.
+	\end{itemize}
+
+	\begin{onlyenv}<.->
+		\tikz[overlay]{
+			\node[anchor=north] at ([xshift=2\zw]inlining.south) {\emoji{point-up}};
+			\node[anchor=north] at ([xshift=4\zw]devirt.south) {\emoji{point-up}};
+		}
+	\end{onlyenv}
+
+	\begin{center}
+		\includegraphics<.->[height=.37\textheight]{img/wait-what.png}
+	\end{center}
 \end{frame}

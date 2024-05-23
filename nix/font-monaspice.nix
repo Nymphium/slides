@@ -1,8 +1,8 @@
 { stdenv, fetchurl, unzip, fontconfig }:
 
 stdenv.mkDerivation rec {
-  pname = "font-genshingothic";
-  version = "20150607";
+  pname = "font-monaspice";
+  version = "3.2.1";
 
   dontPatch = true;
   dontConfigure = true;
@@ -11,8 +11,8 @@ stdenv.mkDerivation rec {
   dontFixup = true;
 
   src = fetchurl {
-    url = "https://ftp.iij.ad.jp/pub/osdn.jp/users/8/8637/genshingothic-20150607.zip";
-    sha256 = "uOAPAKbiUXv+dc6ypzK1lv4AJFe4nAXBgda3E3Oq2lg=";
+    url = "https://github.com/ryanoasis/nerd-fonts/releases/v3.2.1/download/Monaspace.zip";
+    sha256 = "0zlgl5cpl9pz3b36kj2zpj486hr5xm1s9kyhnxv0a8r8v403xzv4";
   };
 
   nativeBuildInputs = [ unzip fontconfig ];
@@ -21,6 +21,6 @@ stdenv.mkDerivation rec {
 
   installPhase = ''
     mkdir -p $out
-    cp *.ttf $out/
+    cp *.otf $out/
   '';
 }

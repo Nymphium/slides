@@ -3,7 +3,7 @@ TARGET = main
 LATEXMKFLAG =-pdf -synctex=1 -interaction=nonstopmode $(CONTINUE)
 
 all:
-	latexmk $(LATEXMKFLAG) $(TARGET)
+	latexmk $(LATEXMKFLAG) $(TARGET).tex
 continue:
 	make CONTINUE=-pvc
 clean:

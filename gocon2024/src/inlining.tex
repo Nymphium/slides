@@ -1,0 +1,91 @@
+\section{Inlining}
+\begin{frame}[t,fragile]
+	\frametitlesec
+
+	a.k.a. \textcolor{subhighlight}{\textbf{function inlining}}, is to replace a fn call with its body.
+
+	\pause
+	\centering
+	\begin{tikzpicture}[every node/.style={inner sep=0pt, outer sep=0pt}]
+		\node (A) [text width=.47\textwidth] at (0, 0) {
+			\begin{minted}{go}
+func f(x int) int {
+  return x * x
+}
+
+func main() {
+  fmt.Printf("%d", ?\tikzmark{funcall}?f(3))
+}
+        \end{minted}
+		};
+
+		\pause
+		\node (B) [right= .7 of A, text width=.47\textwidth] {
+			\begin{minted}{go}
+func f(x int) int {
+  return x * x
+}
+
+func main() {
+  fmt.Printf("%d", ?\colorbox{orange}{\textcolor{white}{3 * 3}}?)
+}
+        \end{minted}
+		};
+
+		\draw[orange arrow, bend left=10] ($(A.south) + (.5, 3.6)$) to node[above]{\textbf{\footnotesize Inlining!}} ($(B.south) + (-.5, 3.6)$);
+	\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[t]
+	\frametitlesec
+
+	Inlining has several benefits:
+
+	\pause
+	\onslide<+->
+	\begin{itemize}
+		\item \textbf{Reduces \textit{function call overhead}}:
+
+		      \onslide<+->{No stack frame setup, no return address, no arguments copying.}
+
+		\item \textbf{Improves \textit{cache locality}}:
+
+		      \onslide<+->{The inlined code is closer to the caller.}
+
+		\item \textbf{Enables \textit{further optimizations}}:
+
+		      \onslide<+->{E.g. \textit{constant propagation}, \textit{dead code elimination}.}
+	\end{itemize}
+\end{frame}
+
+\subsection{Conditions for Inlining}
+\begin{frame}[t,fragile]
+	\frametitlesubs
+
+	Several conditions to be inlined:
+
+	\begin{itemize}
+		\item<+->[\emoji{check-mark-button}] Defined as \textbf{Go functions}:
+
+		      \emoji{woman-gesturing-no} External functions
+
+		\item<+->[\emoji{check-mark-button}] Specific tags not set:
+
+		      \begin{itemize}
+			      \item \mintinline{go}{go:noinline}
+			      \item \mintinline{go}{go:systemstack}
+			      \item \mintinline{go}{go:uniptrkeepalive}
+			      \item etc.
+		      \end{itemize}
+
+		\item<+->[\emoji{check-mark-button}] \textbf{non-leaf} function:
+
+		      \onslide<+->{
+			      \textbf{non-leaf}... the function calls other functions
+		      }
+
+		      % \item<+->[\emoji{check-mark-button}] \textbf{Small function}:
+
+		      % \onslide<+->{The function body is small.}
+	\end{itemize}
+\end{frame}

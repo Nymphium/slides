@@ -1,4 +1,4 @@
-\documentclass[unicode,compress,14pt,CJK,aspectratio=43%
+\documentclass[unicode,compress,14pt,CJK,aspectratio=43,xcolor={dvipsnames}%
 \directlua{
     handout = os.getenv"HANDOUT"
     local _ = handout and tex.print(",handout")
@@ -11,37 +11,63 @@
 \usepackage{luacode}
 \input{../template/beamertemp}
 \usepackage{ulem}
-\setsansfont[Script=Default,Kerning=On,BoldFont=GenShinGothic-Bold,ItalicFont=NotoSansDisplay-Italic]{GenShinGothic}
+% \setsansfont[Script=Default,Kerning=On,AutoFakeBold,AutoFakeSlant,BoldSlantedFeatures={AutoFakeBold,AutoFakeSlant}]{GenShinGothic-Medium}
+\setsansfont[Script=Default,Kerning=On,BoldFont={*-Bold},ItalicFont=NotoSansDisplay-Italic]{GenShinGothic}
 \setmainjfont[%
 Script=Default,%
 Kerning=On,%
-% CharacterWidth=AlternateProportional,%
-BoldFont=GenShinGothic-P-Bold,%
 YokoFeatures={JFM=prop}]{GenShinGothic-P}
 \setmonofont[Kerning=Reset]{MonaspiceArNerdFont}
-\newfontfamily{\bfslant}[Script=Default,Kerning=On]{NotoSansDisplay-BoldItalic}
 \newjfontfamily{\semijbf}[%
 Script=Default,%
 Kerning=On,%
-% CharacterWidth=AlternateProportional,%
-YokoFeatures={JFM=prop}]{GenShinGothic-P-Regular}
+AutoFakeSlant,BoldSlantedFeatures={AutoFakeBold,AutoFakeSlant},
+YokoFeatures={JFM=prop}]{GenShinGothic-P-Medium}
 \newfontfamily{\semibf}[%
 Script=Default,%
 Kerning=On,%
-ItalicFont=NotoSansDisplay-Italic,
+AutoFakeSlant,
+BoldSlantedFeatures={AutoFakeBold,AutoFakeSlant},
+% ItalicFont=NotoSansDisplay-Italic,
 % CharacterWidth=AlternateProportional,%
-]{GenShinGothic-P-Regular}
-\newcommand{\textbfslant}[1]{{\bfslant #1}}
+]{GenShinGothic-P-Medium}
 \usepackage{amsmath,amssymb,stmaryrd}
 \usepackage{tikz,pgfplots}
 \pgfplotsset{compat=1.18}
 \usepackage{url,hyperref}
 \usepackage{scalefnt}
 
-% \input{config/biblatex.tex}
+\definecolor{accent}{HTML}{2978D6}
+\definecolor{basetext}{RGB}{105,105,105}
+\definecolor{highlight}{HTML}{D63129}
+\definecolor{subhighlight}{HTML}{2978D6}
+
+\setbeamercolor*{normal text}{fg=basetext}
+\setbeamercolor*{section in head/foot}{fg=accent}%
+\setbeamercolor*{subsection in head/foot}{fg=accent}%
+\setbeamercolor*{frametitle}{fg=accent}%
+\setbeamercolor*{framesubtitle}{fg=subhighlight}
+\setbeamercolor*{headline}{fg=accent}%
+\usebeamercolor[fg]{normal text}
+
+\usepackage[newfloat=true]{minted}
+\usepackage{mdframed}
+\usemintedstyle{friendly}
+\setminted{%
+  fontsize=\footnotesize,
+  beameroverlays=true,
+  frame=single,
+  framerule=1.3pt,
+  framesep=.6\fboxsep,
+  escapeinside=??,
+autogobble}
+% \BeforeBeginEnvironment{minted}{
+% \begingroup
+% \catcode`\!=\active
+% \def!#1!{\colorbox{green}{#1}}}
+% \AfterEndEnvironment{minted}{\endgroup}
 
 \usepackage{graphicx}
-\usepackage{xcolor}
 \usepackage[most]{tcolorbox}
 \newtcolorbox{newbie}{
     enhanced,
@@ -54,8 +80,17 @@ ItalicFont=NotoSansDisplay-Italic,
     sharp corners,
     colback=black!20,
 }
-\usetikzlibrary{shapes,arrows.meta,positioning,calc,fit,shapes.callouts}
-\tikzstyle{every picture}+=[remember picture]
+\usetikzlibrary{tikzmark,shapes,arrows,arrows.meta,positioning,calc,fit,shapes.callouts}
+% \tikzstyle{every picture}+=[remember picture]
+
+\tikzset{
+  orange arrow/.style={
+    draw=orange,
+    arrows={-Triangle[angle=90:10pt]},
+    line width=.3\zh
+    % postaction={draw=orange,shorten >=.2\zh, -}
+  }
+}
 
 \newcommand{\itemheader}[1]{%
   {\semibf\semijbf #1}}
@@ -63,10 +98,13 @@ ItalicFont=NotoSansDisplay-Italic,
 \AtBeginSection{}
 \AtBeginSubsection{}
 
-\csname endofdump\endcsname
-
-\title{\color{black}{\LARGE\bfslant\color{blue}Guide}\newline{\large to}{\newline}{\color{red}{\huge\bfslant Profile-Guided Optimization}:}}
-\subtitle{\bf\normalsize\color{black} inlining, devirtualizing, and profiling}
+\title{%
+{\huge\it\bf\textcolor{subhighlight}{Guide}}%
+\newline\null%
+{\large \textcolor{basetext}{to}}%
+\newline\null%
+{\huge\it\bf\textcolor{highlight}{ Profile-Guided Optimization:}}}
+\subtitle{\bf\large\color{basetext} inlining, devirtualizing, and profiling}
 \def\thetitle{\normalsize Guide to Profile-Guided Optimization: inlining, devirtualizing, and profiling}
 \hypersetup{pdftitle={\thetitle}}
 \author{Satoru Kawahara}
@@ -77,4 +115,11 @@ ItalicFont=NotoSansDisplay-Italic,
 \input{src/first.tex}
 \input{src/intro.tex}
 \input{src/pgo1.tex}
+\input{src/inlining.tex}
+\input{src/devirtualizing.tex}
+\input{src/pgo2.tex}
+\input{src/senden.tex}
+\input{src/evaluation.tex}
+\input{src/misc.tex}
+\input{src/conclusion.tex}
 \end{document}
