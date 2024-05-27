@@ -1,9 +1,8 @@
 CONTINUE ?=
 TARGET = main
-LATEXMKFLAG =-lualatex $(CONTINUE) -shell-escape -synctex=1 -interaction=nonstopmode
 
 all:
-	-latexmk $(LATEXMKFLAG) $(TARGET)
+	-latexmk $(CONTINUE) $(TARGET)
 
 continue:
 	make CONTINUE=-pvc

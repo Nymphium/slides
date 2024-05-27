@@ -1,5 +1,7 @@
 \section{Profile-Guided Optimization}
 \begin{frame}[t]
+	\tikzstyle{every picture}+=[remember picture,baseline,anchor=base, inner sep=0pt]
+
 	\frametitlesec
 	\pause
 
@@ -7,20 +9,23 @@
 
 	\pause
 	\begin{itemize}[<+->]
-		\item Uses \textcolor{highlight}{\it profiling information} from \textcolor{highlight}{\bf program execution},
+		\item Uses \textcolor{highlight}{\it profiling information} from \textcolor{highlight}{\bf program execution}
 		\item Enables \textcolor{subhighlight}{\it more aggressive optimizations},\\
 
-		      such as \textcolor{subhighlight}{\scalefont{1.1}\textbf<+->{\tikz\coordinate[remember picture] (inlining);\null inlining}} and \textcolor{subhighlight}{\scalefont{1.1}\textbf<.->{\tikz\coordinate[remember picture] (devirt);\null devirtualization}}.
+		      such as
+		      \tikz\node (inlining) {\textbf<+->{\textcolor{subhighlight}{\scalefont{1.1} inlining}}};
+		      and \tikz\node (devirt) {\textbf<.->{\textcolor{subhighlight}{\scalefont{1.1} devirtualization}}};
 	\end{itemize}
 
-	\begin{onlyenv}<.->
-		\tikz[overlay]{
-			\node[anchor=north] at ([xshift=2\zw]inlining.south) {\emoji{point-up}};
-			\node[anchor=north] at ([xshift=4\zw]devirt.south) {\emoji{point-up}};
-		}
-	\end{onlyenv}
+	\onslide<.>{
+		\begin{tikzpicture}[overlay]
+			\Large
+			\node[below = .12 of inlining] {\emoji{point-up}};
+			\node[below = .12 of devirt] {\emoji{point-up}};
+		\end{tikzpicture}
 
-	\begin{center}
-		\includegraphics<.->[height=.37\textheight]{img/wait-what.png}
-	\end{center}
+		\begin{center}
+			\includegraphics[height=.37\textheight]{img/wait-what.png}
+		\end{center}
+	}
 \end{frame}

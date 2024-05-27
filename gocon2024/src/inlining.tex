@@ -1,91 +1,194 @@
-\section{Inlining}
-\begin{frame}[t,fragile]
+\section{Function Inlining}
+\begin{frame}[t,fragile,containsverbatim]
 	\frametitlesec
 
-	a.k.a. \textcolor{subhighlight}{\textbf{function inlining}}, is to replace a fn call with its body.
+	\textcolor{highlight}{\textbf{Function inlining}}, or just \textit{inlining}, is\\ the process of \textcolor{subhighlight}{replacing a func call with its body}.
 
 	\pause
 	\centering
-	\begin{tikzpicture}[every node/.style={inner sep=0pt, outer sep=0pt}]
-		\node (A) [text width=.47\textwidth] at (0, 0) {
-			\begin{minted}{go}
-func f(x int) int {
-  return x * x
-}
+	\tikzstyle{every picture}+=[remember picture]
+	\begin{minipage}[t]{.47\textwidth}
+		\begin{onlyenv}<+->
+			\begin{minted}[fontsize=\footnotesize]{go}
+        func ?\tikz\coordinate(f);?f (x int) int {
+          return x * x
+        }
 
-func main() {
-  fmt.Printf("%d", ?\tikzmark{funcall}?f(3))
-}
-        \end{minted}
-		};
+        func main() {
+          fmt.printf("%d", ?\tikz\coordinate(call);?f(3))
+        }
+      \end{minted}
+		\end{onlyenv}
+	\end{minipage}
+	\begin{minipage}[t]{.49\textwidth}%
+		\vskip-.1\zh
+		\begin{uncoverenv}<.(2)->
+			\begin{minted}[fontsize=\footnotesize]{go}
+        func f(x int) int {
+          return x * x
+        }
 
-		\pause
-		\node (B) [right= .7 of A, text width=.47\textwidth] {
-			\begin{minted}{go}
-func f(x int) int {
-  return x * x
-}
+        func main() {
+          fmt.printf("%d", ?\tikz\coordinate(inl);\colorbox{orange}{\textcolor{white}{3 * 3}}?)
+        }
+      \end{minted}
+		\end{uncoverenv}
+	\end{minipage}
 
-func main() {
-  fmt.Printf("%d", ?\colorbox{orange}{\textcolor{white}{3 * 3}}?)
-}
-        \end{minted}
-		};
+	\begin{tikzpicture}[overlay, every node/.style={inner sep=0pt, outer sep=0pt}]
+		\node<+-> [text width=.37\textwidth,text height=2.8\zh,fill=orange,opacity=0.4,anchor=north west] (fentire) at ([xshift=-2.2\zw,yshift=.7\zh] f) {};
+		\draw<.-> [boldarrow, draw=blue, bend left=15,opacity=0.5] ([yshift=.5\zh]call) to node[above right, text opacity=1]{\footnotesize \textcolor{highlight}{see definition}} ([yshift=0pt]fentire);
 
-		\draw[orange arrow, bend left=10] ($(A.south) + (.5, 3.6)$) to node[above]{\textbf{\footnotesize Inlining!}} ($(B.south) + (-.5, 3.6)$);
+		\draw<+->[boldarrow, draw=orange, bend left=10, opacity=0.6] ([xshift=.2\zw]fentire.east) to node[above right, text opacity=1]{\footnotesize \textcolor{highlight}{inline!}} ([yshift=.5\zh]inl);
 	\end{tikzpicture}
+
+	\onslide<+->
+	\footnotesize
+	\emoji{warning} Note: actually, performed on the IR or more lower level
 \end{frame}
 
 \begin{frame}[t]
 	\frametitlesec
 
-	Inlining has several benefits:
+	Inlining has \textcolor<.-4>{subhighlight}{several benefits}:
 
-	\pause
 	\onslide<+->
-	\begin{itemize}
-		\item \textbf{Reduces \textit{function call overhead}}:
+	\begin{itemize}[<+->]
+		\item[\emoji{thumbs-up}] \textbf<.>{\only<.>{\color{subhighlight}} Reduces \textit{function call overhead}}:
 
-		      \onslide<+->{No stack frame setup, no return address, no arguments copying.}
+		      \only<.(1)->{\footnotesize}
+		      No stack frame setup, no return address, no arguments copying
 
-		\item \textbf{Improves \textit{cache locality}}:
+		\item[\emoji{thumbs-up}] \textbf<.>{\only<.>{\color{subhighlight}}Improves \textit{cache locality}}:
 
-		      \onslide<+->{The inlined code is closer to the caller.}
+		      \only<.(1)->{\footnotesize}
+		      The inlined code is closer to the caller
 
-		\item \textbf{Enables \textit{further optimizations}}:
+		\item[\emoji{thumbs-up}] \textbf<.>{\only<.>{\color{subhighlight}}Enables \textit{further optimizations}}:
 
-		      \onslide<+->{E.g. \textit{constant propagation}, \textit{dead code elimination}.}
+		      \only<.(1)->{\footnotesize}
+		      E.g., \textit<.>{constant propagation}, \textit<.>{dead code elimination}
 	\end{itemize}
+
+	\onslide<+->
+	\vskip-1.4\zh
+	\begin{center}
+		\begin{minipage}{.35\textwidth}
+			\huge\bf\textcolor{subhighlight}{\scalefont{1.4} BUT$\cdots$}
+		\end{minipage}
+		\begin{minipage}{.6\textwidth}
+			\Large
+			\onslide<+->
+			There are
+
+			\textcolor{highlight}{\textbf{several conditions}}
+
+			to be applied.
+		\end{minipage}
+	\end{center}
 \end{frame}
 
 \subsection{Conditions for Inlining}
 \begin{frame}[t,fragile]
 	\frametitlesubs
 
-	Several conditions to be inlined:
+	\textcolor{highlight}{\textbf{Several conditions}} to be applied:
 
-	\begin{itemize}
-		\item<+->[\emoji{check-mark-button}] Defined as \textbf{Go functions}:
+	\onslide<+->
+	\begin{itemize}[<+->]
+		% \item[\emoji{check-mark-button}] Specific tags not set,
 
-		      \emoji{woman-gesturing-no} External functions
+		% {\small \texttt{//go:noinline}, \texttt{//go:systemstack}, etc.}
 
-		\item<+->[\emoji{check-mark-button}] Specific tags not set:
+		\item[\emoji{check-mark-button}] {\only<.-.(2)>{\color{subhighlight}} \textbf<.-.(2)>{Non-leaf} function:}
 
-		      \begin{itemize}
-			      \item \mintinline{go}{go:noinline}
-			      \item \mintinline{go}{go:systemstack}
-			      \item \mintinline{go}{go:uniptrkeepalive}
+		      \onslide<+->
+		      \only<.(2)->{\footnotesize}
+		      The func \textcolor<.-.(1)>{highlight}{shouldn't} call other funcs.
+
+		      \begin{onlyenv}<.-.(1)>
+			      \tikzstyle{every picture}+=[remember picture]
+			      \centering
+			      \begin{minipage}[t]{.5\textwidth}
+				      \begin{minted}[fontsize=\footnotesize]{go}
+func f (x int) int {
+  return x * x
+}
+
+func g (x int) int {
+  return f(x)?\tikz\coordinate[anchor=center](g);? + 1
+}
+              \end{minted}
+			      \end{minipage}
+
+			      \onslide<+>
+			      \tikz[overlay]{
+				      \node[fill=orange,anchor=center,inner sep=2pt, outer sep=2pt] at ([xshift=-.9\zw,yshift=.23\zh]g) {\footnotesize\textcolor{white}{\texttt{f(x)}}};
+				      \node[mycallout, callout absolute pointer={($(g)-(.7,.1)$)}, yshift=-2.4\zh,xshift=-5\zw] (c1) at (g) {\textcolor{highlight}{calls \texttt{f}}};
+				      \node[draw, xshift=7\zw] (c2) at (c1.east) {\textcolor{highlight}{\textbf{non-leaf function}}};
+				      \draw[boldarrow, draw=orange] ([xshift=2pt]c1.east) to ([xshift=-2pt]c2.west);
+			      }
+		      \end{onlyenv}
+
+		\item[\emoji{check-mark-button}] {\only<.>{\color{subhighlight}}\textbf<.>{Small function}, \textit<.>{"Budget"} $\leq 80$:}
+
+		      \only<+->{
+			      \setbeamertemplate{itemize/enumerate subbody begin}{\scriptsize}
+			      \footnotesize
+		      }
+
+		      Constructs are \textcolor<.(-1)>{subhighlight}{rated} by their cost:\footnote{\url{https://github.com/golang/go/blob/go1.21.0/src/cmd/compile/internal/inline/inl.go}}
+
+		      \begin{itemize}[<1->]
+			      \item \textcolor<.(-1)>{subhighlight}{57} for non-leaf func call
+			      \item \textcolor<.(-1)>{subhighlight}{1} for \mintinline{go}{panic}
 			      \item etc.
 		      \end{itemize}
 
-		\item<+->[\emoji{check-mark-button}] \textbf{non-leaf} function:
+		      The \textit<.(-1)>{budget} is the total cost of func body.
 
-		      \onslide<+->{
-			      \textbf{non-leaf}... the function calls other functions
-		      }
-
-		      % \item<+->[\emoji{check-mark-button}] \textbf{Small function}:
-
-		      % \onslide<+->{The function body is small.}
+		\item<.-> Other conds$\cdots$
+		      \begin{itemize}[<1->]
+			      \item Not external function (e.g., C functions),
+			      \item No specific tags set,
+			      \item Not a complex body, including \mintinline{go}{defer}, \mintinline{go}{recover}, etc.
+		      \end{itemize}
 	\end{itemize}
+\end{frame}
+
+\subsection{Compiler Flags for Inlining}
+\begin{frame}[t,fragile]
+	\frametitlesubs
+
+	Use \mintinline{sh}{gcflags} to \texttt{go build} to control compiler flags.
+
+
+
+	\begin{table}
+		\centering
+		\begin{tabular}{l|l}
+			\hline
+			{\semibf Flag} & {\semibf Description} \\
+			\hline
+			\texttt{-m}    & Verbose optimization  \\
+			\hline
+			\texttt{-l}    & Control inlining      \\
+			\hline
+		\end{tabular}
+	\end{table}
+
+
+
+	% \begin{minted}{go}
+	% type Point struct{ x, y int }
+
+	% func (p Point) String() string {
+	% return fmt.Sprintf("(%d, %d)", p.x, p.y)
+	% }
+
+	% func main() {
+	% p := Point{1, 2}
+	% fmt.Println(p)
+	% }
+	% \end{minted}
 \end{frame}

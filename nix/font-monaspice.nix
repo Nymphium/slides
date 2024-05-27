@@ -11,7 +11,7 @@ stdenv.mkDerivation rec {
   dontFixup = true;
 
   src = fetchurl {
-    url = "https://github.com/ryanoasis/nerd-fonts/releases/v3.2.1/download/Monaspace.zip";
+    url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Monaspace.zip";
     sha256 = "0zlgl5cpl9pz3b36kj2zpj486hr5xm1s9kyhnxv0a8r8v403xzv4";
   };
 

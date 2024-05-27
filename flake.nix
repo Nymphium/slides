@@ -21,7 +21,7 @@
         };
 
         fonts = with pkgs; [
-          noto-fonts-cjk
+          noto-fonts
           noto-fonts-emoji
           genshingothic
           monaspice

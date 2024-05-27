@@ -12,24 +12,20 @@
 \input{../template/beamertemp}
 \usepackage{ulem}
 % \setsansfont[Script=Default,Kerning=On,AutoFakeBold,AutoFakeSlant,BoldSlantedFeatures={AutoFakeBold,AutoFakeSlant}]{GenShinGothic-Medium}
-\setsansfont[Script=Default,Kerning=On,BoldFont={*-Bold},ItalicFont=NotoSansDisplay-Italic]{GenShinGothic}
-\setmainjfont[%
-Script=Default,%
-Kerning=On,%
-YokoFeatures={JFM=prop}]{GenShinGothic-P}
+\setsansfont[Script=Default,Kerning=On,BoldFont={*-Bold},ItalicFont={*-Italic}]{NotoSans}
+\setmainjfont[Script=Default,Kerning=On,BoldFont={*-Bold},ItalicFont={NotoSans-Italic},YokoFeatures={JFM=prop}]{GenShinGothic-P}
+\newfontfamily{\boldslant}[Script=Default,Kerning=On]{NotoSans-BoldItalic}
 \setmonofont[Kerning=Reset]{MonaspiceArNerdFont}
 \newjfontfamily{\semijbf}[%
 Script=Default,%
 Kerning=On,%
-AutoFakeSlant,BoldSlantedFeatures={AutoFakeBold,AutoFakeSlant},
 YokoFeatures={JFM=prop}]{GenShinGothic-P-Medium}
 \newfontfamily{\semibf}[%
 Script=Default,%
 Kerning=On,%
-AutoFakeSlant,
-BoldSlantedFeatures={AutoFakeBold,AutoFakeSlant},
-% ItalicFont=NotoSansDisplay-Italic,
-% CharacterWidth=AlternateProportional,%
+BoldFont={GenShinGothic-P-Bold},
+BoldItalicFont={NotoSans-BoldItalic},
+ItalicFont={NotoSans-Italic},
 ]{GenShinGothic-P-Medium}
 \usepackage{amsmath,amssymb,stmaryrd}
 \usepackage{tikz,pgfplots}
@@ -41,6 +37,7 @@ BoldSlantedFeatures={AutoFakeBold,AutoFakeSlant},
 \definecolor{basetext}{RGB}{105,105,105}
 \definecolor{highlight}{HTML}{D63129}
 \definecolor{subhighlight}{HTML}{2978D6}
+\definecolor{codebackground}{HTML}{3f3f3f}
 
 \setbeamercolor*{normal text}{fg=basetext}
 \setbeamercolor*{section in head/foot}{fg=accent}%
@@ -50,22 +47,17 @@ BoldSlantedFeatures={AutoFakeBold,AutoFakeSlant},
 \setbeamercolor*{headline}{fg=accent}%
 \usebeamercolor[fg]{normal text}
 
-\usepackage[newfloat=true]{minted}
-\usepackage{mdframed}
-\usemintedstyle{friendly}
+\usepackage{minted}
+% \usepackage{mdframed}
+\usemintedstyle{lovelace}
 \setminted{%
-  fontsize=\footnotesize,
-  beameroverlays=true,
+  % fontsize=\footnotesize,
+  % beameroverlays=true,
   frame=single,
   framerule=1.3pt,
   framesep=.6\fboxsep,
   escapeinside=??,
-autogobble}
-% \BeforeBeginEnvironment{minted}{
-% \begingroup
-% \catcode`\!=\active
-% \def!#1!{\colorbox{green}{#1}}}
-% \AfterEndEnvironment{minted}{\endgroup}
+  autogobble}
 
 \usepackage{graphicx}
 \usepackage[most]{tcolorbox}
@@ -81,16 +73,21 @@ autogobble}
     colback=black!20,
 }
 \usetikzlibrary{tikzmark,shapes,arrows,arrows.meta,positioning,calc,fit,shapes.callouts}
-% \tikzstyle{every picture}+=[remember picture]
+\tikzstyle{every picture}+=[line width=1.5pt]
+\newcommand{\remembertikz}{\tikz[remember picture]}
 
-\tikzset{
-  orange arrow/.style={
-    draw=orange,
+\tikzset{boldarrow/.style={
     arrows={-Triangle[angle=90:10pt]},
     line width=.3\zh
-    % postaction={draw=orange,shorten >=.2\zh, -}
-  }
-}
+}}
+\tikzset{mycallout/.style={
+draw=orange, rectangle callout, rounded corners
+}}
+
+% https://tex.stackexchange.com/questions/6135/how-to-make-beamer-overlays-with-tikz-node
+\tikzset{onslide/.code args={<#1>#2}{%
+  \only<#1>{\pgfkeysalso{#2}} 
+}}
 
 \newcommand{\itemheader}[1]{%
   {\semibf\semijbf #1}}
@@ -99,14 +96,12 @@ autogobble}
 \AtBeginSubsection{}
 
 \title{%
-{\huge\it\bf\textcolor{subhighlight}{Guide}}%
+{\huge{\boldslant \textcolor{subhighlight}{Guide}}}
 \newline\null%
 {\large \textcolor{basetext}{to}}%
 \newline\null%
-{\huge\it\bf\textcolor{highlight}{ Profile-Guided Optimization:}}}
-\subtitle{\bf\large\color{basetext} inlining, devirtualizing, and profiling}
-\def\thetitle{\normalsize Guide to Profile-Guided Optimization: inlining, devirtualizing, and profiling}
-\hypersetup{pdftitle={\thetitle}}
+{\huge\boldslant \textcolor{highlight}{Profile-Guided Optimization:}}}
+\subtitle{\large inlining, devirtualizing, and profiling}
 \author{Satoru Kawahara}
 \date{June 8, 2024}
 \institute{Go Conference 2024}
