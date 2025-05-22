@@ -1,0 +1,189 @@
+\section{Continuations?}
+
+\begin{frame}
+	\frametitlesec
+
+	Do you \textit{remember} continuations?
+
+	\pause
+	\begin{itemize}[<+->]
+		\item[\emoji{man-raising-hand}] Hmm$\dots\dots$ I forget. Help me remember!
+		\item[\emoji{man-raising-hand}] \only<.(2)>{\emoji{check-mark-button}\semibf} Yeah, I think it's a callback function.
+		\item[\emoji{old-man}] I'm one with continuations.
+	\end{itemize}
+
+	\onslide<+->
+	\center
+	\Large
+
+	\begin{minipage}[c]{.55\linewidth}
+		Yes, it is just
+
+		a \textcolor{subhighlight}{callback function}!
+	\end{minipage}
+	\begin{minipage}[c]{.38\linewidth}
+		\includegraphics[height=.5\textheight]{img/ukkari.png}
+	\end{minipage}
+
+\end{frame}
+
+\begin{frame}[t,fragile]
+	\frametitlesec
+	\center
+
+	E.g. \raisebox{-.1\zh}{\includegraphics[height=1.1\zh]{img/scala_logo.png}} Read a file, then pass the result to a callback
+
+	\begin{minipage}[t]{.85\linewidth}
+		\begin{minted}[fontsize=\small]{scala}
+     ?\tikz\coordinate(c1l);?readFile(file).flatMap ?\tikz\coordinate(k1);?
+    \end{minted}
+	\end{minipage}
+
+	\begin{tikzpicture}[overlay, every node/.style={inner sep=0pt, outer sep=0pt}]
+		\node[right = 0 of k1, yshift=.24\zh] (k1i)
+		{\mintinline{scala}|{ data => ?$\dots\dots$? }|};
+
+		\node<+(1),+(3)->[fill=highlight, text=white, minimum height=1\zh, inner sep=2pt] at (k1i)
+		{\mintinline[style=bw]{scala}|{{ data => ?$\dots\dots$? }}|};
+
+		\node<.(1)>[draw, fill=white, ellipse callout, align=center, inner sep=2pt, callout absolute pointer = ($(k1i.south)$)]
+		at ([yshift=-2\zh]k1i.south west) {\large continuation};
+	\end{tikzpicture}
+
+	\vspace*{.5\zh}
+
+	\pause % cover cont highlight
+	\pause
+	\begin{minipage}[t]{.53\linewidth}
+		\begin{minted}{scala}
+      ?\tikz\coordinate(c2l);?for {?\tikz\coordinate(c2r);?
+        ?\tikz\coordinate(k2p1);?data <- readFile(file)
+        ?\tikz\coordinate(k3p1);$\dots\dots$?
+      } yield res
+    \end{minted}
+	\end{minipage}
+
+	\begin{tikzpicture}[overlay, every node/.style={inner sep=0pt, outer sep=0pt}]
+		\draw[boldarrow,draw=orange,bend left=30] ([yshift=-.4\zh]k1i.south east) to ([xshift=11\zw, yshift=-1\zh] c2r);
+		\node[fill=highlight, text=white, minimum height = 1\zh, inner sep=2pt, anchor=west] at ([yshift=.3\zh]k2p1)
+		{\mintinline[style=bw]{scala}|data ←|};
+
+		\node[fill=highlight, text=white, minimum height = 1\zh, inner sep=2pt, anchor=west, baseline]
+		at ([yshift=.3\zh]k3p1)
+		{\mintinline[style=bw]{scala}|?$\dots\dots$?|\vphantom{l}};
+
+		\draw<+(1)->[boldarrow,draw=orange,bend left=30]([yshift=-1\zh]c2l.west) to ([yshift=-.5\zh]c1l.south west);
+	\end{tikzpicture}
+\end{frame}
+
+\begin{frame}[t,fragile]
+	\frametitlesec
+
+	\tikzset{every node/.style={inner sep=0pt, outer sep=0pt, baseline, anchor=base}}
+
+	{\only<.(6)->{\vspace*{-.2\zh}\scalefont{0.6}}%
+		Just a callback? \only<.(6)->{\bf\color{subhighlight}\large No ---}}%
+	\only<.-.(5)>{%
+		\raisebox{-.3\zh}{%
+			\includegraphics[height=1.7\zh]{img/scala_logo.png}%
+			\hspace{-.2\zw}\raisebox{1.7\zh}{\tiny\color{subhighlight}\bf \rotatebox{-10}{??}}%
+		}%
+	}
+
+	\only<.(6)->{%
+		Continuations are $\dots\dots$%
+	}%
+	\only<.(7)>{%
+		\hspace{6\zw}\raisebox{-.2\zh}[-.2\zh]{%
+			\includegraphics[height=1.7\zh]{img/scala_logo.png}%
+			\hspace{-.2\zw}\raisebox{1.7\zh}{\scriptsize\color{highlight}\bf \rotatebox{-10}{!}\rotatebox{-10}{!}}%
+		}
+
+		\vspace{-.7\zh}%
+		\begin{center}
+			\Large\bf\color{highlight}
+			The Rest of The Computation!!
+		\end{center}%
+	}
+
+	% 3 + 4 -> 3に詰め
+	\only<.-.(5)>{\vspace*{.4\zh}}\vspace*{.3\zh}
+	\hspace*{1.5\zw}
+	\begin{tikzpicture}
+		\coordinate (p1);
+		\coordinate[right=.313\linewidth of p1] (p2);
+		\coordinate[below=4.4\zh of p2] (p3);
+		\coordinate[left=.313\linewidth of p3] (p4);
+
+		\path[draw=black, line width=1pt] (p1) -- (p2) -- (p3) -- (p4) -- (p1);
+
+		\node[right=3.3pt of p1, yshift=-.65\zh] (c1l) {\mintinline{scala}|val v1 =|};
+		\node[right=.3 of c1l]                (c1r)                                 {\mintinline{scala}|f()|};
+
+		\node[below=.2 of c1l]                (c2l) {\mintinline{scala}|val v2 =|};
+		\node[right=.3 of c2l]                (c2r)                                 {\mintinline{scala}|g(v1)|};
+
+		\node[below=.2 of c2l]                (c3l) {\mintinline{scala}|val v3 =|};
+		\node[right=.3 of c3l]                (c3r)                                 {\mintinline{scala}|h(v2)|};
+
+		\node[below=.2 of c3l, xshift=-1\zw]  (c4)  {\mintinline{scala}|?$\dots\dots$?|\vphantom{l}};
+	\end{tikzpicture}
+
+	\pause
+
+	\begin{tikzpicture}[overlay]
+		\coordinate[right=7.36 of p1] (p1');
+		\coordinate[right=.404\linewidth of p1'] (p2');
+		\coordinate[below=4.4\zh of p2'] (p3');
+		\coordinate[left=.404\linewidth of p3'] (p4');
+
+		\path[draw=black, line width=1pt] (p1') -- (p2') -- (p3') -- (p4') -- (p1');
+
+		\node[right=6.44 of c1r] (a1) {\mintinline{scala}#f()   |>#};
+		\node[right=3 of c2r]    (a2) {\mintinline{scala}#((v1) => g(v1) |>#};
+		\node[right=3 of c3r]    (a3) {\mintinline{scala}#((v2) => h(v2) |>#};
+		\node[right=6.04 of c4]  (a4) {\mintinline{scala}#((v3) => ?$\dots\dots$?  )))#};
+
+		\node[draw, fill=white, ellipse callout, align=center, inner xsep=-2pt, inner ysep=2pt,
+			callout absolute pointer={([xshift=-2.3\zw,yshift=-.2\zh]a4.south east)}]
+		at ([xshift=1.1\zw, yshift=-1.35\zh]a4.south)
+		{\mintinline[fontsize=\footnotesize]{scala}#def x |> k === k(x)#};
+
+		\draw[boldarrow, draw=subhighlight, bend right = 25] ([yshift=-.4\zh]p3.south east) to ([yshift=-.4\zh]p4'.south west) node[below,xshift=-2.5\zw,yshift=-1\zh] {\scriptsize\it Continuation Passing Style};
+		\node<.>[rotate={20}] at ([xshift=.1\zw,yshift=.4\zh]a2.north west) {\huge\scalefont{1.4}\color{highlight}\bf !?};
+	\end{tikzpicture}
+
+	\pause
+	\begin{tikzpicture}[overlay, every node/.style={inner xsep=2pt, fill=highlight, text=white, inner ysep=1pt, minimum height=1.1\zh}]
+		\usemintedstyle{bw}
+
+		\begin{scope}[zlevel=3]
+			\begin{onlyenv}<+>
+				\node[xshift=.13em] (c1l') at (c1l) {\mintinline{scala}|val v1 =|\hphantom{.}};
+				\node (c2r') at (c2r) {\mintinline{scala}|g(v1)|};
+
+				\node (a2') at (a2) {\mintinline{scala}#((v1) => g(v1) |>#};
+			\end{onlyenv}
+		\end{scope}
+
+		\begin{scope}[zlevel=2]
+			\begin{onlyenv}<.,+>
+				\node[xshift=.13em] (c2l') at (c2l) {\mintinline{scala}|val v2 =|\hphantom{.}};
+				\node (c3r') at (c3r) {\mintinline{scala}|h(v2)|};
+
+				\node (a3') at (a3) {\mintinline{scala}#((v2) => h(v2) |>#};
+			\end{onlyenv}
+		\end{scope}
+
+		\begin{scope}[zlevel=1]
+			\begin{onlyenv}<.(-1)-+>
+				\node[xshift=.13em] (c3l') at (c3l) {\mintinline{scala}|val v3 =|\hphantom{.}};
+				\node (c4') at (c4)  {\mintinline{scala}|?$\dots\dots$?|\vphantom{l}};
+
+				\node (a4') at (a4) {\mintinline{scala}#((v3) => ?$\dots\dots$?  )))#};
+			\end{onlyenv}
+		\end{scope}
+	\end{tikzpicture}
+
+\end{frame}
+

@@ -1,0 +1,157 @@
+\usepackage{ifluatex,xcolor,xhfill,amsmath}%
+\usecolortheme{lily}%
+\definecolor{titleblue}{HTML}{0f61b1}
+\newif\ifnotoc\notocfalse%
+\newcommand{\notoc}{\notoctrue}%
+\newif\ifnosubtoc\nosubtocfalse%
+\newcommand{\nosubtoc}{\nosubtoctrue}%
+\newif\ifskipnexttoc\skipnexttocfalse
+\newcommand{\skipnexttoc}{\skipnexttoctrue}
+\newcounter{toccolnum}%
+\newif\iftocmonocol\tocmonocolfalse%
+\newcommand{\toccolnum}[1]{%
+  \ifnum#1<2 \tocmonocoltrue\else\setcounter{toccolnum}{#1}\fi%
+}\toccolnum{2}%
+\newenvironment{toccol}{\iftocmonocol\relax\else
+\begin{multicols}{\thetoccolnum}\fi}{\iftocmonocol\relax\else
+\end{multicols}\fi}%
+%%%%% [[[
+\makeatletter%
+\ifluatex\else%
+\newlength\zw%
+\zw=1zw\relax%
+\fi%
+%%
+\geometry{
+  top=3pt,
+  left=1\zw,
+  right=1\zw,
+}
+%%
+\newif\ifnofooter\nofootertrue%
+\newcommand{\switchfooter}{\ifnofooter\nofooterfalse\else\nofootertrue\fi}%
+\preto\frame{\ifnofooter{\ifbeamer@noframenumbering\else\addtocounter{framenumber}{-1}\fi}\fi}
+\newif\ifnoheader\noheadertrue%
+\newcommand{\switchheader}{\ifnoheader\noheaderfalse\else\noheadertrue\fi}%
+\newif\ifnosubheader\nosubheadertrue%
+\newcommand{\switchsubheader}{\ifnosubheader\nosubheaderfalse\else\nosubheadertrue\fi}%
+\newif\ifnoframetitle\noframetitlefalse%
+\newcommand{\switchframetitle}{\ifnoframetitle\noframetitlefalse\else\noframetitletrue\fi}%
+\renewcommand{\title}{\@dblarg\beamer@title}%
+\long\def\beamer@title[#1]#2{%
+  \def\thetitle{#2}%
+  \def\inserttitle{#2}%
+  \def\beamer@shorttitle{#1}%
+}%
+\def\maketitle{
+  aa
+  o
+  \ifbeamer@inframe
+  \titlepage
+  \else
+  \frame{\titlepage}
+  \fi
+  %%
+  \ifnotoc\else
+  \switchfooter
+  \switchheader
+  \begin{frame}<handout>[c]
+    \begin{toccol}
+      \tableofcontents
+    \end{toccol}
+  \end{frame}
+  \switchfooter
+  \switchheader
+  \fi
+\nofooterfalse}%
+\def\@makefnmark{\hbox{\@textsuperscript{{\usebeamercolor[fg]{footnote
+mark}\usebeamerfont*{footnote mark}{*\@thefnmark}}}}}%
+\makeatother%
+%%%%% ]]]
+%%%%% [[[
+% overwrite `\framesubtitle` to be showable wheather frametitle is set or not
+\let\oldframesubtitle\framesubtitle
+\renewcommand{\framesubtitle}[1]{%
+  \frametitle{\empty}
+  \oldframesubtitle{#1}
+}
+\newcommand\frametitlesec{\frametitle{\insertsectionhead}}
+\newcommand\frametitlesubs{\framesubtitle{\insertsubsectionhead}}
+%%%%% [[[
+\newcounter{currentwotocframenumber}%
+\newcounter{wotoctotalframenumber}%
+\setbeamerfont{frametitle}{size=\footnotesize}%
+\setbeamerfont{framesubtitle}{size=\small}
+\setbeamercolor{section in head/foot}{fg=blue}%
+\setbeamercolor{subsection in head/foot}{fg=blue}%
+\setbeamercolor{footline}{fg=gray}%
+\setbeamercolor{frametitle}{fg=titleblue}%
+\setbeamercolor{framesubtitle}{fg=titleblue!85!}
+\setbeamercolor{headline}{fg=blue}%
+\setbeamercolor{subheadline}{fg=gray}%
+\setbeamertemplate{navigation symbols}{}%
+\setbeamertemplate{itemize subitem}{$\bullet$}
+\setbeamertemplate{itemize subsubitem}{-}
+%%%%% ]]]
+%%%%% [[[
+\setbeamertemplate{footnote}{%
+  \tiny%
+  \makebox[2em][l]{\insertfootnotemark}\hspace{-.7\zw}\insertfootnotetext%
+\vspace{.1\zw}}%
+\setbeamertemplate{frametitle}{%
+  \ifnoframetitle\else%
+  \ifx\insertframesubtitle\empty%
+  \begin{beamercolorbox}{frametitle}%
+    \hbox{{\large$\blacksquare$\insertframetitle}}\par%
+    \vskip-.7\zh\xhrulefill{titleblue}{1pt}
+  \end{beamercolorbox}%
+  \else%
+  \begin{beamercolorbox}{framesubtitle}%
+    \hbox{{\large$\bullet$\insertframesubtitle}}\par%
+    \vskip-.7\zh\xhrulefill{titleblue}{1pt}
+  \end{beamercolorbox}
+\fi\fi}%
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \vspace{1\zw}
+  \begin{beamercolorbox}{footline}%
+    \tiny%
+    \hspace{.4\zw}\hbox{\ifnofooter\else\insertsectionhead\ifx\insertsubsectionhead\empty\else{}.\insertsubsectionhead\fi\fi}%
+    \setcounter{wotoctotalframenumber}{\inserttotalframenumber}%
+    % \addtocounter{wotoctotalframenumber}{-\inserttotaltocpage}%
+    \addtocounter{wotoctotalframenumber}{-1}%
+    \setcounter{currentwotocframenumber}{\theframenumber}%
+    \addtocounter{currentwotocframenumber}{-1}%
+    % \addtocounter{currentwotocframenumber}{-\thetocpage}%
+    \hfill\hbox{\ifnofooter\else\thecurrentwotocframenumber/\thewotoctotalframenumber\fi\hspace{.8\zw}}%
+\end{beamercolorbox}}%
+\setbeamertemplate{headline}{%
+  \begin{beamercolorbox}{headline}%
+    \centering\hbox{\ifnoheader\else\large\thetitle\fi}%
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}{subheadline}%
+    \centering\hbox{\ifnosubheader\else\large\thetitle\fi}%
+\end{beamercolorbox}}%
+\addtobeamertemplate{headline}{\vspace*{1\zw}}{}%
+%%%%% ]]]
+%%%%% [[[
+\newcommand{\TableOfContents}[1]{
+  \switchfooter%
+  \switchheader
+  \begin{frame}<beamer>[c]%
+    \begin{toccol}%
+      \tableofcontents[#1,sectionstyle=show/shaded,subsectionstyle=show/shaded]%
+    \end{toccol}%
+  \end{frame}%
+  \switchfooter%
+\switchheader}
+\AtBeginSection[]{%
+  \ifnotoc\else\ifskipnexttoc\skipnexttocfalse\else%
+  \TableOfContents{currentsection}
+\fi\fi}%
+\AtBeginSubsection[]{%
+  \ifnotoc\else\ifnosubtoc\else%
+  \TableOfContents{currentsubsection}
+\fi\fi}%
+%%%%% ]]]
+

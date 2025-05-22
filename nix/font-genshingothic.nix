@@ -1,4 +1,9 @@
-{ stdenv, fetchurl, unzip, fontconfig }:
+{
+  stdenv,
+  fetchurl,
+  unzip,
+  fontconfig,
+}:
 
 stdenv.mkDerivation rec {
   pname = "font-genshingothic";
@@ -15,12 +20,15 @@ stdenv.mkDerivation rec {
     sha256 = "uOAPAKbiUXv+dc6ypzK1lv4AJFe4nAXBgda3E3Oq2lg=";
   };
 
-  nativeBuildInputs = [ unzip fontconfig ];
+  nativeBuildInputs = [
+    unzip
+    fontconfig
+  ];
 
   unpackPhase = "unzip $src";
 
   installPhase = ''
-    mkdir -p $out
-    cp *.ttf $out/
+    mkdir -p $out/share/fonts/gen-shin-gothic
+    cp *.ttf $out/share/fonts/gen-shin-gothic
   '';
 }

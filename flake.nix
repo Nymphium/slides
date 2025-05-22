@@ -1,48 +1,65 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.0.tar.gz";
 
     flake-utils.url = "github:numtide/flake-utils";
   };
-  outputs = { self, flake-utils, nixpkgs, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    {
+      flake-utils,
+      nixpkgs,
+      ...
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
         texlive = pkgs.texlive.combine {
-          inherit (pkgs.texlive) scheme-full fontspec;
+          inherit (pkgs.texlive) scheme-full;
         };
 
-        genshingothic = with pkgs; callPackage ./nix/font-genshingothic.nix {
-          inherit stdenv fetchurl unzip;
+        genshingothic =
+          with pkgs;
+          callPackage ./nix/font-genshingothic.nix {
+            inherit stdenv fetchurl unzip;
+          };
+
+        fontsEnv = pkgs.buildEnv {
+          name = "fonts-env";
+          paths = with pkgs; [
+            noto-fonts
+            noto-fonts-emoji
+            noto-fonts-cjk-serif
+            noto-fonts-cjk-sans
+            source-han-serif-japanese
+            nerd-fonts.monaspace
+            genshingothic
+          ];
+          pathsToLink = [ "/share/fonts" ];
         };
 
-        monaspice = with pkgs; callPackage ./nix/font-monaspice.nix {
-          inherit stdenv fetchurl unzip;
-        };
-
-        fonts = with pkgs; [
-          noto-fonts
-          noto-fonts-emoji
-          genshingothic
-          monaspice
-        ];
-        OSFONTDIR = builtins.concatStringsSep ":" fonts;
+        formatter = pkgs.nixfmt-rfc-style;
 
       in
       {
         legacyPackages = pkgs;
-        devShells.default =
-          pkgs.mkShell {
-            buildInputs = [
-              texlive
-              pkgs.python3Packages.pygments
-              pkgs.nil pkgs.nixpkgs-fmt
-            ];
-            shellHook = ''
-              export OSFONTDIR=${OSFONTDIR}
-              luaotfload-tool --update
-            '';
-          };
-        formatter = pkgs.nixpkgs-fmt;
-      });
+        devShells.default = pkgs.mkShellNoCC {
+          buildInputs = [
+            texlive
+            pkgs.python3Packages.pygments
+
+            pkgs.texlab
+
+            pkgs.nil
+            formatter
+          ];
+          FONTCONFIG_FILE = pkgs.makeFontsConf { fontDirectories = [ "${fontsEnv}/share/fonts" ]; };
+          shellHook = ''
+            export OSFONTDIR="${fontsEnv}/share/fonts"
+            luaotfload-tool --update
+          '';
+        };
+        inherit formatter;
+      }
+    );
 }

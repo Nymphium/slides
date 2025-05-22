@@ -1,0 +1,38 @@
+\section{Who talks}
+
+\begin{frame}
+  \frametitlesec
+
+  \begin{itemize}
+    \item[\emoji{office}]
+      \itemheader{\href{https://corp.eiicon.net}{eiicon, co.,ltd.}}
+    \item[\textcolor{gray}{\faicon{paperclip}}] {\small
+        \href{https://twitter.com/Nymphium}{\textcolor{blue!60!white}{\faicon{twitter}}}
+        \href{https://github.com/Nymphium}{\textcolor{black}{\faicon{github}}}
+      Nymphium}\tikzmark{item1}
+    \item[\emoji{heart}] FP Lover
+    \item[\emoji{nerd-face}] Interested in:
+      {\small %
+        \begin{itemize}
+          \item Programming language theory and implementations
+          \item Control-flow and its operators
+        \end{itemize}}
+
+    \item[\emoji{flexed-biceps}]<2-> Motto:
+
+      \begin{center}
+        \hspace{-2\zw}%
+        \Large\boldslant Continuation is power
+      \end{center}
+
+  \end{itemize}
+
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[anchor = west] (img) at ([xshift=1.05\zw,yshift=-.7\zh]pic cs:item1)
+    {\includegraphics[height=4\zh]{img/yh.png}};
+    \node[draw,fill=white, ellipse callout, right = .6 of img, callout
+      absolute pointer={($(img.east)+(-.2,.2) $)}, xshift=-1\zw,
+    yshift=2\zh, align=center] {こんにちは､\\びしょ〜じょです｡};
+  \end{tikzpicture}
+\end{frame}
+

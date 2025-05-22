@@ -15,3 +15,8 @@ main.pdf
 *.bbl
 *.bcf
 temp
+
+_minted/
+/.direnv/
+
+*.run.xml

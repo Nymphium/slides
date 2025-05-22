@@ -1,0 +1,125 @@
+\documentclass[unicode,compress,17pt,CJK,aspectratio=169,xcolor={dvipsnames}%
+  \directlua{
+    handout = os.getenv"HANDOUT"
+    local _ = handout and tex.print(",handout")
+}]{beamer}
+\usepackage{luatexja}
+\usepackage[no-math]{luatexja-fontspec}
+\usepackage{fontawesome}
+\usepackage{emoji}
+\usefonttheme[onlymath]{serif}
+\usepackage{luacode}
+\input{../template/beamertemp}
+\usepackage{ulem}
+% \setsansfont[Script=Default,Kerning=On,AutoFakeBold,AutoFakeSlant,BoldSlantedFeatures={AutoFakeBold,AutoFakeSlant}]{GenShinGothic-Medium}
+\setsansfont[Script=Default, Kerning=On, BoldFont={*-Bold},
+ItalicFont={*-Italic}]{NotoSans}
+\setmainfont[Script=Default, Kerning=On, BoldFont={*-Bold},
+ItalicFont={*-Italic}]{NotoSerif}
+\setmainjfont[Script=Default, Kerning=On,
+Renderer=HarfBuzz]{SourceHanSerif}
+\setsansjfont[Script=Default, Kerning=On, BoldFont={*-Bold},
+ItalicFont={NotoSans-Italic}, YokoFeatures={JFM=prop}]{GenShinGothic-P}
+\newfontfamily{\boldslant}[Script=Default,Kerning=On]{NotoSans-BoldItalic}
+\setmonofont[Contextuals={Alternate},Ligatures={Common},StylisticSet={1,2,3,4,5,6,7,8,9}]{MonaspiceArNerdFont}
+\newjfontfamily{\semijbf}[Script=Default, Kerning=On,
+YokoFeatures={JFM=prop}]{GenShinGothic-P-Medium}
+\newfontfamily{\semibf}[Script=Default, Kerning=On, BoldFont={GenShinGothic-P-Bold},
+  BoldItalicFont={NotoSans-BoldItalic},
+  ItalicFont={NotoSans-Italic},
+]{GenShinGothic-P-Medium}
+\renewcommand{\kanjifamilydefault}{\gtdefault}
+\usepackage{amsmath,amssymb,stmaryrd}
+\usepackage{tikz,pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{hyperref}
+\usepackage{scalefnt}
+
+\definecolor{accent}{HTML}{2978D6}
+\definecolor{basetext}{RGB}{105,105,105}
+\definecolor{highlight}{HTML}{D63129}
+\definecolor{subhighlight}{HTML}{2978D6}
+\definecolor{codebackground}{HTML}{3f3f3f}
+
+\setbeamercolor*{normal text}{fg=basetext}
+\setbeamercolor*{section in head/foot}{fg=accent}%
+\setbeamercolor*{subsection in head/foot}{fg=accent}%
+\setbeamercolor*{frametitle}{fg=accent}%
+\setbeamercolor*{framesubtitle}{fg=subhighlight}
+\setbeamercolor*{headline}{fg=accent}%
+\usebeamercolor[fg]{normal text}
+
+\usepackage{minted}
+% \usepackage{mdframed}
+\usemintedstyle{lovelace}
+\setminted{%
+  % fontsize=\footnotesize,
+  beameroverlays=true,
+  frame=single,
+  framerule=1.3pt,
+  framesep=.6\fboxsep,
+  escapeinside=??,
+  fontsize=\small,
+autogobble}
+
+\usepackage{graphicx}
+\usepackage[most]{tcolorbox}
+\newtcolorbox{newbie}{
+  enhanced,
+  boxrule=0pt,
+  right skip=0pt,
+  left skip=0pt,
+  boxsep=0pt,
+  right=.3em,
+  left=.3em,
+  sharp corners,
+  colback=black!20,
+}
+\usetikzlibrary{tikzmark,shapes,arrows,arrows.meta,positioning,calc,fit,shapes.callouts}
+\tikzstyle{every picture}+=[line width=1.5pt]
+\newcommand{\remembertikz}{\tikz[remember picture]}
+
+% https://tex.stackexchange.com/questions/20425/z-level-in-tikz
+\pgfdeclarelayer{1}
+\pgfdeclarelayer{2}
+\pgfdeclarelayer{3}
+\pgfsetlayers{1,2,3,main}
+\tikzset{zlevel/.style={%
+    execute at begin scope={\pgfonlayer{#1}},
+    execute at end scope={\endpgfonlayer}
+}}
+
+\tikzset{every picture/.style={remember picture}}
+\tikzset{boldarrow/.style={
+    arrows={-Triangle[angle=90:10pt]},
+    line width=.3\zh
+}}
+\tikzset{mycallout/.style={
+    draw=orange, rectangle callout, rounded corners, outer sep=2pt
+}}
+
+% https://tex.stackexchange.com/questions/6135/how-to-make-beamer-overlays-with-tikz-node
+\tikzset{onslide/.code args={<#1>#2}{%
+    \only<#1>{\pgfkeysalso{#2}}
+}}
+
+\newcommand{\itemheader}[1]{%
+{\semibf\semijbf #1}}
+
+\AtBeginSection{}
+\AtBeginSubsection{}
+
+\title{Continuations: continued and to be continued}
+\author{Satoru Kawahara}
+\date{June 14, 2025}
+\institute{関数型まつり2025}
+
+\begin{document}
+\input{src/title.tex}
+\input{src/first.tex}
+\input{src/whatscont.tex}
+\input{src/intro.tex}
+% \input{src/misc.tex}
+% \input{src/conclusion.tex}
+\end{document}
+

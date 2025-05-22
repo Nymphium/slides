@@ -1,0 +1,48 @@
+\makeatletter
+\setbeamertemplate{title page}{
+	\begin{center}
+		{\huge
+		\textcolor{green!50!black}{\texttt{C}}%
+		\textcolor{basetext!70}{\texttt{[}}%
+		\textcolor{black}{\texttt{ontinuations}}%
+		\textcolor{basetext!70}{\texttt{]:}}%
+		}
+		\rm
+
+		\vspace*{.6\zh}
+
+		\def\@margin{\hspace*{.4\zw}}
+		\textcolor{subhighlight}{\LARGE
+			$\underleftarrow{\raisebox{0pt}[.4\zh]{\@margin\textrm{continued}\@margin}}$}
+
+		\vspace*{.2\zh}
+
+		\textcolor{basetext}{\large and}
+
+		\vspace*{.2\zh}
+
+		\textcolor{highlight}{\LARGE
+			$\overrightarrow{\raisebox{0pt}[.7\zh]{\@margin\textrm{to be continued}\@margin}}$}
+		\vspace*{.2\zh}
+
+		\xhrulefill{titleblue}{1pt}
+
+		\vspace*{1\zh}
+		\small
+		\mcfamily
+		\color{basetext}
+
+		\textsc{\textmd{%
+				{\footnotesize At}
+				\href{https://2025.fp-matsuri.org/}{\insertinstitute}\hspace{.5\zw}
+				{\footnotesize\insertdate}
+			}}
+
+		\vspace*{.4\zh}
+
+		\insertauthor
+	\end{center}
+}
+\makeatother
+\maketitle
+
