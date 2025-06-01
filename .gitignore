@@ -20,3 +20,4 @@ _minted/
 /.direnv/
 
 *.run.xml
+*-SAVE-ERROR

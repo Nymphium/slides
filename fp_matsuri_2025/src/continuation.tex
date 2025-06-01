@@ -1,0 +1,40 @@
+\section{The birth of continuations}
+
+\begin{frame}[t,fragile]
+	\frametitlesec
+
+	{\large \verb|Dump|} in \underline{{\boldslant SECD} machine}\cite{landin1964mechanical}:
+
+	The first abstract machine for evaluating functional programs
+
+	\pause
+
+	% \vspace{1\zh}
+	\begin{table}[h!]
+		\begin{tabular}{lcl}
+			{\boldslant S}tack       & : & Stores \underline{intermediate results}                                                                          \\
+			{\boldslant E}nvironment & : & Stores \underline{variables}                                                                                     \\
+			{\boldslant C}ontrol     & : & Stores \underline{the next instruction}                                                                          \\
+			{\boldslant D}ump        & : & Stores \tikz\coordinate[xshift=2\zw](p1);\underline{\only<+(1)->{\bf\color{highlight}}the suspended computation}
+		\end{tabular}
+	\end{table}
+
+	\onslide<.(1)->{\tikz[overlay]{
+			\node[below = .2 of p1, rotate=45] (pointup) {\LARGE\emoji{backhand-index-pointing-right}};
+			\node[below = .05 of pointup] {{\large Can be seen as \textbf{\Large continuations!}}\cite{danvy2004secd}};
+		}}
+\end{frame}
+
+\begin{frame}[t,fragile]
+	\frametitlesec
+
+  \verb|J| operator\cite{landin1965generalization} and \verb|call/cc|\cite{sussman1975scheme}:
+
+  \begin{itemize}
+    \item captures the rest of computation
+    
+  \end{itemize}
+
+
+\end{frame}
+

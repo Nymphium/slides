@@ -1,4 +1,4 @@
-\documentclass[unicode,compress,17pt,CJK,aspectratio=169,xcolor={dvipsnames}%
+\documentclass[unicode,compress,14pt,CJK,aspectratio=169,xcolor={dvipsnames}%
   \directlua{
     handout = os.getenv"HANDOUT"
     local _ = handout and tex.print(",handout")
@@ -106,6 +106,19 @@ autogobble}
 \newcommand{\itemheader}[1]{%
 {\semibf\semijbf #1}}
 
+\usepackage[style=alphabetic,minalphanames=3,backend=biber]{biblatex}
+\renewcommand*{\labelalphaothers}{\textsuperscript{+}}
+\addbibresource{main.bib}
+\beamertemplatetextbibitems
+%% bib underline breaklines https://tex.stackexchange.com/questions/200997/underlined-titles-in-bibliography-with-biblatex-and-ulem-packages
+\DeclareFieldFormat*{title}{#1}
+\DeclareFieldFormat*{titlecase}{%
+    \ifdef{\currentfield}
+      {\ifcurrentfield{title}
+         {\usefield{\uline}{\currentfield}}%
+         {#1}}
+      {#1}}
+
 \AtBeginSection{}
 \AtBeginSubsection{}
 
@@ -115,11 +128,20 @@ autogobble}
 \institute{関数型まつり2025}
 
 \begin{document}
-\input{src/title.tex}
-\input{src/first.tex}
-\input{src/whatscont.tex}
-\input{src/intro.tex}
+% \input{src/title.tex}
+% \input{src/first.tex}
+% \input{src/whatscont.tex}
+% \input{src/intro.tex}
+% \input{src/procedural.tex}
+\input{src/continuation.tex}
 % \input{src/misc.tex}
 % \input{src/conclusion.tex}
+
+\switchfooter
+\section{References}
+\begin{frame}[t,allowframebreaks]
+	\frametitlesec
+	\printbibliography
+\end{frame}
 \end{document}
 
