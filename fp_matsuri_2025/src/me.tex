@@ -1,7 +1,8 @@
-\section{Who talks}
+\section*{Who talks}
 
-\begin{frame}
-	\frametitlesec
+\switchfooter
+\begin{frame}[c]{Who talks}
+	% \frametitlesec
 
 	\begin{itemize}
 		\item[\emoji{office}]
@@ -10,7 +11,7 @@
 		      \href{https://twitter.com/Nymphium}{\textcolor{blue!60!white}{\faicon{twitter}}}
 		      \href{https://github.com/Nymphium}{\textcolor{black}{\faicon{github}}}
 		      Nymphium}\tikzmark{item1}
-		\item[\emoji{heart}] FP Lover
+		\item[\emoji{heart}] OCaml
 		\item[\emoji{nerd-face}] Interested in:
 		      {\small %
 		      \begin{itemize}
@@ -21,18 +22,24 @@
 		\item[\emoji{flexed-biceps}]<2-> Motto:
 
 		      \begin{center}
+			      {\small\hspace{-2.4\zw}%
+				      継続は力なり}
+
 			      \hspace{-2\zw}%
-			      \Large\boldslant Continuation is power
+			      \boldslant%
+			      {\LARGE{}Continuation is power}
+
 		      \end{center}
 
 	\end{itemize}
 
 	\begin{tikzpicture}[remember picture, overlay]
-		\node[anchor = west] (img) at ([xshift=1.05\zw,yshift=-.7\zh]pic cs:item1)
-		{\includegraphics[height=4\zh]{img/yh.png}};
+		\node[anchor = west] (img) at ([xshift=4\zw,yshift=-1.2\zh]pic cs:item1)
+		{\includegraphics[height=5\zh]{img/yh.png}};
 		\node[draw,fill=white, ellipse callout, right = .6 of img, callout
 		absolute pointer={($(img.east)+(-.2,.2) $)}, xshift=-1\zw,
 		yshift=2\zh, align=center] {こんにちは､\\びしょ〜じょです｡};
 	\end{tikzpicture}
 \end{frame}
+\switchfooter
 

@@ -1,7 +1,8 @@
-\section{Continuations?}
+\section{Introduction}
 
+\subsection{Continuations?}
 \begin{frame}[t]
-	\frametitlesec
+	\frametitlesubs
 
 	Do you \textit{remember} continuations?
 
@@ -28,7 +29,7 @@
 \end{frame}
 
 \begin{frame}[t,fragile]
-	\frametitlesec
+	\frametitlesubs
 
 	E.g. \raisebox{-.1\zh}{\includegraphics[height=1.1\zh]{img/scala_logo.png}} Read a file, then pass the result to a callback
 
@@ -78,7 +79,7 @@
 \end{frame}
 
 \begin{frame}[t,fragile]
-	\frametitlesec
+	\frametitlesubs
 
 	\tikzset{every node/.style={inner sep=0pt, outer sep=0pt, baseline, anchor=base}}
 
@@ -149,7 +150,7 @@
 			callout absolute pointer={([xshift=-2.3\zw,yshift=-.2\zh]a4.south east)}]
 		at ([xshift=1.1\zw, yshift=-1.8\zh]a4.south) {\mintinline[fontsize=\scriptsize]{scala}#def x |> k === k(x)#};
 
-		\draw[boldarrow, draw=subhighlight, bend right = 25] ([yshift=-.4\zh]p3.south east) to ([yshift=-.4\zh]p4'.south west) node[below,xshift=-2.8\zw,yshift=-1.5\zh] {\scriptsize\it Continuation Passing Style};
+		\draw[boldarrow, draw=subhighlight, bend right = 25] ([yshift=-.4\zh]p3.south east) to ([yshift=-.4\zh]p4'.south west) node[below,xshift=-3.8\zw,yshift=-1.5\zh] {\scriptsize\it Pseudo Continuation-Passing Style};
 		\node<.>[rotate={20}] at ([xshift=.1\zw,yshift=.4\zh]a2.north west) {\huge\scalefont{1.4}\color{highlight}\bf !?};
 	\end{tikzpicture}
 

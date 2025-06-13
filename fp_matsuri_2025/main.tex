@@ -1,51 +1,57 @@
-\documentclass[unicode,compress,14pt,CJK,aspectratio=169,xcolor={dvipsnames}%
+\documentclass[unicode,compress,14pt,CJK,aspectratio=169,xcolor={dvipsnames},t%
   \directlua{
     handout = os.getenv"HANDOUT"
     local _ = handout and tex.print(",handout")
 }]{beamer}
-\usepackage{luatexja}
+\usepackage{fontawesome,emoji,amssymb,stmaryrd,scalefnt,relsize}
+\usepackage[normalem]{ulem}
+\usepackage{hyperref}
+\usepackage{luatexja,luacode}
 \usepackage[no-math]{luatexja-fontspec}
-\usepackage{fontawesome}
-\usepackage{emoji}
 \usefonttheme[onlymath]{serif}
-\usepackage{luacode}
 \input{../template/beamertemp}
-\usepackage{ulem}
 % \setsansfont[Script=Default,Kerning=On,AutoFakeBold,AutoFakeSlant,BoldSlantedFeatures={AutoFakeBold,AutoFakeSlant}]{GenShinGothic-Medium}
 \setsansfont[Script=Default, Kerning=On, BoldFont={*-Bold},
-ItalicFont={*-Italic}]{NotoSans}
+ItalicFont={NotoSans-Italic},
+Contextuals={Alternate},Ligatures={Common}
+]{SourceHanSans}
 \setmainfont[Script=Default, Kerning=On, BoldFont={*-Bold},
-ItalicFont={*-Italic}]{NotoSerif}
+ItalicFont={NotoSerif-Italic},
+Contextuals={Alternate},Ligatures={Common}
+]{SourceHanSerif}
 \setmainjfont[Script=Default, Kerning=On,
-Renderer=HarfBuzz]{SourceHanSerif}
+ItalicFont={NotoSerif-Italic},
+Renderer=HarfBuzz,
+Contextuals={Alternate},Ligatures={Common}
+]{SourceHanSerif}
 \setsansjfont[Script=Default, Kerning=On, BoldFont={*-Bold},
-ItalicFont={NotoSans-Italic}, YokoFeatures={JFM=prop}]{GenShinGothic-P}
+ItalicFont={NotoSans-Italic}, YokoFeatures={JFM=prop},
+Contextuals={Alternate},Ligatures={Common}
+]{SourceHanSans}
 \newfontfamily{\boldslant}[Script=Default,Kerning=On]{NotoSans-BoldItalic}
-\setmonofont[Contextuals={Alternate},Ligatures={Common},StylisticSet={1,2,3,4,5,6,7,8,9}]{MonaspiceArNerdFont}
+\setmonofont[Contextuals={Alternate},Ligatures={Common},StylisticSet={1,2,3,4,5,6,7,8,9}]{MonaspiceNeNerdFontMono}
 \newjfontfamily{\semijbf}[Script=Default, Kerning=On,
-YokoFeatures={JFM=prop}]{GenShinGothic-P-Medium}
-\newfontfamily{\semibf}[Script=Default, Kerning=On, BoldFont={GenShinGothic-P-Bold},
+YokoFeatures={JFM=prop}]{SourceHanSans-Medium}
+\newfontfamily{\semibf}[Script=Default, Kerning=On, BoldFont={SourceHanSans-Bold},
   BoldItalicFont={NotoSans-BoldItalic},
   ItalicFont={NotoSans-Italic},
-]{GenShinGothic-P-Medium}
+]{SourceHanSans-Medium}
+\newfontfamily{\osietes}[Script=Default, Kerning=On,
+]{Arial Rounded MT Bold}
 \renewcommand{\kanjifamilydefault}{\gtdefault}
-\usepackage{amsmath,amssymb,stmaryrd}
 \usepackage{tikz,pgfplots}
 \pgfplotsset{compat=1.18}
-\usepackage{hyperref}
-\usepackage{scalefnt}
 
 \definecolor{accent}{HTML}{2978D6}
-\definecolor{basetext}{RGB}{105,105,105}
+\definecolor{basetext}{RGB}{103,103,103}
 \definecolor{highlight}{HTML}{D63129}
-\definecolor{subhighlight}{HTML}{2978D6}
+% \definecolor{subhighlight}{HTML}{2978D6}
+\definecolor{subhighlight}{HTML}{0f61b1} % same to titleblue
 \definecolor{codebackground}{HTML}{3f3f3f}
 
 \setbeamercolor*{normal text}{fg=basetext}
 \setbeamercolor*{section in head/foot}{fg=accent}%
 \setbeamercolor*{subsection in head/foot}{fg=accent}%
-\setbeamercolor*{frametitle}{fg=accent}%
-\setbeamercolor*{framesubtitle}{fg=subhighlight}
 \setbeamercolor*{headline}{fg=accent}%
 \usebeamercolor[fg]{normal text}
 
@@ -56,11 +62,13 @@ YokoFeatures={JFM=prop}]{GenShinGothic-P-Medium}
   % fontsize=\footnotesize,
   beameroverlays=true,
   frame=single,
-  framerule=1.3pt,
+  framerule=.08\zw,
   framesep=.6\fboxsep,
   escapeinside=??,
   fontsize=\small,
 autogobble}
+
+\newsavebox{\mintedbox}
 
 \usepackage{graphicx}
 \usepackage[most]{tcolorbox}
@@ -106,18 +114,118 @@ autogobble}
 \newcommand{\itemheader}[1]{%
 {\semibf\semijbf #1}}
 
-\usepackage[style=alphabetic,minalphanames=3,backend=biber]{biblatex}
+\usepackage[style=numeric-comp,minalphanames=3,backend=biber]{biblatex}
 \renewcommand*{\labelalphaothers}{\textsuperscript{+}}
+\renewcommand{\bibfont}{\footnotesize}
 \addbibresource{main.bib}
 \beamertemplatetextbibitems
-%% bib underline breaklines https://tex.stackexchange.com/questions/200997/underlined-titles-in-bibliography-with-biblatex-and-ulem-packages
-\DeclareFieldFormat*{title}{#1}
-\DeclareFieldFormat*{titlecase}{%
-    \ifdef{\currentfield}
-      {\ifcurrentfield{title}
-         {\usefield{\uline}{\currentfield}}%
-         {#1}}
-      {#1}}
+
+\setbeamertemplate{frametitle}{%
+  \ifnoframetitle\else%
+    \renewcommand{\arraystretch}{0}
+    \ifx\insertframesubtitle\empty%
+      \begin{beamercolorbox}{frametitle}%
+        \vskip-.6\zh\hspace*{-.3\zw}
+        \hbox{\large$\blacksquare$ \insertframetitle}\par%
+        \raisebox{1.3\baselineskip}[-1pt][2\zh]{%
+          \hskip-.06\linewidth\relax%
+          \makebox[1.116\linewidth]{%
+            \large\mcfamily\bfseries\color{gray!10}%
+            \mbox{
+              \begin{tabular}{c}
+                継\\続
+              \end{tabular}
+            }
+            \hfill
+            \mbox{
+              \begin{tabular}{c}
+                継\\続
+              \end{tabular}
+        }}}
+        \vskip-2.7\zh\hspace*{-.05\linewidth}
+        \makebox[1.1\linewidth]{\color{titleblue}\rule{1.1\linewidth}{2pt}}
+      \end{beamercolorbox}%
+    \else%
+      \begin{beamercolorbox}{framesubtitle}%
+        \vskip-.6\zh\hspace*{-.3\zw}
+        \hbox{{\huge$\bullet$}\large \insertframesubtitle}\par%
+        \raisebox{1.3\baselineskip}[-1pt][2.2\zh]{%
+          \hskip-.06\linewidth\relax%
+          \makebox[1.116\linewidth]{%
+            \large\mcfamily\bfseries\color{gray!10}%
+            \mbox{
+              \begin{tabular}{c}
+                継\\続
+              \end{tabular}
+            }
+            \hfill
+            \mbox{
+              \begin{tabular}{c}
+                継\\続
+              \end{tabular}
+        }}}
+        \vskip-2.7\zh\hspace*{-.05\linewidth}
+        \makebox[1.1\linewidth]{\color{titleblue!85!}\rule{1.1\linewidth}{2pt}}
+      \end{beamercolorbox}
+    \fi%
+  \fi
+}
+
+\newsavebox{\sectionnumberbox}
+\setbeamertemplate{section in toc}{%
+  \leavevmode%
+  \color{titleblue}%
+  \savebox{\sectionnumberbox}{\underline{$\blacksquare$ \inserttocsectionnumber.}}
+  \usebox{\sectionnumberbox}
+  \parbox[t]{\columnwidth-\leftskip-1em-\wd\sectionnumberbox\relax}{%
+    \raggedright
+    \setlength{\baselineskip}{9pt}
+    \inserttocsection
+  }
+  \par
+}
+\setbeamertemplate{subsection in toc}{%
+  \leavevmode%
+  \savebox{\sectionnumberbox}{\underline{$\blacksquare$ \inserttocsectionnumber.}\ }%
+  \parbox[t]{\wd\sectionnumberbox\relax}{\rightline{\Large$\bullet$\hspace*{5pt}}}%
+  \parbox[t]{\columnwidth-\leftskip-1em-\wd\sectionnumberbox\relax}{%
+    \raggedright
+    \setlength{\baselineskip}{6pt}
+    \small\inserttocsubsection
+  }\par
+}
+
+\newsavebox{\keizokutoc}
+\savebox{\keizokutoc}{%
+  \sloppy
+  \Huge\scalefont{1.83}
+  \parbox[c][.28\baselineskip][c]{1.24\linewidth}{
+    \makebox[\linewidth]{\mcfamily\bfseries\color{gray!10}継 \hfill 続}
+  }
+}
+
+\renewcommand{\TableOfContents}[1]{
+    \switchfooter%
+    \begin{frame}<beamer>%
+      \sloppy
+      \centering
+
+      \hspace*{-.09\linewidth}\usebox{\keizokutoc}\par
+      \vskip-\dimexpr\ht\keizokutoc+\dp\keizokutoc+.3\baselineskip\relax
+      \begin{tabular}[c]{c}
+        \textcolor{titleblue}{\tt\Large{}Continuations:}\\
+        \rm\large{}continued and to be continued
+      \end{tabular}\par
+      % \vspace*{-.3\zh}
+      \hspace*{-.05\linewidth}
+      \makebox[1.1\linewidth]{\color{titleblue}\rule{1.1\linewidth}{2pt}}
+
+      \setlength\columnsep{.5\zw}
+      \begin{multicols}{2}%
+        \tableofcontents[sectionstyle=show/shaded,subsectionstyle=show/shaded,#1]%
+      \end{multicols}%
+    \end{frame}%
+    \switchfooter}
 
 \AtBeginSection{}
 \AtBeginSubsection{}
@@ -128,20 +236,18 @@ autogobble}
 \institute{関数型まつり2025}
 
 \begin{document}
-% \input{src/title.tex}
-% \input{src/first.tex}
-% \input{src/whatscont.tex}
-% \input{src/intro.tex}
-% \input{src/procedural.tex}
+\input{src/title.tex}
+% \input{src/me.tex}
+\input{src/intro.tex}
 \input{src/continuation.tex}
+% \addtocontents{toc}{\vfill\newpage} % tocを改行
+\input{src/effect.tex}
+% \input{src/types.tex}
 % \input{src/misc.tex}
 % \input{src/conclusion.tex}
 
 \switchfooter
-\section{References}
-\begin{frame}[t,allowframebreaks]
-	\frametitlesec
+\begin{frame}[allowframebreaks]{References}
 	\printbibliography
 \end{frame}
 \end{document}
-

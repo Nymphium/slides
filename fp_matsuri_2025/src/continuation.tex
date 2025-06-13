@@ -1,40 +1,359 @@
-\section{The birth of continuations}
+\section{The Evolution of Continuations}
+\TableOfContents{}
 
-\begin{frame}[t,fragile]
-	\frametitlesec
+\subsection{Dump and J operator, SECD machine}
+\begin{frame}[fragile]
+	\frametitlesubs
 
-	{\large \verb|Dump|} in \underline{{\boldslant SECD} machine}\cite{landin1964mechanical}:
+	In 1960s, the first abstract machine for evaluating \textcolor{subhighlight}{functional} programs\cite{landin1964mechanical}:
 
-	The first abstract machine for evaluating functional programs
-
-	\pause
-
-	% \vspace{1\zh}
+	\only<.(3)->\small
+	\vspace{-.4\zh}
 	\begin{table}[h!]
 		\begin{tabular}{lcl}
-			{\boldslant S}tack       & : & Stores \underline{intermediate results}                                                                          \\
-			{\boldslant E}nvironment & : & Stores \underline{variables}                                                                                     \\
-			{\boldslant C}ontrol     & : & Stores \underline{the next instruction}                                                                          \\
-			{\boldslant D}ump        & : & Stores \tikz\coordinate[xshift=2\zw](p1);\underline{\only<+(1)->{\bf\color{highlight}}the suspended computation}
+
+			{\boldslant S}\texttt{tack}                   & : & Stores \underline{intermediate results}                                                \\
+			{\boldslant E}\texttt{nvironment}             & : & Stores \underline{variables}                                                           \\
+			{\boldslant C}\texttt{ontrol}                 & : & Stores \underline{the next instruction}                                                \\
+
+			\only<.(3)->\large {\boldslant D}\texttt{ump} & : & Stores {\only<.(3)->{\large\bf\color{highlight}}\underline{the suspended computation}} \\
 		\end{tabular}
 	\end{table}
 
-	\onslide<.(1)->{\tikz[overlay]{
-			\node[below = .2 of p1, rotate=45] (pointup) {\LARGE\emoji{backhand-index-pointing-right}};
-			\node[below = .05 of pointup] {{\large Can be seen as \textbf{\Large continuations!}}\cite{danvy2004secd}};
-		}}
+	\pause
+	\vspace{-.4\zh}
+	\hspace{1.7\zw}
+	And
+	\only<.(2)->\large
+	\verb|J| operator
+		{\only<.(2)->{\bf\color{highlight}}
+			captures the \verb|Dump|}\cite{landin1965generalization}
+
+	\pause
+	\vspace{-1.4\zh}
+	\begin{figure}[h!]
+		\begin{tikzpicture}
+			\node[rotate=45] (pointup) {\Large\emoji{backhand-index-pointing-right}};
+			\node[below = .01 of pointup, anchor=north] {{\large\emoji{face-with-monocle} Could be seen as \textbf{\Large continuations!}\cite{10.1023/A:1010060315625}\cite{danvy2004secd}}};
+		\end{tikzpicture}
+	\end{figure}
 \end{frame}
 
-\begin{frame}[t,fragile]
-	\frametitlesec
+\subsection{\texttt{call/cc}: \texttt{goto} Practical}
+\begin{frame}[fragile]
+	\frametitlesubs
 
-  \verb|J| operator\cite{landin1965generalization} and \verb|call/cc|\cite{sussman1975scheme}:
+	In 1970s, Operators in Scheme\cite{sussman1975scheme}, notably \mintinline{scheme}|call/cc|\cite{scheme1978revised}\footnote{abbrev of "call-with-current-continuation"}:
 
-  \begin{itemize}
-    \item captures the rest of computation
-    
-  \end{itemize}
+	Captures the current continuation as a first-class value
 
+	\begin{minted}{racket}
+    (let {[(x (call/cc (λ (?\large\textcolor{highlight}{κ}?)
+                (+ 2 (?\large\textcolor{highlight}{κ}? 4)))))]}
+        (+ x 3))
+    ; => (let {[x 4]} (+ x 3))
+    ; => returns 7
+  \end{minted}
 
+	\pause
+	\mintinline{scheme}{call/cc} enables to implement:
+
+	\begin{minipage}{.3\textwidth}
+		\begin{itemize}
+			\item[\emoji{check-mark-button}] non-local exit
+			\item[\emoji{check-mark-button}] backtracking
+			\item[] $\cdots\cdots$
+		\end{itemize}
+	\end{minipage}
+	\begin{minipage}{.64\textwidth}
+		\pause
+		{\Huge \emoji{backhand-index-pointing-right}}
+		\Large
+		\parbox{.85\textwidth}{%
+			\color{highlight}
+			\bf
+			\centering
+			ANYTHING related to
+
+			\boldslant control transfer%
+		}
+	\end{minipage}
 \end{frame}
+
+\subsection{Continuation-Passing Style}
+\begin{frame}[fragile]
+	\frametitlesubs
+
+	A program representation where control flow is made \textit{\semibf explicit}
+	\\by chaining computations as \textcolor{subhighlight}{continuations}\cite{reynolds1972definitional}:
+
+	\def\relanime{4}
+
+	\begin{center}
+		\only<.(\relanime)->{%
+			\setminted{fontsize=\smaller[2]}\smaller[2]
+			\vskip-.8\zh\relax
+		}
+
+		\tikzstyle{every picture}+=[remember picture]
+		\begin{minipage}[c]{9\zw}
+			\begin{minted}{racket}
+        (define (add1 x)
+          (+ x 1))
+        (define (mul2 x)
+          (* x 2))
+
+        ?\tikzmarknode{origord2a}?(mul2 ?\tikzmarknode{origord1a}?(add1 3)?\tikzmarknode{origord1}?)?\tikzmarknode{origord2}?
+      \end{minted}
+		\end{minipage}
+		\pause
+		\begin{minipage}[c]{6\zw}
+			\smaller
+			\centering
+			\color{highlight}\bf
+			CPS\\
+			$\underrightarrow{\textsf{Conversion!}}$
+		\end{minipage}
+		\begin{minipage}[c]{11\zw}
+			\begin{minted}{racket}
+        (define (add1 x ?\larger\textcolor{highlight}{κ}?)
+          (?\larger\textcolor{highlight}{κ}? (+ x 1)))
+        (define (mul2 x ?\larger\textcolor{highlight}{κ}?)
+          (?\larger\textcolor{highlight}{κ}? (* x 2)))
+
+        ?\tikzmarknode{cpsord1a}?(add1 3?\tikzmarknode{cpsord1}? (λ (smu)
+          ?\tikzmarknode{cpsord2a}?(mul2 sum?\tikzmarknode{cpsord2}? (λ (mul)
+            mul))))
+      \end{minted}
+		\end{minipage}
+	\end{center}
+
+	\pause{}
+	CPS \underline{\textit{fixes}} the order of evaluation and control flow%
+	\begin{tikzpicture}[overlay, remember picture, every node/.style={inner sep=0pt}, underline/.style={line width=1pt,draw}]
+		% \smaller
+		\only<.(1)->{\smaller[2]}
+		\node[color=SeaGreen,circle,draw,anchor=south east,yshift=.7\baselineskip] at (origord1) {1};
+		\path[underline, color=SeaGreen] ([yshift=-.2\zh]origord1a.north) -- ([yshift=-.2\zh]origord1.north);
+
+		\node[color=Peach,circle,draw,anchor=south east,yshift=.7\baselineskip, xshift=.5\zw] at (origord2) {2};
+		\path[underline, color=Peach] ([yshift=-.4\zh]origord2a.north) -- ([yshift=-.4\zh]origord2.north);
+
+		\node[color=SeaGreen,circle,draw,anchor=south east,yshift=.7\baselineskip, xshift=.3\zw] at (cpsord1)  {1};
+		\path[underline, color=SeaGreen] ([yshift=-.2\zh]cpsord1a.north) -- ([yshift=-.2\zh]cpsord1.north);
+
+		\node[color=Peach,circle,draw,anchor=north east,yshift=-.2\baselineskip, xshift=.7\zw] at (cpsord2)  {2};
+		\path[underline,color=Peach] ([yshift=-.2\zh]cpsord2a.north) -- ([yshift=-.2\zh]cpsord2.north);
+	\end{tikzpicture}%
+	\pause{},
+
+	so that it's good for
+
+	\centerline{\Large\textbf{an intermediate representation}}
+
+	for language implementations!
+\end{frame}
+
+\subsection{Compiling with Continuations}
+\begin{frame}[fragile]
+	\frametitlesubs
+
+	CPS as \textcolor{subhighlight}{an intermediate representation} (IR) for language impls\cite{appel1992cwc}:
+
+	\begin{center}
+		\begin{tikzpicture}
+			\smaller[2]
+			\node[draw] (src) {Source};
+			\node[right = of src,draw] (cps) {\color{highlight}\larger CPS};
+			\node[right = 1.8 of cps, draw] (gen) {Codegen};
+			\node (opts) at ($(cps.south east)!0.5!(gen.south west)$) {(Opts.)};
+			\draw[->,thick]
+			(src) edge (cps)
+			(cps) edge (gen);
+		\end{tikzpicture}
+	\end{center}
+
+	\pause
+	\begin{itemize}
+		\item[\emoji{check-mark-button}]<+->
+		      Good for {\only<.>{\color{subhighlight}}functional languages}
+
+		      \smaller
+		      CPS operates functions as first-class values!
+		      \tikz[remember picture, overlay]\node[left = 0.2 of src.west]{
+			      \scalebox{.5}{
+				      $\left.
+					      \begin{array}{l}
+						      \textsf{SML/NJ} \\
+						      \textsf{Scheme} \\
+						      \begin{array}{c}
+							      \textsf{OCaml} \\
+							      {\scriptsize\left(\textsf{flambda}\right)}
+						      \end{array}
+					      \end{array}
+					      \right\}$
+			      }
+		      };
+
+		\item[\emoji{check-mark-button}]<+->
+		      Good for \textcolor{subhighlight}{optimizations}
+
+		      \smaller
+		      Several optimizations can be done by \textcolor{highlight}{β}/\textcolor{highlight}{η},
+
+		      and each values are single-assignment!
+		      \smaller[3]
+		      \begin{lrbox}{\mintedbox}
+			      \begin{minipage}{14.5\zw}
+				      \setminted{fontsize=\relsize{0}}
+				      \begin{minted}{OCaml}
+                let z = a * b + a * b
+                in e
+              \end{minted}
+			      \end{minipage}
+		      \end{lrbox}
+		      \begin{tikzpicture}[remember picture, overlay]
+			      \node[below right = 0.05 of opts,xshift=-2\zw] (optmap) {
+				      \begin{minipage}[c]{.35\textwidth}
+					      \begin{tabular}{crc}
+						      \begin{tabular}{c}
+							      Constant Folding \\
+							      \& Inlining
+						      \end{tabular}
+						                          & $\Rightarrow$ & β reduction  \\
+						      Defunctionalization & $\Rightarrow$ & η reduction  \\
+						      \begin{tabular}{c}
+							      Common Subexpression \\
+							      Elimination
+						      \end{tabular}
+						                          & $\Rightarrow$ & \textit{EZ}:
+					      \end{tabular}
+				      \end{minipage}
+			      };
+
+			      \node[below = -.1 of optmap, xshift=5\zw] (raw) {\usebox{\mintedbox}};
+		      \end{tikzpicture}
+
+		      \begin{lrbox}{\mintedbox}
+			      \begin{minipage}{15\zw}
+				      \setminted{fontsize=\relsize{0}}
+				      \begin{minted}{OCaml}
+                ?\tikzmarknode{ab1}{}?( *' ) a b?\tikzmarknode{ab1e}{}? (fun ?$\texttt{v}_1$? ->
+                ?\tikzmarknode{ab2}{}?( *' ) a b?\tikzmarknode{ab2e}{}? (fun ?$\texttt{v}_2$? ->
+                ( +' ) ?$\texttt{v}_1$? ?$\texttt{v}_2$? (fun z ->
+                ?$\llbracket\texttt{e}\rrbracket^\kappa$?
+              \end{minted}
+			      \end{minipage}
+		      \end{lrbox}
+		      \begin{tikzpicture}[remember picture, overlay]
+			      \node[below = .0 of raw] (cpsed) {\usebox{\mintedbox}};
+			      \path[draw] (raw.east) edge[bend left=30,->] (cpsed.east) node[midway,right]{
+					      \smaller
+					      \begin{tabular}{c}
+						      CPS \\
+						      Conversion
+					      \end{tabular}
+				      };
+
+			      \path[draw, line width=0.1\zh,color=highlight]
+			      ([yshift=-.2\zw]ab1.south) -- ([yshift=-.2\zw]ab1e.south)
+			      ([yshift=-.2\zw]ab2.south) -- ([yshift=-.2\zw]ab2e.south);
+			      \node[above= .2 of ab1e.north east,fill=white,opacity=0.5,text opacity=1] {\color{highlight}same!};
+		      \end{tikzpicture}
+	\end{itemize}
+\end{frame}
+
+\subsection{Delimited Coninuations}
+\begin{frame}[fragile]
+	\frametitlesubs
+
+	\begin{minipage}{.09\textwidth}
+		\
+	\end{minipage}
+	\begin{minipage}{.9\textwidth}
+		\begin{itemize}
+			\item[\textcolor{subhighlight}{Problem}:]
+			      \mintinline{scheme}{call/cc} is a powerful control structure, but captures the entire rest of the computation (like \mintinline{c}{goto}!)
+
+		\end{itemize}
+	\end{minipage}
+
+	\pause
+	\vspace{1\zh}
+	\hspace{.2\zw}\textcolor{highlight}{Solution}:
+
+	\hspace{.3\zw}
+	\begin{minipage}[t]{.60\textwidth}
+		\vspace{.2\zh}
+		\centering
+		{\Large{}Use}
+
+		\textbf{\large{}Delimited continuations!}\cite{felleisen1988prompt}
+
+		\begin{itemize}
+			\item[\emoji{check-mark-button}] capturing \textit{scoped} conitnuations
+			\item[\emoji{check-mark-button}] more structured and composable
+		\end{itemize}
+
+	\end{minipage}
+	\begin{minipage}[t]{.30\textwidth}
+		\begin{figure}[h]
+			\includegraphics[width=\textwidth]{img/pointing-smile-man.png}
+		\end{figure}
+	\end{minipage}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitlesubs
+
+	shift/reset \cite{danvy1990abstracting}:
+
+	captures a scoped continuation
+
+	\begin{minted}{racket}
+    (+ 3 (reset (+ 4 (shift k (k (k 5))))))
+
+    ; => (+ 3 (+ 4 (+ 4 5)))
+  \end{minted}
+
+	\pause
+	Delimited continuations enable to implement
+
+	\begin{itemize}
+		\item[\emoji{check-mark-button}] \mintinline[fontsize=\large]{scheme}|call/cc|!
+		\item[\emoji{check-mark-button}] \textcolor{subhighlight}{\bf ALL of \underline{monads}!!}
+
+		      \pause\LARGE
+		\item[] $\dots\dots$and \textcolor{highlight}{\bf visa-versa}\emoji{exclamation}\cite{dybvig2005a}
+	\end{itemize}
+\end{frame}
+
+\subsection{Correspondence between procedural and functional}
+\begin{frame}[fragile]
+	\frametitlesubs
+
+	How do \textit{control transfer} correspond in \textcolor{subhighlight}{imperative} and \textcolor{highlight}{functional}?
+
+	\pause
+	\begin{itemize}
+		\item<+-> Imperative:
+
+		      \begin{itemize}
+			      \item[\emoji{down-arrow}] \verb|jmp|: Low-level control transfer
+			      \item[\emoji{down-arrow}] \verb|goto|: Arbitrary jumps in high-level repr.
+			      \item[\emoji{backhand-index-pointing-right}] \verb|for| / \verb|while| / \verb|if|: Structured, clear control
+		      \end{itemize}
+
+		\item<+-> Functional:
+
+		      \begin{itemize}
+			      \item[\emoji{down-arrow}] \verb|J|: Low-level continuation operator
+			      \item[\emoji{down-arrow}] \verb|call/cc|: Capturing entire continuation
+			      \item[\emoji{backhand-index-pointing-right}] \verb|shift/reset|: Structured, modular and composable control
+		      \end{itemize}
+	\end{itemize}
+
+	Also, CPS <-> SSA! \cite{10.1145/278283.278285}
+\end{frame}
+
 

@@ -1,0 +1,70 @@
+\section{Continuations with Effects}
+\TableOfContents{}
+
+\subsection{Why continuations for effects?}
+\begin{frame}
+	\frametitlesubs{}
+
+	{
+		\only<.(3)->{\smaller[2]}
+		Computational effects, side effects or just \textit{effects}:
+		\only<.(3)->{\vspace{-.6\zh}}
+
+		\begin{minipage}[t]{.8\textwidth}
+			\begin{itemize}
+				\only<.(3)->{\setlength{\itemsep}{-.2\zh}}
+				\item Exception {\only<.(2)->{\dotfill \textit{halt?}}}
+				\item Async I/O {\only<.(2)->{\dotfill \textit{when to resume?}}}
+				\item Coroutines {\only<.(2)->{\dotfill \textit{which order to resume?}}}
+				\item etc.
+			\end{itemize}
+		\end{minipage}
+	}
+
+	\vspace{.6\zh}
+	Handling effects is about what happens------
+	\pause
+	\\\centerline{\larger{}and \textit{when} and \textit{how} to \textcolor{subhighlight}{resume}.}
+
+	\pause
+
+	\vspace{-.4\zh}
+	\centering
+	\hspace*{\fill}
+	\begin{minipage}[t]{.41\textwidth}
+		\vspace{.6\zh}
+
+		\centering
+		\large
+		So, it's time
+		for
+		\LARGE
+		\textcolor{highlight}{\boldslant Continuations!}
+	\end{minipage}
+	\begin{minipage}[t]{.30\textwidth}
+		\begin{figure}[h]
+			\centering
+			\sloppy
+			\includegraphics[height=.38\textheight]{img/woman-shouting.png}
+		\end{figure}
+	\end{minipage}
+\end{frame}
+
+\subsection{Monads}
+
+\begin{frame}[fragile]
+	\frametitlesubs{}
+
+	In 1991, a new approach to handling effects\cite{moggi1991notions}:
+
+	\begin{itemize}
+		\item \verb|return| / \verb|pure|: lifts a value into the effectful context
+		\item {\only<2->{\color{highlight}}\verb|bind| / \verb|flatMap| / \texttt{>>=}}: chains monadic computations
+	\end{itemize}
+
+\end{frame}
+
+\subsection{Algebraic Effect Handlers}
+\begin{frame}
+	\frametitlesubs
+\end{frame}

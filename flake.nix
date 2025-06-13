@@ -32,6 +32,7 @@
             noto-fonts-cjk-serif
             noto-fonts-cjk-sans
             source-han-serif-japanese
+            source-han-sans-japanese
             nerd-fonts.monaspace
             genshingothic
           ];

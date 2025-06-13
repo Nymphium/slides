@@ -1,15 +1,30 @@
 \makeatletter
 \setbeamertemplate{title page}{
 	\begin{center}
-		{\Huge
-		\textcolor{green!50!black}{\texttt{C}}%
-		\textcolor{basetext!70}{\texttt{[}}%
-		\textcolor{black}{\texttt{ontinuations}}%
-		\textcolor{basetext!70}{\texttt{]:}}%
+		\newsavebox{\keizokutitle}
+		\savebox{\keizokutitle}{%
+			\parbox[c][.70\textheight][c]{1\linewidth}{%
+				\makebox[\linewidth]{\Huge\scalefont{8.5}\mcfamily\bfseries\color{gray!5}継 続}
+			}
+		}
+		\usebox{\keizokutitle}
+		\vskip-\dimexpr\ht\keizokutitle+\dp\keizokutitle+1.5\baselineskip\relax
+
+		{
+		\Huge
+		\hphantom{.}
+		\hspace{-.75\zw}%
+		\textcolor{green!50!black}{\semibf\scalefont{1.09}C}%
+		\kern-.15\zw%
+		\textcolor{basetext!50}{\scalefont{1.18}\texttt{[}}%
+		\kern-.38\zw%
+		\textcolor{black!80!green}{\raisebox{.065\zh}{\texttt{{\scalefont{1.03}o}\kern-2pt n\kern-3pt t\kern-2pt i\kern-4pt n\kern-2pt u\kern-2pt a\kern-4pt t\kern-2pt i\kern-4pt o\kern-2pt n\kern-2pt s}}}%
+		\kern-.36\zw%
+		\textcolor{basetext!50}{{\scalefont{1.18}\texttt{]\hspace{-.35\zw}:}}}%
 		}
 		\rm
 
-		\vspace*{1.5\zh}
+		\vspace*{1.48\zh}
 
 		\def\@margin{\hspace*{.4\zw}}
 		\textcolor{subhighlight}{\LARGE
@@ -23,19 +38,19 @@
 
 		\textcolor{highlight}{\LARGE
 			$\overrightarrow{\raisebox{0pt}[.7\zh]{\@margin\textrm{to be continued}\@margin}}$}
-		\vspace*{.6\zh}
+		\vspace*{1.8\zh}
 
-		\xhrulefill{titleblue}{1pt}
+		\makebox[.4\linewidth]{\xhrulefill{titleblue}{1pt}}
 
-		\vspace*{1.4\zh}
+		\vspace*{.65\zh}
+
 		\small
 		\mcfamily
 		\color{basetext}
 
 		\textsc{\textmd{%
-				{\footnotesize At}
-				\href{https://2025.fp-matsuri.org/}{\insertinstitute}\hspace{.5\zw}
-				{\footnotesize\insertdate}
+				{\footnotesize{}At}
+				\href{https://2025.fp-matsuri.org/}{\underline{\insertinstitute}}\hspace{.5\zw} {\small\insertdate}
 			}}
 
 		\vspace*{.4\zh}

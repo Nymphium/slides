@@ -12,4 +12,9 @@ clean:
 	-rm $(TARGET).nav
 	-rm $(TARGET).snm
 	-rm $(TARGET).vrb
+	-rm $(TARGET).pyg
+	-rm $(TARGET).bbl*
+	-rm $(TARGET).bcf
+	-rm -rf _minted
+	-rm indent.log
 
