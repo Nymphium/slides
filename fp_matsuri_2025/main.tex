@@ -5,6 +5,7 @@
 }]{beamer}
 \usepackage{fontawesome,emoji,amssymb,stmaryrd,scalefnt,relsize}
 \usepackage[normalem]{ulem}
+\usepackage{luatexja-ruby}
 \usepackage{hyperref}
 \usepackage{luatexja,luacode}
 \usepackage[no-math]{luatexja-fontspec}
@@ -13,23 +14,27 @@
 % \setsansfont[Script=Default,Kerning=On,AutoFakeBold,AutoFakeSlant,BoldSlantedFeatures={AutoFakeBold,AutoFakeSlant}]{GenShinGothic-Medium}
 \setsansfont[Script=Default, Kerning=On, BoldFont={*-Bold},
 ItalicFont={NotoSans-Italic},
-Contextuals={Alternate},Ligatures={Common}
+Contextuals={Alternate},Ligatures=TeX
 ]{SourceHanSans}
 \setmainfont[Script=Default, Kerning=On, BoldFont={*-Bold},
 ItalicFont={NotoSerif-Italic},
-Contextuals={Alternate},Ligatures={Common}
+Contextuals={Alternate},Ligatures=TeX
 ]{SourceHanSerif}
 \setmainjfont[Script=Default, Kerning=On,
 ItalicFont={NotoSerif-Italic},
 Renderer=HarfBuzz,
-Contextuals={Alternate},Ligatures={Common}
+Contextuals={Alternate},Ligatures=TeX
 ]{SourceHanSerif}
 \setsansjfont[Script=Default, Kerning=On, BoldFont={*-Bold},
 ItalicFont={NotoSans-Italic}, YokoFeatures={JFM=prop},
-Contextuals={Alternate},Ligatures={Common}
+Contextuals={Alternate},Ligatures=TeX
 ]{SourceHanSans}
 \newfontfamily{\boldslant}[Script=Default,Kerning=On]{NotoSans-BoldItalic}
-\setmonofont[Contextuals={Alternate},Ligatures={Common},StylisticSet={1,2,3,4,5,6,7,8,9}]{MonaspiceNeNerdFontMono}
+\setmonofont[
+BoldFont={*-Bold},
+ItalicFont={*-Italic},
+BoldItalicFont={*-BoldItalic},
+Contextuals={Alternate},Ligatures=Common,StylisticSet={1,2,3,4,5,6,7,8,9},Renderer=HarfBuzz]{MonaspiceNeNerdFontMono}
 \newjfontfamily{\semijbf}[Script=Default, Kerning=On,
 YokoFeatures={JFM=prop}]{SourceHanSans-Medium}
 \newfontfamily{\semibf}[Script=Default, Kerning=On, BoldFont={SourceHanSans-Bold},
@@ -145,6 +150,7 @@ autogobble}
         \vskip-2.7\zh\hspace*{-.05\linewidth}
         \makebox[1.1\linewidth]{\color{titleblue}\rule{1.1\linewidth}{2pt}}
       \end{beamercolorbox}%
+      \vskip-.6\baselineskip
     \else%
       \begin{beamercolorbox}{framesubtitle}%
         \vskip-.6\zh\hspace*{-.3\zw}
@@ -167,6 +173,7 @@ autogobble}
         \vskip-2.7\zh\hspace*{-.05\linewidth}
         \makebox[1.1\linewidth]{\color{titleblue!85!}\rule{1.1\linewidth}{2pt}}
       \end{beamercolorbox}
+      \vskip-.6\baselineskip
     \fi%
   \fi
 }
@@ -244,7 +251,7 @@ autogobble}
 \input{src/effect.tex}
 % \input{src/types.tex}
 % \input{src/misc.tex}
-% \input{src/conclusion.tex}
+\input{src/conclusion.tex}
 
 \switchfooter
 \begin{frame}[allowframebreaks]{References}

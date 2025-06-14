@@ -193,3 +193,107 @@ isbn = {0521416957},
 publisher = {Cambridge University Press},
 address = {USA}
 }
+
+  @article{10.1145/1160074.1159808,
+author = {Kiselyov, Oleg and Shan, Chung-chieh and Sabry, Amr},
+title = {Delimited dynamic binding},
+year = {2006},
+issue_date = {September 2006},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {41},
+number = {9},
+issn = {0362-1340},
+url = {https://doi.org/10.1145/1160074.1159808},
+doi = {10.1145/1160074.1159808},
+abstract = {Dynamic binding and delimited control are useful together in many settings, including Web applications, database cursors, and mobile code. We examine this pair of language features to show that the semantics of their interaction is ill-defined yet not expressive enough for these uses.We solve this open and subtle problem. We formalise a typed language DB+DC that combines a calculus DB of dynamic binding and a calculus DC of delimited control. We argue from theoretical and practical points of view that its semantics should be based on delimited dynamic binding: capturing a delimited continuation closes over part of the dynamic environment, rather than all or none of it; reinstating the captured continuation supplements the dynamic environment, rather than replacing or inheriting it. We introduce a type- and reduction-preserving translation from DB + DC to DC, which proves that delimited control macro-expresses dynamic binding. We use this translation to implement DB+DC in Scheme, OCaml, and Haskell.We extend DB + DC with mutable dynamic variables and a facility to obtain not only the latest binding of a dynamic variable but also older bindings. This facility provides for stack inspection and (more generally) folding over the execution context as an inductive data structure.},
+journal = {SIGPLAN Not.},
+month = sep,
+pages = {26–37},
+numpages = {12},
+keywords = {delimited continuations, dynamic binding, monads}
+}
+
+@inproceedings{kiselyov2006delimited,
+author = {Kiselyov, Oleg and Shan, Chung-chieh and Sabry, Amr},
+title = {Delimited dynamic binding},
+year = {2006},
+isbn = {1595933093},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/1159803.1159808},
+doi = {10.1145/1159803.1159808},
+abstract = {Dynamic binding and delimited control are useful together in many settings, including Web applications, database cursors, and mobile code. We examine this pair of language features to show that the semantics of their interaction is ill-defined yet not expressive enough for these uses.We solve this open and subtle problem. We formalise a typed language DB+DC that combines a calculus DB of dynamic binding and a calculus DC of delimited control. We argue from theoretical and practical points of view that its semantics should be based on delimited dynamic binding: capturing a delimited continuation closes over part of the dynamic environment, rather than all or none of it; reinstating the captured continuation supplements the dynamic environment, rather than replacing or inheriting it. We introduce a type- and reduction-preserving translation from DB + DC to DC, which proves that delimited control macro-expresses dynamic binding. We use this translation to implement DB+DC in Scheme, OCaml, and Haskell.We extend DB + DC with mutable dynamic variables and a facility to obtain not only the latest binding of a dynamic variable but also older bindings. This facility provides for stack inspection and (more generally) folding over the execution context as an inductive data structure.},
+booktitle = {Proceedings of the Eleventh ACM SIGPLAN International Conference on Functional Programming},
+pages = {26–37},
+numpages = {12},
+keywords = {delimited continuations, dynamic binding, monads},
+location = {Portland, Oregon, USA},
+series = {ICFP '06}
+}
+
+  @inproceedings{10.1145/155090.155104,
+author = {Sitaram, Dorai},
+title = {Handling control},
+year = {1993},
+isbn = {0897915984},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/155090.155104},
+doi = {10.1145/155090.155104},
+abstract = {Non-local control transfer and exception handling have a long tradition in higher-order programming languages such as Common Lisp, Scheme and ML. However, each language stops short of providing a full and complementary approach—control handling is provided only if the corresponding control operator is first-order. In this work, we describe handlers in a higher-order control setting. We invoke our earlier theoretical result that all denotational models of control languages invariably include capabilities that handle control. These capabilities, when incorporated into the language, form an elegant and powerful higher-order generalization of the first-order exception-handling mechanism.},
+booktitle = {Proceedings of the ACM SIGPLAN 1993 Conference on Programming Language Design and Implementation},
+pages = {147–155},
+numpages = {9},
+location = {Albuquerque, New Mexico, USA},
+series = {PLDI '93}
+}
+
+@article{Dorai1993handling,
+author = {Sitaram, Dorai},
+title = {Handling control},
+year = {1993},
+issue_date = {June 1993},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {28},
+number = {6},
+issn = {0362-1340},
+url = {https://doi.org/10.1145/173262.155104},
+doi = {10.1145/173262.155104},
+abstract = {Non-local control transfer and exception handling have a long tradition in higher-order programming languages such as Common Lisp, Scheme and ML. However, each language stops short of providing a full and complementary approach—control handling is provided only if the corresponding control operator is first-order. In this work, we describe handlers in a higher-order control setting. We invoke our earlier theoretical result that all denotational models of control languages invariably include capabilities that handle control. These capabilities, when incorporated into the language, form an elegant and powerful higher-order generalization of the first-order exception-handling mechanism.},
+journal = {SIGPLAN Not.},
+month = jun,
+pages = {147–155},
+numpages = {9}
+}
+
+@inproceedings{shan2004shift,
+  title={Shift to control},
+  author={Shan, Chung-chieh},
+  booktitle={Proceedings of the 5th workshop on Scheme and Functional Programming},
+  pages={99--107},
+  year={2004}
+}
+
+
+@book{dijkstra1972structured,
+editor = {Dahl, O. J. and Dijkstra, E. W. and Hoare, C. A. R.},
+title = {Structured programming},
+year = {1972},
+isbn = {0122005503},
+publisher = {Academic Press Ltd.},
+address = {GBR},
+}
+
+@inproceedings{bauer2013effect,
+  author = {Bauer, Andrej and Pretnar, Matija},
+  year = {2013},
+  month = {06},
+  pages = {},
+  title = {An Effect System for Algebraic Effects and Handlers},
+  volume = {10},
+  isbn = {978-3-642-40205-0},
+  journal = {Logical Methods in Computer Science},
+  doi = {10.1007/978-3-642-40206-7_1}
+}
