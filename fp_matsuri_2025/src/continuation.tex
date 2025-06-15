@@ -54,13 +54,19 @@
 
 	Captures the current continuation as a first-class value
 
-	\begin{minted}{racket}
-    (let {[(x (call/cc (λ (?\large\textcolor{highlight}{κ}?)
-                (+ 2 (?\large\textcolor{highlight}{κ}? 4)))))]}
-        (+ x 3))
-    ; => (let {[x 4]} (+ x 3))
-    ; => returns 7
-  \end{minted}
+	\begin{center}
+		\vspace*{-1.2\baselineskip}
+		\begin{minipage}[t]{.55\textwidth}
+			\begin{minted}{racket}
+        (let {[(x (call/cc (λ (?\large\textcolor{highlight}{κ}?)
+                    (+ 2 (?\large\textcolor{highlight}{κ}? 4)))))]}
+            (+ x 3))
+        ; => (let {[x 4]} (+ x 3))
+        ; => returns 7
+      \end{minted}
+		\end{minipage}
+		\vspace*{-.4\baselineskip}
+	\end{center}
 
 	\pause
 	\mintinline{scheme}{call/cc} can be used to implement:
@@ -130,11 +136,15 @@
 \begin{frame}[fragile]
 	\frametitlesubs
 
-	\begin{minted}{racket}
-    (+ 3 (reset (+ 4 (shift κ (κ (κ 5))))))
+	\begin{center}
+		\begin{minipage}{.7\textwidth}
+			\begin{minted}{racket}
+        (+ 3 (reset (+ 4 (shift κ (κ (κ 5))))))
 
-    ; => (+ 3 (+ 4 (+ 4 5)))
-  \end{minted}
+        ; => (+ 3 (+ 4 (+ 4 5)))
+      \end{minted}
+		\end{minipage}
+	\end{center}
 
 	\pause
 	\begin{minipage}[t]{.49\textwidth}
@@ -171,6 +181,8 @@
 	\end{minipage}
 
 	\begin{center}
+		\vspace*{-.7\baselineskip}
+		\hspace*{-.065\textwidth}
 		\begin{tikzpicture}
 			\smaller[1]
 			\node (callcc) {\texttt{call/cc}};
@@ -369,12 +381,12 @@
 		      \end{lrbox}
 		      \begin{tikzpicture}[remember picture, overlay]
 			      \node[below = .0 of raw.south west, anchor=north west] (cpsed) {\usebox{\mintedbox}};
-			      \path[draw] (raw.east) edge[bend left=30,->] node[midway,right = 0]{
+			      \path[draw] (raw.east) edge[bend left=30,->] node[midway,right = -.1]{
 					      \smaller
 					      \begin{tabular}{c}
 						      CPS        \\
 						      Conversion \\
-						      ($\llbracket-\rrbracket$)
+						      $\left(\llbracket-\rrbracket\right)$
 					      \end{tabular}
 				      }
 			      (cpsed.east);
@@ -391,29 +403,30 @@
 \begin{frame}[fragile]
 	\frametitlesubs
 
-	How do \textit{control transfers} correspond in \textcolor{highlight}{functional} and \textcolor{subhighlight}{procedural}?
+	How do \textit{control transfers} correspond in
+
+	\centerline{\textcolor{highlight}{functional} and \textcolor{subhighlight}{procedural}?}
 
 	% TODO: 表にして横にならべる
 	\begin{itemize}
 		\item Functional side:
 		      \begin{itemize}
-			      \pause
-			      \item<+->[\emoji{down-arrow}] \verb|J|: Low-level continuation operator
-			      \item<+->[\emoji{down-arrow}] \verb|call/cc|: Capturing entire continuation
-			      \item<+->[\emoji{backhand-index-pointing-right}] \verb|shift/reset|: Structured, modular and composable control
-			      \item<+->[\emoji{gear}] {\large \textcolor{highlight}{\textbf{CPS} as an IR}}
+			      \item<+(1)->[\emoji{down-arrow}] \verb|J|: Low-level continuation operator
+			      \item<+(1)->[\emoji{down-arrow}] \verb|call/cc|: Capturing entire continuation
+			      \item<+(1)->[\emoji{backhand-index-pointing-right}] \verb|shift/reset|: Structured, modular and composable control
+			      \item<+(1)->[\emoji{gear}] {\large \textcolor{highlight}{\textbf{CPS} as an IR}}
 		      \end{itemize}
 
 		\item Procedural side:
 		      \begin{itemize}
-			      \item<.(-5)->[\emoji{down-arrow}] \verb|jmp|: Low-level control transfer\tikzmarknode{pos}{}
-			      \item<.(-2)->[\emoji{down-arrow}] \verb|goto|: Arbitrary jumps in high-level repr.
-			      \item<.(-1)->[\emoji{backhand-index-pointing-right}] \verb|for| / \verb|while| / \verb|if|: Structured, clear control\cite{dijkstra1972structured}
-			      \item<.(0)->[\emoji{gear}] {\large \textcolor{subhighlight}{\textbf{SSA}\footnote{Static Single-Assignment form} as an IR}}\vspace*{-.3\baselineskip}
+			      \item<.(-2)->[\emoji{down-arrow}] \verb|jmp|: Low-level control transfer\tikzmarknode{pos}{}
+			      \item<.(-1)->[\emoji{down-arrow}] \verb|goto|: Arbitrary jumps in high-level repr.
+			      \item<.(0)->[\emoji{backhand-index-pointing-right}] \verb|for| / \verb|while| / \verb|if|: Structured, clear control\cite{dijkstra1972structured}
+			      \item<.(1)->[\emoji{gear}] {\large \textcolor{subhighlight}{\textbf{SSA}\footnote{Static Single-Assignment form} as an IR}}\vspace*{-.60\baselineskip}
 		      \end{itemize}
 	\end{itemize}
 
-	\only<.->{
+	\only<.(1)->{
 		\begin{tikzpicture}[overlay]
 			\node[right = 3.5\zw of pos,yshift=0.7\zh] (cpsssa) {
 				\begin{tabular}{l}

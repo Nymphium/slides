@@ -8,20 +8,22 @@
 	{
 		\only<.(3)->{\smaller[2]}
 		\textit{Effects}, side effects or computational effects:
-		\only<.(3)->{\vspace{-.6\zh}}
+		\vspace*{-1.1\zh}
 
-		\begin{minipage}[t]{.8\textwidth}
-			\begin{itemize}
-				\only<.(3)->{\setlength{\itemsep}{-.2\zh}}
-				\item Exception {\only<.(2)->{\dotfill \textit{halt?}}}
-				\item Async I/O {\only<.(2)->{\dotfill \textit{when to resume?}}}
-				\item Coroutines {\only<.(2)->{\dotfill \textit{which order to resume?}}}
-				\item etc.
-			\end{itemize}
-		\end{minipage}
+		\begin{center}
+			\begin{minipage}[t]{.7\textwidth}
+				\begin{itemize}
+					\only<.(3)->{\setlength{\itemsep}{-.2\zh}}
+					\item Exception {\only<.(2)->{\dotfill \textit{halt?}}}
+					\item Async I/O {\only<.(2)->{\dotfill \textit{when to resume?}}}
+					\item Coroutines {\only<.(2)->{\dotfill \textit{which order to resume?}}}
+					\item etc.
+				\end{itemize}
+			\end{minipage}
+		\end{center}
 	}
 
-	\vspace{.6\zh}
+	\vspace{.2\zh}
 	Handling effects is about what happens------
 	\pause
 	\\\centerline{\larger{}and \textit{when} and \textit{how} to \textcolor{subhighlight}{resume}.}
@@ -54,9 +56,6 @@
 
 \begin{frame}[fragile]
 	\frametitlesubs{}
-
-	\only<.>{\Huge\bf モナドは単なる自己関手の圏におけるモノイド対象だよ。何か問題でも？}
-	\pause
 
 	An approach to modeling calculi with \textit{effects}\cite{moggi1991notions}:
 
@@ -154,42 +153,43 @@
 
 	\pause
 
-	\begin{minipage}[t]{.45\textwidth}
-      \centering
-		\parbox[c][.35\textheight][c]{\textwidth}{
-      \begin{center}
-        \textcolor{subhighlight}{Handlers} make it \textit{easier} to \textbf{compose} and \textbf{modularise}
+	\begin{center}
+		\vspace*{-.1\baselineskip}
+		\begin{minipage}[t]{.44\textwidth}
+			\centering
+			\parbox[c][.35\textheight][c]{\textwidth}{
+				\begin{center}
+					\textcolor{subhighlight}{Handlers} make it \textit{easier} to \textbf{compose} and \textbf{modularise}
 
-        than
+					than
 
-        \textcolor{highlight}{monad transformers}\textbf{!}
-      \end{center}
-		}
-	\end{minipage}
-	\begin{minipage}[t]{.03\textwidth}
-		\
-	\end{minipage}
-	\begin{minipage}[t]{.5\textwidth}
-		\parbox[t][.3\textheight][t]{\textwidth}{
-			\includegraphics[width=3.6\zw]{img/notgood.png}\raisebox{2\zh}{\tiny\footnote{\url{https://www.youtube.com/watch?v=uxpDa-c-4Mc}}}
-			\raisebox{1.2\baselineskip}{\mbox{
-					\footnotesize
-					\color{highlight}
-					\begin{tabular}{c}
-						Monad \\
-						Transformers
-					\end{tabular}
-				}}
-			\vskip-.4\baselineskip
+					\textcolor{highlight}{monad transformers}\textbf{!}
+				\end{center}
+			}
+		\end{minipage}
+		\hspace{.03\textwidth}
+		\begin{minipage}[t]{.4\textwidth}
+			\parbox[t][.3\textheight][t]{\textwidth}{
+				\includegraphics[width=3.6\zw]{img/notgood.png}\raisebox{2\zh}{\tiny\footnote{\url{https://www.youtube.com/watch?v=uxpDa-c-4Mc}}}
+				\raisebox{1.2\baselineskip}{\mbox{
+						\footnotesize
+						\color{highlight}
+						\begin{tabular}{c}
+							Monad \\
+							Transformers
+						\end{tabular}
+					}}
+				\vskip-.4\baselineskip
 
-			\includegraphics[width=3.6\zw]{img/good.png}
-			\raisebox{\baselineskip}{\mbox{
-					\footnotesize
-					\color{subhighlight}
-					\begin{tabular}{c}
-						Algebraic Effect \\
-						Handlers
-					\end{tabular}
-				}}}
-	\end{minipage}
+				\includegraphics[width=3.6\zw]{img/good.png}
+				\raisebox{\baselineskip}{\mbox{
+						\footnotesize
+						\color{subhighlight}
+						\begin{tabular}{c}
+							Algebraic Effect \\
+							Handlers
+						\end{tabular}
+					}}}
+		\end{minipage}
+	\end{center}
 \end{frame}
